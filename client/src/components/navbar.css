@@ -1,0 +1,23 @@
+*h1{
+  font-weight:800;
+}
+
+#Nav_Font{
+  font-size: 20px;
+  font-family: Montserrat;
+}
+.person{
+  color: blue !important;
+  background-color: red;
+border-width: 1px;
+}
+.person :active{
+  background-color: pink;
+}
+.nav-tabs{
+  border-width: 1px
+}
+
+#last{
+  color: black;
+}

@@ -1,0 +1,61 @@
+.MuiStepConnector-line {
+    display: none;
+ }
+ 
+.css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root {
+    color:#f2eeed;
+    border-radius: 50%;
+    box-shadow: 0.5px 0.5px 1px 1px #c4c4c4;
+    
+}
+.css-117w1su-MuiStepIcon-text{
+    fill:black;
+    font-weight: bold;
+}
+.css-1hv8oq8-MuiStepLabel-label.Mui-completed{
+    font-weight: 600;
+    color: black;
+}
+.css-1hv8oq8-MuiStepLabel-label.Mui-active{
+    font-weight: 600;
+    color: black;
+    
+
+}
+
+.css-1hv8oq8-MuiStepLabel-label{
+    font-weight: 600;
+    color: black;
+
+}
+.css-i4bv87-MuiSvgIcon-root{
+    margin-left: 1rem;
+    color:#9f9c9c
+}
+
+
+/* media query  */
+@media screen and (max-width:1024px){
+   #check{
+    display: flex;
+    gap:1rem
+   } 
+}
+
+@media screen and (max-width:780px){
+    .css-i4bv87-MuiSvgIcon-root{
+        display: none;
+    }  
+}
+
+@media screen and (max-width: 480px) {
+   #check{
+    display:grid;
+    gap: 0.5rem;
+   
+}
+    .css-i4bv87-MuiSvgIcon-root{
+        display: none;
+    }
+    
+  }

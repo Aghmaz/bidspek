@@ -1,0 +1,46 @@
+.center{
+    display: flex;
+    flex-direction: column;
+    font-weight:800;
+    font-size: "60px";
+      align-items: center; 
+      justify-content: center;
+  }
+  
+  .logout_button{
+    float: right;
+    margin-right: 2rem;
+    margin-top: -3rem;
+  }
+
+  #basic-menu{
+    left:-42px;
+  }
+  .css-1poimk-MuiPaper-root-MuiMenu-paper-MuiPaper-root-MuiPopover-paper{
+    background-color: inherit;
+  }
+
+
+
+
+  @media screen and (max-width:992px)and (min-width:250px){
+   
+    .center{
+      display: flex;
+      flex-direction: column;
+      font-weight:800;
+      font-size: "40px";
+        align-items: center; 
+        justify-content: center;
+        margin-top: "5rem";
+    }
+    .logout_button{
+      float: right;
+      margin-right: -0.1rem;
+      margin-top:-0.1px;
+    }
+    #basic-menu{
+      left:5px;
+    }
+   }
+ 

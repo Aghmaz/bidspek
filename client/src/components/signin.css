@@ -1,0 +1,254 @@
+* {
+   /* overflow: hidden; */
+   margin:0;
+   padding:0;
+   
+}
+
+.FONT{
+   font-family: "Montserrat";
+}
+
+.pic{
+   float:right;
+   margin-top:-9.5rem;
+   /* mix-blend-mode: hard-light; */
+   
+}
+.buttonnn{
+   float: right;
+   margin-top: -2.8rem;
+   cursor: pointer;
+   margin-right: 3rem;
+
+}
+
+.btn-google {
+   color: #545454;
+background-color: #ffffff;
+box-shadow: 0 1px 2px 1px #ddd;
+}
+
+.btn {
+   align-items: center;
+}
+
+.or-container {
+   align-items: center;
+   color: #ccc;
+   display: flex;
+   /* margin: 20px 0; */
+}
+
+.line-separator {
+   background-color: #ccc;
+   flex-grow: 5;
+   height: 1px;
+}
+
+.or-label {
+   flex-grow: 1;
+   margin: 0 15px;
+   text-align: center;
+}
+
+@media screen and (max-width:1950px)and (min-width: 1800px){
+ 
+   .pic{
+width:960px;
+/* display: none; */
+ }
+ .mob{
+   width:60%;
+}
+}
+@media screen and (max-width:1800px)and (min-width: 1700px){
+ 
+   .pic{
+width:900px;
+/* display: none; */
+ }
+ .mob{
+   width:55%;
+}
+}
+@media screen and (max-width:1700px)and (min-width: 1560px){
+ 
+   .pic{
+width:850px;
+/* display: none; */
+ }
+ .mob{
+   width:50%;
+}
+}
+@media screen and (max-width:1560px)and (min-width: 1480px){
+ 
+   .pic{
+width:760px;
+/* display: none; */
+ }
+ .mob{
+   width:50%;
+}
+}
+@media screen and (max-width:1480px)and (min-width: 1400px){
+ 
+   .pic{
+width:700px;
+/* display: none; */
+ }
+ .mob{
+   width:48%;
+}
+}
+@media screen and (max-width:1400px)and (min-width: 1280px){
+ 
+   .pic{
+width:700px;
+/* display: none; */
+ }
+ .mob{
+   width:45%;
+}
+}
+@media screen and (max-width:1280px)and (min-width: 1126px){
+ 
+   .pic{
+width:560px;
+/* display: none; */
+ }
+ .mob{
+   width:50%;
+}
+}
+@media screen and (max-width:1126px)and (min-width: 1060px){
+ 
+   .pic{
+width:500px;
+/* display: none; */
+ }
+ .mob{
+   width:50%;
+}
+}
+@media screen and (max-width:1060px)and (min-width: 1030px){
+ 
+   .pic{
+width:480px;
+/* display: none; */
+ }
+ .mob{
+   width:50%;
+}
+}
+@media screen and (max-width:1030px)and (min-width: 1005px){
+ 
+   .pic{
+width:450px;
+/* display: none; */
+ }
+ .mob{
+   width:50%;
+}
+}
+@media screen and (max-width:1005px)and (min-width: 856px){
+
+ 
+   .pic{
+width:430px;
+
+ }
+ .mob{
+   width:50%;
+}
+}
+@media screen and (max-width:856px)and (min-width: 786px){
+
+   .pic{
+  width:300px;
+  margin-top: -11.5rem;
+}
+   .buttonnn{
+      margin-top: 28rem;
+
+      margin-left: 4rem;
+      /* display: none; */
+      float: left;
+   }
+  
+.mob{
+   width: 60%;
+}
+  }
+
+  @media screen and (max-width:786px)and (min-width: 678px){
+
+   .pic{
+  width:300px;
+  margin-top: -11.5rem;
+}
+   .buttonnn{
+      margin-top: 28rem;
+
+      margin-left: 4rem;
+      /* display: none; */
+      float: left;
+   }
+  
+.mob{
+   width: 60%;
+}
+  }
+
+  @media screen and (max-width:678px)and (min-width: 638px){
+
+   .pic{
+  width:250px;
+  margin-top: -11.5rem;
+}
+   .buttonnn{
+      margin-top: 28rem;
+
+      margin-left: 4rem;
+      /* display: none; */
+      float: left;
+   }
+  
+.mob{
+   width: 60%;
+}
+  }
+  @media screen and (max-width:638px)and (min-width: 500px){
+
+   .pic{
+  width:200px;
+  margin-top: -11.5rem;
+}
+   .buttonnn{
+      margin-top: 28rem;
+
+      margin-left: 4rem;
+      /* display: none; */
+      float: left;
+   }
+  
+.mob{
+   width: 60%;
+}
+  }
+  @media screen and (max-width:500px)and (min-width: 250px){
+   
+   .pic{
+  display: none;
+  /* width: 100px; */
+  margin-right: 8rem;
+  /* opacity: 0.1; */
+   }
+   .buttonnn{
+      display: none;
+   }
+   .mob{
+      width: 80%;
+   }
+  }
