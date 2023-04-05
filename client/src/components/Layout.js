@@ -32,38 +32,38 @@ const Layout = ({ user }) => {
   const [headerText, setHeaderText] = useState("Create a Profile");
 
   // API call for linkedin
-  useLayoutEffect(() => {
-    const handleSubmit = async (event) => {
-      // console.log("Submitting form...");
+  // useLayoutEffect(() => {
+  //   const handleSubmit = async (event) => {
+  //     // console.log("Submitting form...");
 
-      // event.preventDefault();
+  //     // event.preventDefault();
 
-      try {
-        const response = await axios.post(
-          `${process.env.REACT_APP_API_URL}/engineer/emailregister/`,
-          {
-            email: "abc@gmail.com",
-            // email: `abc${Math.random()}@gmail.com`,
-            password: "",
-          }
-        );
-        console.log(response);
-        console.log(response.data.engineer._id);
-        localStorage.setItem("engineerId", response.data.engineer._id);
-        console.log("done");
-      } catch (error) {
-        console.log("Error submitting form:", error);
-        if (error.response && error.response.status === 409) {
-          console.log(error);
-        } else {
-          console.log(error);
-        }
-      }
+  //     try {
+  //       const response = await axios.post(
+  //         `${process.env.REACT_APP_API_URL}/engineer/emailregister/`,
+  //         {
+  //           email: "abc@gmail.com",
+  //           // email: `abc${Math.random()}@gmail.com`,
+  //           password: "",
+  //         }
+  //       );
+  //       console.log(response);
+  //       console.log(response.data.engineer._id);
+  //       localStorage.setItem("engineerId", response.data.engineer._id);
+  //       console.log("done");
+  //     } catch (error) {
+  //       console.log("Error submitting form:", error);
+  //       if (error.response && error.response.status === 409) {
+  //         console.log(error);
+  //       } else {
+  //         console.log(error);
+  //       }
+  //     }
 
-      // console.log("Form submitted.");
-    };
-    handleSubmit();
-  }, []);
+  //     // console.log("Form submitted.");
+  //   };
+  //   handleSubmit();
+  // }, []);
 
   return (
     <div className="container-fluid">

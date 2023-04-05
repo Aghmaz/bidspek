@@ -4,7 +4,7 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Avatar from "@material-ui/core/Avatar";
-import { Card } from "react-bootstrap";
+import { Card, TabContainer } from "react-bootstrap";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import TextField from "@mui/material/TextField";
@@ -97,7 +97,7 @@ const DisplayData = ({ user, props }) => {
     formData.append("permitsRegion", userData.region);
     formData.append("permitsCountry", userData.country);
     formData.append("permitsStates", userData.state);
-    formData.append("image", image);
+    // formData.append("image", image);
     formData.append("preferences", JSON.stringify(selectedItems));
     formData.append("services", JSON.stringify(selectedServiceItems));
 
@@ -120,7 +120,6 @@ const DisplayData = ({ user, props }) => {
         localStorage.removeItem("pieLicense");
         localStorage.removeItem("corrosion");
         localStorage.removeItem("company_name");
-        localStorage.removeItem("servicesData");
         localStorage.removeItem("buildingPermit");
         localStorage.removeItem("isInputField");
         localStorage.removeItem("uploadedImage");
@@ -130,6 +129,11 @@ const DisplayData = ({ user, props }) => {
         localStorage.removeItem("isInputField2");
         localStorage.removeItem("hourly");
         localStorage.removeItem("billing");
+        localStorage.removeItem("switchValue");
+        localStorage.removeItem("selectedValue");
+        localStorage.removeItem("boxCount");
+        localStorage.removeItem("images");
+        localStorage.removeItem("servicesData");
         localStorage.removeItem("professionalData");
         setTimeout(() => {
           localStorage.removeItem("token");
@@ -144,28 +148,28 @@ const DisplayData = ({ user, props }) => {
   const errorToast = () => toast("this is error", { Type: "error" });
   // ==============image
 
-  function handleApi() {
-    console.log("i am there");
-    const formData = new FormData();
-    formData.append("image", image);
-    const engineerId = localStorage.getItem("engineerId");
-    axios
-      .patch(
-        `${process.env.REACT_APP_API_URL}/engineer/profileupload/${engineerId}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
+  // function handleApi() {
+  //   console.log("i am there");
+  //   const formData = new FormData();
+  //   formData.append("image", image);
+  //   const engineerId = localStorage.getItem("engineerId");
+  //   axios
+  //     .patch(
+  //       `${process.env.REACT_APP_API_URL}/engineer/profileupload/${engineerId}`,
+  //       formData,
+  //       {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //         },
+  //       }
+  //     )
+  //     .then((response) => {
+  //       console.log(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // }
 
   const [heading, setHeading] = useState("");
   const [heading1, setHeading1] = useState("");
@@ -849,7 +853,7 @@ const DisplayData = ({ user, props }) => {
           type="submit"
           onClick={() => setStep(4)}
         >
-          back
+          Review
         </Button>
         <Button
           style={{
@@ -864,11 +868,12 @@ const DisplayData = ({ user, props }) => {
           onClick={() => {
             notify();
             handleSubmit();
-            handleApi();
+            // handleApi();
           }}
         >
           Confirm
         </Button>
+        <ToastContainer />
       </div>
     </div>
   );
