@@ -21,7 +21,7 @@ function App() {
         data.user.provider === "linkedin"
       ) {
         setUser(data.user._json);
-        console.log(data.user._json);
+        // console.log(data.user._json);
         // localStorage.setItem("engineerId", data.user._json.sub);
       } else if (data.user.provider === "local") {
         // Modify this part to handle email login

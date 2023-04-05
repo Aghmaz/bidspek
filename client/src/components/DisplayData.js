@@ -98,8 +98,8 @@ const DisplayData = ({ user, props }) => {
     formData.append("permitsCountry", userData.country);
     formData.append("permitsStates", userData.state);
     formData.append("image", image);
-    // formData.append("preferences", );
-    // formData.append("services", selectedServiceItems);
+    formData.append("preferences", JSON.stringify(selectedItems));
+    formData.append("services", JSON.stringify(selectedServiceItems));
 
     const engineerId = localStorage.getItem("engineerId");
     const config = {
@@ -166,6 +166,36 @@ const DisplayData = ({ user, props }) => {
         console.error(error);
       });
   }
+
+  const [heading, setHeading] = useState("");
+  const [heading1, setHeading1] = useState("");
+  const [heading2, setHeading2] = useState("");
+  const [heading3, setHeading3] = useState("");
+  const [heading4, setHeading4] = useState("");
+  useEffect(() => {
+    if (jobTitle === "engineer") {
+      setHeading("If Yes, please specify the region, country & states * ?");
+      setHeading1("Do you carry a PE License ?");
+      setHeading2("Are you a certified corrosion Engineer?");
+
+      setHeading3(
+        "Are you or company able to provide assistance with building permits ? "
+      );
+
+      // setServiceState(inisialState);
+    } else {
+      setHeading(
+        "Which country/states are you or your company licensed to work in?"
+      );
+      setHeading1("Become an Advisor");
+      setHeading2("Sign up for the next two webinars");
+      setHeading3("Price Bidspek sample project");
+      setHeading4("Increase your chances to win more work!");
+
+      // setServiceState(inisialState2);
+    }
+  }, [jobTitle]);
+
   return (
     <div>
       {/* ================ personal data =========== */}
@@ -546,7 +576,8 @@ const DisplayData = ({ user, props }) => {
         {peLicense && (
           <div className="row">
             <h1>Licenses & Certificates</h1>
-            <h6>Do you carry a PE License ?</h6>
+            <h4>{heading4}</h4>
+            <h6>{heading1}</h6>
             {peLicense === "yes" && (
               <div className="col-lg-3 col-sm-6">
                 <Card
@@ -591,7 +622,7 @@ const DisplayData = ({ user, props }) => {
         )}
         {corrosionEngineer && (
           <div className="row mt-3">
-            <h6>Are you a certified corrosion Engineer?</h6>
+            <h6> {heading2}</h6>
 
             {corrosionEngineer === "yes" && (
               <div className="col-lg-3 col-sm-6">
@@ -638,10 +669,7 @@ const DisplayData = ({ user, props }) => {
         {/* building permits  */}
         {BuilingPermits && (
           <div className="row mt-3">
-            <h6>
-              Are you or company able to provide assistance with building
-              permits ?
-            </h6>
+            <h6>{heading3}</h6>
             {BuilingPermits === "yes" && (
               <div className="col-lg-3 col-sm-6">
                 <Card
@@ -685,8 +713,9 @@ const DisplayData = ({ user, props }) => {
           </div>
         )}
       </div>
-      <div className="row">
-        <div className="col-lg-2 col-sm-4 mt-4">
+      <div className="row mt-4">
+        <h6>{heading}</h6>
+        <div className="col-lg-2 col-sm-4 ">
           <Box
             component="form"
             sx={{
@@ -704,7 +733,7 @@ const DisplayData = ({ user, props }) => {
             />
           </Box>
         </div>{" "}
-        <div className="col-lg-2 col-sm-4 mt-4">
+        <div className="col-lg-2 col-sm-4 ">
           <Box
             component="form"
             sx={{
@@ -722,7 +751,7 @@ const DisplayData = ({ user, props }) => {
             />
           </Box>
         </div>{" "}
-        <div className="col-lg-2 col-sm-4 mt-4">
+        <div className="col-lg-2 col-sm-4">
           <Box
             component="form"
             sx={{
@@ -742,87 +771,105 @@ const DisplayData = ({ user, props }) => {
         </div>
       </div>
       {/* =============portfolio ================  */}
-
-      <h3 className="mt-3"> Project Case Study</h3>
-      <span>
-        {" "}
-        Share images of your previous work helps your potential clients see the
-        quality of your work
-      </span>
-      <div style={{ display: "flex" }}>
-        {[...Array(numImages)].map((_, index) => (
-          <div key={index} style={{ margin: "10px" }}>
-            <div
-              style={{
-                border: "1px solid blue",
-                width: "80px",
-                height: "80px",
-                position: "relative",
-                borderRadius: "0.5rem",
-              }}
-            >
-              {images[index] && (
-                <>
-                  <img
-                    src={images[index]}
-                    // src={URL.createObjectURL(images[index])}
-                    alt="uploaded"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                    }}
-                  />
-                </>
-              )}
-              {!images[index] && (
-                <div style={{ position: "absolute", top: "1%", left: "30%" }}>
-                  <label htmlFor={`image${index}`}>
-                    <span style={{ fontSize: "50px", color: "blue" }}>+</span>
-                    <input
-                      style={{ display: "none" }}
-                      type="file"
-                      id={`image${index}`}
-                      accept="image/*"
-                    />
-                  </label>
-                </div>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
-      {/* ================buttons========= */}
-      <Box
-        style={{ marginBottom: "2rem" }}
-        sx={{ display: "flex", flexDirection: "row", pt: 2 }}
+      <div
+        style={{
+          margin: "auto",
+          // width: "80%",
+          // maxWidth: "1270px",
+          marginBottom: "5rem",
+        }}
+        className="mb-3 mt-5 "
       >
-        <div className="col-lg-9 col-sm-9" xs={2}>
-          <Button
-            style={{ paddingLeft: "3.5rem", paddingRight: "3.5rem" }}
-            // onClick={handleBack}
-            variant="outlined"
-            onClick={() => setStep(4)}
-          >
-            Review
-          </Button>
-        </div>
-        <div className="col-lg-1 col-sm-1" xs={2}>
-          <Button
-            style={{ paddingLeft: "3.5rem", paddingRight: "3.5rem" }}
-            // onClick={handleReset}
-            variant="contained"
-            onClick={() => {
-              notify();
-              handleSubmit();
-              handleApi();
+        <h3> Project Case Study</h3>
+        <span>
+          {" "}
+          Share images of your previous work helps your potential clients see
+          the quality of your work
+        </span>
+        <div style={{ width: "100%" }}>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              // alignItems: "center",
+              // justifyContent: "center",
             }}
           >
-            confirm
-          </Button>
-          <ToastContainer />
+            {[...Array(numImages)].map((_, index) => (
+              <div key={index} style={{ margin: "10px" }}>
+                <div
+                  style={{
+                    border: "1px solid blue",
+                    width: "80px",
+                    height: "80px",
+                    position: "relative",
+                    borderRadius: "0.5rem",
+                  }}
+                >
+                  {images[index] && (
+                    <>
+                      <img
+                        src={images[index]}
+                        // src={URL.createObjectURL(images[index])}
+                        alt="uploaded"
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                        }}
+                      />
+                    </>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      </Box>
+      </div>
+      {/* ================buttons========= */}
+
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          // width: "100%",
+          alignItems: "center",
+          marginTop: "2rem",
+        }}
+      >
+        <Button
+          style={{
+            flexGrow: 1,
+            margin: "0 5px",
+            maxWidth: "180px",
+            border: "2px solid rgb(25, 118, 210)",
+          }}
+          variant="outline-primary"
+          type="submit"
+          onClick={() => setStep(4)}
+        >
+          back
+        </Button>
+        <Button
+          style={{
+            flexGrow: 1,
+            margin: "0 5px",
+            maxWidth: "180px",
+            backgroundColor: "rgb(25, 118, 210)",
+            color: "white",
+            marginLeft: "auto",
+          }}
+          type="submit"
+          onClick={() => {
+            notify();
+            handleSubmit();
+            handleApi();
+          }}
+        >
+          Confirm
+        </Button>
+      </div>
     </div>
   );
 };

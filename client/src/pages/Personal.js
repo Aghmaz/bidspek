@@ -84,13 +84,13 @@ const Personal = ({ user }) => {
     // setIsInputValid(validateField(fieldName));
 
     const value = userData[fieldName];
+
     if (!value) {
       // If the value is empty, the field is invalid
       return false;
     }
     if (fieldName === "lastname") {
       const pattern = /^[\p{L}\p{M}'\-\s]{5,12}$/u;
-      // firstNameerror();
 
       return pattern.test(value);
     }
@@ -125,7 +125,7 @@ const Personal = ({ user }) => {
     const namePattern = /^[\p{L}\p{M}'\-\s]{5,12}$/u;
     return namePattern.test(value);
   };
-  const firstNameerror = () => toast("enter correct name");
+  const firstNameError = () => toast("enter correct name");
 
   // const [isInputField, setIsInputField] = useState(false);
 
@@ -136,6 +136,7 @@ const Personal = ({ user }) => {
   useEffect(() => {
     localStorage.setItem("isInputField", isInputField);
   }, [isInputField]);
+
   const handleSend = () => {
     if (isInputField) {
       setStep(2);
@@ -149,6 +150,7 @@ const Personal = ({ user }) => {
       const isZipValid = validateField("zip");
 
       // show toast message if any of the input fields are invalid
+
       if (!isFirstNameValid) {
         firstName();
       }
@@ -168,24 +170,24 @@ const Personal = ({ user }) => {
         zip();
       }
 
-      if (!user && !isFirstNameValid) {
-        firstName();
-      }
-      if (!user && !isLastNameValid) {
-        lastName();
-      }
-      if (!user && !isEmailValid) {
-        email();
-      }
-      if (!user && !isPhoneValid) {
-        phone();
-      }
-      if (!user && !isStateValid) {
-        state();
-      }
-      if (!user && !isZipValid) {
-        zip();
-      }
+      // if (!user && !isFirstNameValid) {
+      //   firstName();
+      // }
+      // if (!user && !isLastNameValid) {
+      //   lastName();
+      // }
+      // if (!user && !isEmailValid) {
+      //   email();
+      // }
+      // if (!user && !isPhoneValid) {
+      //   phone();
+      // }
+      // if (!user && !isStateValid) {
+      //   state();
+      // }
+      // if (!user && !isZipValid) {
+      //   zip();
+      // }
     }
   };
 
@@ -210,7 +212,7 @@ const Personal = ({ user }) => {
 
   useLayoutEffect(() => {
     const handleSubmit = async (event) => {
-      console.log("Submitting form...");
+      // console.log("Submitting form...");
 
       // event.preventDefault();
 
@@ -235,7 +237,7 @@ const Personal = ({ user }) => {
         }
       }
 
-      console.log("Form submitted.");
+      // console.log("Form submitted.");
     };
 
     handleSubmit();
@@ -264,18 +266,26 @@ const Personal = ({ user }) => {
             <Form.Group as={Col} md="6">
               <Form.Label>First Name*</Form.Label>
               <Form.Control
-                required
+                required={!user || user.provider !== "google.com"}
                 type="text"
                 placeholder="First Name"
-                defaultValue={user ? user.given_name : ""}
+                defaultValue={
+                  user && user.given_name
+                    ? user.given_name
+                    : user && user.firstName
+                    ? user.firstName.localized["en_US"]
+                    : " "
+                }
                 value={
                   user && user.given_name
-                    ? userData["user.given_name"]
+                    ? userData[user.given_name]
+                    : user && user.firstName
+                    ? userData[user.firstName.localized["en_US"]]
                     : userData["firstname"]
                 }
-                onChange={(e) =>
-                  setUserData({ ...userData, firstname: e.target.value })
-                }
+                onChange={(e) => {
+                  setUserData({ ...userData, firstname: e.target.value });
+                }}
                 isValid={validateField("firstname")}
                 isInvalid={!validateField("firstname")}
               />
@@ -295,8 +305,20 @@ const Personal = ({ user }) => {
                 required
                 type="text"
                 placeholder="Last Name"
-                value={userData["lastname"]}
-                defaultValue={user ? user.family_name : " "}
+                defaultValue={
+                  user && user.family_name
+                    ? user.family_name
+                    : user && user.lastName
+                    ? user.lastName.localized["en_US"]
+                    : " "
+                }
+                value={
+                  user && user.family_name
+                    ? userData[user.family_name]
+                    : user && user.lastName
+                    ? userData[user.lastName.localized["en_US"]]
+                    : userData["lastname"]
+                }
                 onChange={(e) =>
                   setUserData({ ...userData, lastname: e.target.value })
                 }

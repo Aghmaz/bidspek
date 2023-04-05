@@ -14,6 +14,8 @@ import "./services.css";
 import { multiStepContext } from "../StepContext";
 import Button from "@mui/material/Button";
 import { ToastContainer, toast } from "react-toastify";
+import DownloadDoneIcon from "@mui/icons-material/DownloadDone";
+import CloseIcon from "@mui/icons-material/Close";
 
 // country names array
 
@@ -26,6 +28,17 @@ const inisialState = [
   { title: "Cathodic Protection", flag: false },
   { title: "Concret Repair /Masonry Design", flag: false },
   { title: "Structural Strengthening", flag: false },
+];
+
+const inisialState2 = [
+  { title: "Corrosion Protection", flag: false },
+  { title: "Concrete Repairs", flag: false },
+  { title: "Waterproofing", flag: false },
+  { title: "Painting", flag: false },
+  { title: "Flooring", flag: false },
+  { title: "Masonry Repairs", flag: false },
+  { title: "Coatings", flag: false },
+  { title: "Strengthening", flag: false },
 ];
 
 function Services(props) {
@@ -108,7 +121,9 @@ function Services(props) {
   // console.log(State.getAllStates());
 
   const [serviceState, setServiceState] = useState(
-    JSON.parse(localStorage.getItem("servicesData")) || inisialState
+    JSON.parse(localStorage.getItem("servicesData")) ||
+      inisialState ||
+      inisialState2
   );
   const [showInput, setShowInput] = useState(false);
   const [inputValue, setInputValue] = useState("");
@@ -152,10 +167,37 @@ function Services(props) {
   }, [hourlyRate]);
 
   // ==============dynamic data =========
-  const [heading, setHeading] = useState(
-    "If Yes,please specify the region,country & states * ?"
-  );
+  const [heading, setHeading] = useState("");
+  const [heading1, setHeading1] = useState("");
+  const [heading2, setHeading2] = useState("");
+  const [heading3, setHeading3] = useState("");
+  const [heading4, setHeading4] = useState("");
 
+  const jobtitle = localStorage.getItem("selectedValue");
+
+  useEffect(() => {
+    if (jobtitle === "engineer") {
+      setHeading("If Yes, please specify the region, country & states * ?");
+      setHeading1("Do you carry a PE License ?");
+      setHeading2("Are you a certified corrosion Engineer?");
+
+      setHeading3(
+        "Are you or company able to provide assistance with building permits ? "
+      );
+
+      setServiceState(inisialState);
+    } else {
+      setHeading(
+        "Which country/states are you or your company licensed to work in?"
+      );
+      setHeading1("Become an Advisor");
+      setHeading2("Sign up for the next two webinars");
+      setHeading3("Price Bidspek sample project");
+      setHeading4("Increase your chances to win more work!");
+
+      setServiceState(inisialState2);
+    }
+  }, [jobtitle]);
   // ===============
   const [isInputField, setIsInputField] = useState(
     localStorage.getItem("isInputField3") === "true"
@@ -176,9 +218,124 @@ function Services(props) {
 
   return (
     <div style={{ margin: "auto", width: "60%" }} className=" mb-3 mt-5">
-      <h3>Service Offered</h3>
+      <div className="d-flex flex-row justify-content-between align-items-center flex-wrap">
+        <div>
+          <h3>Service Offered</h3>
+          <span>What kind of services do you want to provide</span>
+        </div>
+        <div className="display-change">
+          {showInput ? (
+            <div className="input-group mb-3">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Enter title"
+                aria-label="Enter title"
+                aria-describedby="button-addon2"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+              />
+              <button
+                className="btn btn-outline-secondary"
+                type="button"
+                id="button-addon2"
+                onClick={handleAddItem}
+              >
+                <DownloadDoneIcon />
+              </button>
+              <button
+                className="btn btn-outline-secondary"
+                type="button"
+                id="button-addon2"
+                onClick={() => setShowInput(false)}
+              >
+                <CloseIcon />
+              </button>
+            </div>
+          ) : (
+            <button className="btn btn-link add-btn"  onClick={() => setShowInput(true)}>
+              <u>Add new</u>
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* <div className="d-flex flex-row justify-content-between align-items-center">
+        <div>
+          <h3>Service Offered</h3>
+          <span>What kind of services do you want to provide</span>
+        </div>
+        <div style={{ maxWidth: "400px" }} className="display-change">
+          {showInput ? (
+            <div className="input-group mb-3">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Enter title"
+                aria-label="Enter title"
+                aria-describedby="button-addon2"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+              />
+              <button
+                className="btn btn-outline-secondary"
+                type="button"
+                id="button-addon2"
+                onClick={handleAddItem}
+              >
+                <DownloadDoneIcon />
+              </button>
+              <button
+                className="btn btn-outline-secondary"
+                type="button"
+                id="button-addon2"
+                onClick={() => setShowInput(false)}
+              >
+                <CloseIcon />
+              </button>
+            </div>
+          ) : (
+            <button className="btn btn-link" onClick={() => setShowInput(true)}>
+              <u>Add new</u>
+            </button>
+          )}
+        </div>
+      </div> */}
+
+      {/* <h3>Service Offered</h3>
       <span>What kind of services do you want to provide</span>
-      {showInput ? (
+      <div
+        className="d-flex flex-row justify-content-end align-items-center "
+        style={{ maxWidth: "200px", flaot: "right" }}
+      >
+        {showInput ? (
+          <div className="input-group mb-3">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Enter title"
+              aria-label="Enter title"
+              aria-describedby="button-addon2"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+            />
+            <button
+              className="btn btn-outline-secondary"
+              type="button"
+              id="button-addon2"
+              onClick={handleAddItem}
+            >
+              Add
+            </button>
+          </div>
+        ) : (
+          <button className="btn btn-link" onClick={() => setShowInput(true)}>
+            <u>Add new</u>
+          </button>
+        )}
+      </div> */}
+
+      {/* {showInput ? (
         <div
           style={{
             display: "inline",
@@ -187,19 +344,27 @@ function Services(props) {
             marginTop: "-1rem",
           }}
         >
-          <input
-            style={{ paddingLeft: "1rem", width: "7rem", marginRight: "1rem" }}
-            type="text"
-            placeholder="Enter title"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-          />
-          <button
-            style={{ float: "right", border: "none" }}
-            onClick={handleAddItem}
-          >
-            Add
-          </button>
+          
+
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Enter title"
+              aria-label="Enter title"
+              aria-describedby="button-addon2"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+            />
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              id="button-addon2"
+              onClick={handleAddItem}
+            >
+              Add
+            </button>
+          </div>
         </div>
       ) : (
         <button
@@ -210,7 +375,7 @@ function Services(props) {
             Add new
           </span>
         </button>
-      )}
+      )} */}
       <div
         style={{
           display: "flex",
@@ -291,7 +456,8 @@ function Services(props) {
             </div>
             <div className="row">
               <h1>Licenses & Certificates</h1>
-              <h6>Do you carry a PE License ?</h6>
+              <h4>{heading4}</h4>
+              <h6>{heading1}</h6>
               <div className="col-lg-3 col-sm-6">
                 {" "}
                 <Card
@@ -332,7 +498,7 @@ function Services(props) {
               </div>
             </div>
             <div className="row mt-3">
-              <h6>Are you a certified corrosion Engineer?</h6>
+              <h6>{heading2}</h6>
 
               <div className="col-lg-3 col-sm-6">
                 {" "}
@@ -374,10 +540,7 @@ function Services(props) {
               </div>
             </div>
             <div className="row mt-3">
-              <h6>
-                Are you or company able to provide assistance with building
-                permits ?
-              </h6>
+              <h6>{heading3}</h6>
               <div className="col-lg-3 col-sm-6">
                 {" "}
                 <Card
@@ -420,7 +583,7 @@ function Services(props) {
             <div className="row mt-3">
               <h6 className="mb-3">{heading}</h6>
 
-              <div className="col-lg-3 col-sm-4">
+              <div className="col-lg-3 col-md-6 col-sm-4">
                 <Box
                   component="form"
                   sx={{
@@ -440,7 +603,7 @@ function Services(props) {
                   />
                 </Box>
               </div>
-              <div className="col-lg-3 col-sm-4">
+              <div className="col-lg-3 col-md-6 col-sm-4">
                 <Box
                   component="form"
                   sx={{
@@ -460,7 +623,7 @@ function Services(props) {
                   />
                 </Box>
               </div>
-              <div className="col-lg-3 col-sm-4">
+              <div className="col-lg-3 col-md-6 col-sm-4">
                 <Box
                   component="form"
                   sx={{
@@ -538,39 +701,46 @@ function Services(props) {
           </div>
         </div>
       </div>
-      <Button
-        style={{
-          paddingLeft: "4rem",
-          paddingRight: "4rem",
-          marginBottom: "1rem",
-          border: "2px solid rgb(25, 118, 210)",
-        }}
-        className=" mb-3 mt-3"
-        variant="outline-primary"
-        type="submit"
-        onClick={() => setStep(2)}
-      >
-        back
-      </Button>
 
-      <Button
+      <div
         style={{
-          float: "right",
-          paddingLeft: "4rem",
-          paddingRight: "4rem",
-          marginBottom: "1rem",
-          backgroundColor: "rgb(25, 118, 210)",
-          color: "white",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          // width: "100%",
+          alignItems: "center",
+          marginTop: "1rem",
         }}
-        className=" mb-3 mt-3"
-        type="submit"
-        onClick={handleSend}
       >
-        next
-      </Button>
-      <ToastContainer />
-      <br />
-      <br />
+        <Button
+          style={{
+            flexGrow: 1,
+            margin: "0 5px",
+            maxWidth: "180px",
+            border: "2px solid rgb(25, 118, 210)",
+          }}
+          variant="outline-primary"
+          type="submit"
+          onClick={() => setStep(2)}
+        >
+          back
+        </Button>
+        <Button
+          style={{
+            flexGrow: 1,
+            margin: "0 5px",
+            maxWidth: "180px",
+            backgroundColor: "rgb(25, 118, 210)",
+            color: "white",
+            marginLeft: "auto",
+          }}
+          type="submit"
+          onClick={handleSend}
+        >
+          next
+        </Button>
+        <ToastContainer />
+      </div>
     </div>
   );
 }

@@ -1,5 +1,21 @@
-@media (max-width: 416px) {
+/* @media (max-width: 416px) {
     .col-sm-6 {
         margin-top:20px;
     }
-}
+
+    .display-change{
+        display: flex;
+        flex-direction: column;
+    }
+} */
+
+@media screen and (max-width: 767px) {
+    .display-change {
+      width: 100%;
+      margin-top: 1rem;
+    }
+    .add-btn{
+        margin-top: -5.4rem;
+        margin-left: 7rem;
+    }
+  }

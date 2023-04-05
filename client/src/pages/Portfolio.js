@@ -19,6 +19,7 @@ const Portfolio = () => {
   const handleImageChange = (index, e) => {
     if (e && e.target && e.target.files && e.target.files.length > 0) {
       const newImages = [...images];
+
       // var file = e.target.files[0];
       // var reader = new FileReader();
       // reader.readAsDataURL(file);
@@ -97,8 +98,13 @@ const Portfolio = () => {
 
   return (
     <div
-      style={{ margin: "auto", width: "60%", marginBottom: "5rem" }}
-      className="mb-3 mt-5"
+      style={{
+        margin: "auto",
+        width: "80%",
+        maxWidth: "1270px",
+        marginBottom: "5rem",
+      }}
+      className="mb-3 mt-5 "
     >
       <h3> Project Case Study</h3>
       <span>
@@ -107,9 +113,23 @@ const Portfolio = () => {
         quality of your work
       </span>
       <div style={{ width: "100%" }}>
-        <div style={{ display: "flex" }}>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            // alignItems: "center",
+            // justifyContent: "center",
+          }}
+        >
           {[...Array(boxCount)].map((_, index) => (
-            <div key={index} style={{ margin: "10px" }}>
+            <div
+              key={index}
+              style={{
+                margin: "10px",
+                // flexBasis: "calc(20% - 20px)"
+                flexBasis: "calc(5% - 10px)",
+              }}
+            >
               <div
                 style={{
                   border: "1px solid blue",
@@ -161,7 +181,7 @@ const Portfolio = () => {
           {/* ==================== */}
 
           {boxCount < 10 && (
-            <div style={{ margin: "10px" }}>
+            <div style={{ margin: "10px", flexBasis: "calc(20% - 20px)" }}>
               <div
                 style={{
                   border: "1px dashed grey",
@@ -185,7 +205,7 @@ const Portfolio = () => {
 
       {/* ====buttons========== */}
       <div className="row mt-2">
-        <div className="col-sm-6 col-lg-4">
+        <div className="col-sm-12 col-lg-2">
           <Button
             style={{
               paddingLeft: "3.4rem",
@@ -198,18 +218,26 @@ const Portfolio = () => {
             delete
           </Button>
         </div>
-        <div className="col-sm-6 col-lg-2">
+        <div className="col-sm-12 col-lg-2">
           <Button
-            style={{ textTransform: "capitalize" }}
+            style={{
+              paddingLeft: "2.2rem",
+              paddingRight: "2.2rem",
+              textTransform: "capitalize",
+            }}
             variant="contained"
             onClick={() => handleRemoveBox(selectedBox)}
           >
             Remove Box
           </Button>
         </div>
-        <div className="col-sm-6 col-lg-4">
+        <div className="col-sm-2 col-lg-2">
           <Button
-            style={{ textTransform: "capitalize" }}
+            style={{
+              paddingLeft: "1.9rem",
+              paddingRight: "1.9rem",
+              textTransform: "capitalize",
+            }}
             variant="contained"
             onClick={() => handleReplacePhoto(selectedBox)}
           >
@@ -217,41 +245,55 @@ const Portfolio = () => {
           </Button>
         </div>
       </div>
-
-      <br></br>
-      <br></br>
-      <br></br>
-      <Button
+      <style>
+        {`
+@media (max-width: 576px) {
+  .row button {
+    margin-bottom: 10px;
+    
+  }
+}
+`}
+      </style>
+      <div
         style={{
-          paddingLeft: "4rem",
-          paddingRight: "4rem",
-          marginBottom: "1rem",
-          border: "2px solid rgb(25, 118, 210)",
-          color: "rgb(25, 118, 210)",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          // width: "100%",
+          alignItems: "center",
+          marginTop: "2rem",
         }}
-        className=" mb-3 mt-3"
-        variant="outline-primary"
-        type="submit"
-        onClick={() => setStep(3)}
       >
-        back
-      </Button>
-      <Button
-        style={{
-          float: "right",
-          paddingLeft: "4rem",
-          paddingRight: "4rem",
-          marginBottom: "1rem",
-          backgroundColor: "rgb(25, 118, 210)",
-          color: "white",
-        }}
-        className=" mb-3 mt-3"
-        type="submit"
-        onClick={handleSend}
-      >
-        next
-      </Button>
-      <ToastContainer />
+        <Button
+          style={{
+            flexGrow: 1,
+            margin: "0 5px",
+            maxWidth: "180px",
+            border: "2px solid rgb(25, 118, 210)",
+          }}
+          variant="outline-primary"
+          type="submit"
+          onClick={() => setStep(3)}
+        >
+          back
+        </Button>
+        <Button
+          style={{
+            flexGrow: 1,
+            margin: "0 5px",
+            maxWidth: "180px",
+            backgroundColor: "rgb(25, 118, 210)",
+            color: "white",
+            marginLeft: "auto",
+          }}
+          type="submit"
+          onClick={handleSend}
+        >
+          next
+        </Button>
+        <ToastContainer />
+      </div>
     </div>
   );
 };

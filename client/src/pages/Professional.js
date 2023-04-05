@@ -1,12 +1,9 @@
 import React, { useContext, useState, useReducer, useEffect } from "react";
 import { Card } from "react-bootstrap";
 import Button from "@mui/material/Button";
-
-import Col from "react-bootstrap/Col";
+import "./professional.css";
 import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
 import { multiStepContext } from "../StepContext";
-import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
 // for selection
@@ -90,9 +87,17 @@ const Professional = (props) => {
       </p>
 
       <div>
-        <div style={{ display: "flex", gap: "5px" }}>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            // justifyContent: "center",
+            gap: "5px",
+          }}
+        >
           <Card
-            style={{ width: "35%" }}
+            // style={{ width: "35%" }}
+            style={{ width: "100%", maxWidth: "400px", marginBottom: "5px" }}
             className="bg-white  p-2 "
             md="4"
             variant="outline-primary"
@@ -108,7 +113,7 @@ const Professional = (props) => {
             />
           </Card>{" "}
           <Card
-            style={{ width: "35%" }}
+            style={{ width: "100%", maxWidth: "400px", marginBottom: "5px" }}
             className="bg-white  p-2"
             md="4"
             variant="outline-primary"
@@ -124,7 +129,7 @@ const Professional = (props) => {
             />
           </Card>{" "}
           <Card
-            style={{ width: "35%" }}
+            style={{ width: "100%", maxWidth: "400px", marginBottom: "5px" }}
             className="bg-white  p-2"
             md="4"
             variant="outline-primary"
@@ -187,10 +192,16 @@ const Professional = (props) => {
           })}
         </div>
 
-        <Button
+        {/* <Button
+          // style={{
+          //   paddingLeft: "4rem",
+          //   paddingRight: "4rem",
+          //   marginBottom: "1rem",
+          //   border: "2px solid rgb(25, 118, 210)",
+          // }}
           style={{
-            paddingLeft: "4rem",
-            paddingRight: "4rem",
+            width: "50%",
+            minWidth: "120px",
             marginBottom: "1rem",
             border: "2px solid rgb(25, 118, 210)",
           }}
@@ -202,10 +213,17 @@ const Professional = (props) => {
           back
         </Button>
         <Button
+          // style={{
+          //   float: "right",
+          //   paddingLeft: "4rem",
+          //   paddingRight: "4rem",
+          //   marginBottom: "1rem",
+          //   backgroundColor: "rgb(25, 118, 210)",
+          //   color: "white",
+          // }}
           style={{
-            float: "right",
-            paddingLeft: "4rem",
-            paddingRight: "4rem",
+            width: "50%",
+            minWidth: "120px",
             marginBottom: "1rem",
             backgroundColor: "rgb(25, 118, 210)",
             color: "white",
@@ -216,7 +234,47 @@ const Professional = (props) => {
         >
           next
         </Button>
-        <ToastContainer />
+        <ToastContainer /> */}
+
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            // width: "100%",
+            alignItems: "center",
+            marginTop: "1rem",
+          }}
+        >
+          <Button
+            style={{
+              flexGrow: 1,
+              margin: "0 5px",
+              maxWidth: "180px",
+              border: "2px solid rgb(25, 118, 210)",
+            }}
+            variant="outline-primary"
+            type="submit"
+            onClick={() => setStep(1)}
+          >
+            back
+          </Button>
+          <Button
+            style={{
+              flexGrow: 1,
+              margin: "0 5px",
+              maxWidth: "180px",
+              backgroundColor: "rgb(25, 118, 210)",
+              color: "white",
+              marginLeft: "auto",
+            }}
+            type="submit"
+            onClick={handleSend}
+          >
+            next
+          </Button>
+          <ToastContainer />
+        </div>
       </div>
     </div>
   );

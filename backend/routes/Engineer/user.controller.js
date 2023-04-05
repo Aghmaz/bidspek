@@ -211,7 +211,9 @@ router.post("/login", async (req, res) => {
     );
 
     // Send the token and engineerId in the response
-    res.status(200).json({ token: token, engineerId: engineer._id });
+    res
+      .status(200)
+      .json({ token: token, email: engineer.email, engineerId: engineer._id });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal server error" });

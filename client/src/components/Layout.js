@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import Navbar from "./navbar";
 import MultiStepForm from "./MultiStepForm";
 import Button from "@mui/material/Button";
@@ -8,10 +8,11 @@ import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import StyledEngineProvider from "@mui/material/StyledEngineProvider";
+import axios from "axios";
 
-const Layout = (userDetails) => {
-  const user = userDetails.user;
-  // console.log(user);
+const Layout = ({ user }) => {
+  // const user = userDetails.user;
+  console.log(user);
 
   const logout = () => {
     window.open(`${process.env.REACT_APP_API_URL}/auth/logout`, "_self");
@@ -30,6 +31,40 @@ const Layout = (userDetails) => {
   //
   const [headerText, setHeaderText] = useState("Create a Profile");
 
+  // API call for linkedin
+  useLayoutEffect(() => {
+    const handleSubmit = async (event) => {
+      // console.log("Submitting form...");
+
+      // event.preventDefault();
+
+      try {
+        const response = await axios.post(
+          `${process.env.REACT_APP_API_URL}/engineer/emailregister/`,
+          {
+            email: "abc@gmail.com",
+            // email: `abc${Math.random()}@gmail.com`,
+            password: "",
+          }
+        );
+        console.log(response);
+        console.log(response.data.engineer._id);
+        localStorage.setItem("engineerId", response.data.engineer._id);
+        console.log("done");
+      } catch (error) {
+        console.log("Error submitting form:", error);
+        if (error.response && error.response.status === 409) {
+          console.log(error);
+        } else {
+          console.log(error);
+        }
+      }
+
+      // console.log("Form submitted.");
+    };
+    handleSubmit();
+  }, []);
+
   return (
     <div className="container-fluid">
       <Navbar />
@@ -45,21 +80,20 @@ const Layout = (userDetails) => {
               marginLeft: "-0.7rem",
             }}
           >
-            {user && user.name ? user.name.slice(0, 2) : "B"}
-            {/* {user && user.name
-              ? user.firstname &&
-                user.firstname.localized &&
-                user.firstname.localized.en_US
-                ? user.firstname.localized.en_US
-                : user.name.slice(0, 2)
-              : "B"} */}
+            {user && user.name
+              ? user.name.slice(0, 2)
+              : user && user.firstName
+              ? user.firstName.localized["en_US"].slice(0, 2)
+              : "B"}
+            {/* {user && user.name ? user.name.slice(0, 2) : "B"} */}
           </Avatar>
-          {user && user.name ? user.name : "Bidspek"}
-          {/* {user && user.name
-            ? user.firstname.localized.en_US
-              ? user.firstname.localized.en_US
-              : user.name
-            : "Bidspek"} */}
+          {user && user.name
+            ? user.name
+            : user && user.firstName
+            ? user.firstName.localized["en_US"]
+            : "Bidspek"}
+          {/* {user && user.name ? user.name : "Bidspek"} */}
+
           <ArrowDropDownIcon onClick={handleClick} />
         </Button>
         <StyledEngineProvider injectFirst>

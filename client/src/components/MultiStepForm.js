@@ -9,15 +9,13 @@ import Personal from "../pages/Personal";
 import Professional from "../pages/Professional";
 import Services from "../pages/Services";
 import Portfolio from "../pages/Portfolio";
-import "./Multistepform.css";
+import styles from "./Multistepform.css";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import StyledEngineProvider from "@mui/material/StyledEngineProvider";
-import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { multiStepContext } from "../StepContext";
 import { useContext } from "react";
 import DisplayData from "./DisplayData";
-import { ToastContainer, toast } from "react-toastify";
 
 const useStyles = makeStyles((theme) => ({}));
 
@@ -54,101 +52,11 @@ export default function MultiStepForm({ user, setHeaderText }) {
     }
   }
 
-  // Creating a profile to Review when all steps finished
-  // console.log("====================");
-  // console.log(currentStep);
-  // console.log("====================");
-
   if (currentStep > steps.length) {
     setHeaderText("Review");
   } else {
     setHeaderText("Create a Profile");
   }
-
-  const handleData = (data) => {
-    // console.log(data);
-  };
-  // const isStepOptional = (step) => {
-  //   return step === 1;
-  // };
-
-  // const handleNext = () => {
-  //   let newSkipped = skipped;
-
-  //   setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  //   setSkipped(newSkipped);
-  // };
-
-  // const handleBack = () => {
-  //   setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  //   setActiveStep((currentStep) => currentStep - 1);
-  // };
-  // ===============================new code ========
-  // const handleComplete = () => {
-  //   alert("Form submitted!");
-  // };
-
-  // const validatePersonal = (data) => {
-  //   // Perform validation logic here
-  //   // Return true if data is valid, false otherwise
-  //   if (!data.name) {
-  //     alert("Please enter your name.");
-  //     return false;
-  //   }
-
-  //   if (!data.email) {
-  //     alert("Please enter your email address.");
-  //     return false;
-  //   }
-
-  //   if (!data.phone) {
-  //     alert("Please enter your phone number.");
-  //     return false;
-  //   }
-  //   return true;
-  // };
-
-  // const validateProfessional = (data) => {
-  //   // Perform validation logic here
-  //   // Return true if data is valid, false otherwise
-  //   return true;
-  // };
-
-  // const validateServices = (data) => {
-  //   // Perform validation logic here
-  //   // Return true if data is valid, false otherwise
-  //   return true;
-  // };
-
-  // const validatePortfolio = (data) => {
-  //   // Perform validation logic here
-  //   // Return true if data is valid, false otherwise
-  //   return true;
-  // };
-
-  // const handlePersonalComplete = (data) => {
-  //   if (validatePersonal(data)) {
-  //     handleNext();
-  //   }
-  // };
-
-  // const handleProfessionalComplete = (data) => {
-  //   if (validateProfessional(data)) {
-  //     handleNext();
-  //   }
-  // };
-
-  // const handleServicesComplete = (data) => {
-  //   if (validateServices(data)) {
-  //     handleNext();
-  //   }
-  // };
-
-  // const handlePortfolioComplete = (data) => {
-  //   if (validatePortfolio(data)) {
-  //     handleNext();
-  //   }
-  // };
 
   const handleReset = () => {
     setActiveStep(0);
@@ -173,7 +81,7 @@ export default function MultiStepForm({ user, setHeaderText }) {
             {" "}
             <StepLabel>
               {" "}
-              Personal <ChevronRightIcon />{" "}
+              Personal <ChevronRightIcon className={styles.customIcon}/>{" "}
             </StepLabel>{" "}
           </Step>
 
@@ -182,14 +90,14 @@ export default function MultiStepForm({ user, setHeaderText }) {
             <StepLabel>
               {" "}
               Professional
-              <ChevronRightIcon />
+              <ChevronRightIcon className={styles.customIcon} />
             </StepLabel>{" "}
           </Step>
           <Step>
             {" "}
             <StepLabel>
               {" "}
-              Services <ChevronRightIcon />
+              Services <ChevronRightIcon className={styles.customIcon} />
             </StepLabel>
           </Step>
           <Step>

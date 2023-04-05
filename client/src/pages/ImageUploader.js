@@ -16,10 +16,12 @@ function ImageUploader({ user }) {
     if (url) {
       setImage(url);
     } else {
-      setImage(user && user.picture ? user.picture : "N");
+      setImage(
+        user && user.picture ? user.picture : "https://picsum.photos/200"
+      );
       localStorage.setItem(
         "uploadedImage",
-        user && user.picture ? user.picture : "N"
+        user && user.picture ? user.picture : "https://picsum.photos/200"
       );
     }
   }, [user && user.picture]);
@@ -58,11 +60,11 @@ function ImageUploader({ user }) {
   };
 
   const handleDelete = () => {
-    setImage(user && user.picture ? user.picture : "N");
+    setImage(user && user.picture ? user.picture : "https://picsum.photos/200");
     localStorage.removeItem("uploadedImage");
   };
   return (
-    <div className="d-flex align-items-center">
+    <div className="d-flex align-items-center" style={{ flexWrap: "wrap" }}>
       <input
         type="file"
         accept="image/*"
@@ -71,54 +73,61 @@ function ImageUploader({ user }) {
         onChange={handleChange}
       />
 
-      <div>
+      <div style={{ marginRight: "1rem" }}>
         {image && (
           <StyledEngineProvider injectFirst>
             <Avatar
               className="avatar"
+              // style={{
+              //   border: "2px solid blue",
+              //   width: "100px",
+              //   height: "100px",
+              //   marginLeft: "2rem",
+              //   marginRight: "3rem",
+              // }}
+              src={image}
+              alt="Uploaded Image"
               style={{
                 border: "2px solid blue",
                 width: "100px",
                 height: "100px",
-                marginLeft: "2rem",
-                marginRight: "3rem",
               }}
-              src={image}
-              alt="Uploaded Image"
             />
           </StyledEngineProvider>
         )}
       </div>
 
-      <div>
+      <div style={{ flex: 1, minWidth: "180px", marginTop: "1rem" }}>
         <label htmlFor="raised-button-file">
           <Button
-            style={{ marginTop: "-3rem" }}
+            // style={{ marginTop: "-3rem" }}
             variant="contained"
             color="primary"
             component="span"
             disabled={loading}
+            style={{ width: "80%" }}
           >
             {loading ? "Uploading..." : "Change Photo"}
           </Button>
-        </label>
 
-        {image && (
-          <Button
-            style={{
-              marginTop: "3.5rem",
-              marginLeft: "-9.4rem",
-              paddingRight: "2.3rem",
-            }}
-            variant="outlined"
-            color="primary"
-            onClick={handleDelete}
-            startIcon={<DeleteIcon />}
-            disabled={loading}
-          >
-            Delete
-          </Button>
-        )}
+          {image && (
+            <Button
+              // style={{
+              //   marginTop: "3.5rem",
+              //   marginLeft: "-9.4rem",
+              //   paddingRight: "2.3rem",
+              // }}
+              variant="outlined"
+              color="primary"
+              onClick={handleDelete}
+              startIcon={<DeleteIcon />}
+              disabled={loading}
+              style={{ width: "80%", marginTop: "0.5rem" }}
+            >
+              Delete
+            </Button>
+          )}
+        </label>
       </div>
     </div>
   );

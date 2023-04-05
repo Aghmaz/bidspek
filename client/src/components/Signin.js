@@ -225,6 +225,7 @@ const Signin = ({ setUser }) => {
             </Button>
             <Button
               className=" FONT"
+              disabled
               style={{
                 textTransform: "initial",
                 fontSize: "1.3rem",

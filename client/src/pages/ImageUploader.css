@@ -10,6 +10,8 @@ position: relative;
 margin-left: 10rem;
 } */
 
+
+
 .avatar{
     border: 2px solid blue;
     width: 100px;
@@ -17,18 +19,21 @@ margin-left: 10rem;
     margin-left: 2rem;
     margin-right: 3rem;
   }
-.button-1{
+/* .button-1{
     margin-top: "-3rem";
+} */
+#btn-del{
+  width: "66%";
 }
 
-/* @media screen and (max-width:588px)and (min-width: 250px){
+@media screen and (max-width:588px)and (min-width: 250px){
    
-.avatar {
+  /* .MuiAvatar-root.MuiAvatar-circular.avatar {
     border: 2px solid blue;
     width: 80px;
     height: 80px;
     margin-left: 2rem;
     margin-right: 3rem;
-  }
+  } */
     
-   } */
+   }
