@@ -201,19 +201,26 @@ router.post("/login", async (req, res) => {
       engineer.password
     );
     if (!passwordMatch) {
-      return res.status(400).json({ error: "Invalid email or password" });
+      return res.status(401).json({ error: "Invalid email or password" });
     }
 
     // Create and sign a JWT token
     const token = jwt.sign(
-      { email: engineer.email, engineerId: engineer._id },
+      {
+        email: engineer.email,
+        engineerId: engineer._id,
+        password: engineer.password,
+      },
       "abcdef"
     );
 
     // Send the token and engineerId in the response
-    res
-      .status(200)
-      .json({ token: token, email: engineer.email, engineerId: engineer._id });
+    res.status(200).json({
+      token: token,
+      password: engineer.password,
+      email: engineer.email,
+      engineerId: engineer._id,
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal server error" });

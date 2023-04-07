@@ -38,7 +38,20 @@ const Portfolio = () => {
     }
   };
 
+  // const handleAddBox = () => {
+  //   setBoxCount((prevBoxCount) => prevBoxCount + 1);
+  //   setImages((prevImages) => [...prevImages, null]);
+  // };
+  // useEffect(() => {
+  //   localStorage.setItem("boxCount", boxCount);
+  // }, [boxCount]);
+
   const handleAddBox = () => {
+    if (images.filter((image) => image !== null).length < 4) {
+      UploadImageFirst();
+      return;
+    }
+
     setBoxCount((prevBoxCount) => prevBoxCount + 1);
     setImages((prevImages) => [...prevImages, null]);
   };
@@ -48,13 +61,26 @@ const Portfolio = () => {
 
   // remove boxes
   const handleRemoveBox = (index) => {
-    setBoxCount((prevBoxCount) => prevBoxCount - 1);
-    const newImages = [...images];
-    newImages.splice(index, 1);
-    setImages(newImages);
-    setSelectedBox(null);
-    localStorage.setItem("images", JSON.stringify(newImages));
+    if (boxCount > 4) {
+      setBoxCount((prevBoxCount) => prevBoxCount - 1);
+      const newImages = [...images];
+      newImages.splice(index, 1);
+      setImages(newImages);
+      setSelectedBox(null);
+      localStorage.setItem("images", JSON.stringify(newImages));
+    }
   };
+  // const handleRemoveBox = (index) => {
+  //   setBoxCount((prevBoxCount) => prevBoxCount - 1);
+  //   const newImages = [...images];
+  //   newImages.splice(index, 1);
+  //   setImages(newImages);
+  //   setSelectedBox(null);
+  //   localStorage.setItem("images", JSON.stringify(newImages));
+  //   if (newImages.filter((image) => image !== null).length < 4) {
+  //     setIsImageUploaded(false);
+  //   }
+  // };
 
   const handleImageCancel = () => {
     const newImages = [...images];
@@ -94,8 +120,10 @@ const Portfolio = () => {
     }
   };
 
-  const notify = () => toast("Please upload an image first.");
-
+  const notify = () =>
+    toast("Please upload an image first.", { type: "error" });
+  const UploadImageFirst = () =>
+    toast("Please upload four images in the box.", { type: "error" });
   return (
     <div
       style={{
@@ -163,7 +191,15 @@ const Portfolio = () => {
                 {!images[index] && (
                   <div style={{ position: "absolute", top: "1%", left: "30%" }}>
                     <label htmlFor={`image${index}`}>
-                      <span style={{ fontSize: "50px", color: "blue" }}>+</span>
+                      <span
+                        style={{
+                          fontSize: "50px",
+                          color: "blue",
+                          cursor: "pointer",
+                        }}
+                      >
+                        +
+                      </span>
                       <input
                         style={{ display: "none" }}
                         type="file"
@@ -205,20 +241,23 @@ const Portfolio = () => {
 
       {/* ====buttons========== */}
       <div className="row mt-2">
-        <div className="col-sm-12 col-lg-2">
+        <div className="col-sm-2 col-lg-2">
           <Button
             style={{
-              paddingLeft: "3.4rem",
-              paddingRight: "3.4rem",
+              paddingLeft: "1.4rem",
+              paddingRight: "1.4rem",
               textTransform: "capitalize",
             }}
             variant="outlined"
-            onClick={handleImageCancel}
+            onClick={() => {
+              handleRemoveBox(selectedBox);
+              handleImageCancel();
+            }}
           >
-            delete
+            delete Photo
           </Button>
         </div>
-        <div className="col-sm-12 col-lg-2">
+        {/* <div className="col-sm-12 col-lg-2">
           <Button
             style={{
               paddingLeft: "2.2rem",
@@ -230,7 +269,7 @@ const Portfolio = () => {
           >
             Remove Box
           </Button>
-        </div>
+        </div> */}
         <div className="col-sm-2 col-lg-2">
           <Button
             style={{

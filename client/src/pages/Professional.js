@@ -97,7 +97,7 @@ const Professional = (props) => {
         >
           <Card
             // style={{ width: "35%" }}
-            style={{ width: "100%", maxWidth: "400px", marginBottom: "5px" }}
+            style={{ width: "100%", maxWidth: "250px", marginBottom: "5px" }}
             className="bg-white  p-2 "
             md="4"
             variant="outline-primary"
@@ -113,7 +113,7 @@ const Professional = (props) => {
             />
           </Card>{" "}
           <Card
-            style={{ width: "100%", maxWidth: "400px", marginBottom: "5px" }}
+            style={{ width: "100%", maxWidth: "250px", marginBottom: "5px" }}
             className="bg-white  p-2"
             md="4"
             variant="outline-primary"
@@ -129,7 +129,7 @@ const Professional = (props) => {
             />
           </Card>{" "}
           <Card
-            style={{ width: "100%", maxWidth: "400px", marginBottom: "5px" }}
+            style={{ width: "100%", maxWidth: "250px", marginBottom: "5px" }}
             className="bg-white  p-2"
             md="4"
             variant="outline-primary"

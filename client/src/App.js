@@ -7,10 +7,10 @@ import { useEffect, useState } from "react";
 import "@fortawesome/fontawesome-free/css/all.css";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
+import Owners from "./components/owners/Owners";
 
 function App() {
   const [user, setUser] = useState(null);
-
   const getUser = async () => {
     try {
       const url = `${process.env.REACT_APP_API_URL}/auth/login/success`;
@@ -38,7 +38,11 @@ function App() {
         if (loginResult.error) {
           // Handle login error
         } else {
-          setUser(loginResult.user);
+          setUser({
+            id: loginResult.user.id,
+            email: loginResult.user.email,
+            password: loginResult.user.password,
+          });
         }
       }
     } catch (err) {
@@ -104,6 +108,7 @@ function App() {
             )
           }
         />
+        <Route path="/owners" element={<Owners />} />
       </Routes>
     </div>
   );

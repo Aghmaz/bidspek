@@ -5,9 +5,10 @@ import { multiStepContext } from "../StepContext";
 import axios from "axios";
 import StyledEngineProvider from "@mui/material/StyledEngineProvider";
 import "./ImageUploader.css";
+import { avatarImage } from "../images/avatarImage.png";
 
 function ImageUploader({ user }) {
-  const [image, setImage] = useState(localStorage.getItem("uploadedImage"));
+  const [image, setImage] = useState(localStorage.getItem("uploadedImmage"));
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -17,11 +18,17 @@ function ImageUploader({ user }) {
       setImage(url);
     } else {
       setImage(
-        user && user.picture ? user.picture : "https://picsum.photos/200"
+        user && user.picture
+          ? user.picture
+          : "https://res.cloudinary.com/df8fsfjad/image/upload/v1680808803/stock_profile710_kqbbgk.png"
+        // "https://picsum.photos/200"
       );
       localStorage.setItem(
         "uploadedImage",
-        user && user.picture ? user.picture : "https://picsum.photos/200"
+        user && user.picture
+          ? user.picture
+          : "https://res.cloudinary.com/df8fsfjad/image/upload/v1680808803/stock_profile710_kqbbgk.png"
+        //  "https://picsum.photos/200"
       );
     }
   }, [user && user.picture]);
@@ -60,7 +67,12 @@ function ImageUploader({ user }) {
   };
 
   const handleDelete = () => {
-    setImage(user && user.picture ? user.picture : "https://picsum.photos/200");
+    setImage(
+      user && user.picture
+        ? user.picture
+        : "https://res.cloudinary.com/df8fsfjad/image/upload/v1680808803/stock_profile710_kqbbgk.png"
+      // "https://picsum.photos/200"
+    );
     localStorage.removeItem("uploadedImage");
   };
   return (

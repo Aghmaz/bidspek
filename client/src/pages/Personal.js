@@ -342,10 +342,20 @@ const Personal = ({ user }) => {
                 type="email"
                 // placeholder="jack.offer@joengineering.com"
                 defaultValue={
-                  user && user.email ? user.email : userData["email"]
+                  user && user.email
+                    ? user.email
+                    : user && user
+                    ? userData[user]
+                    : userData["email"]
                 }
                 // disabled
-                value={userData["email"]}
+                value={
+                  user && user.email
+                    ? user.email
+                    : user && user
+                    ? userData[user]
+                    : userData["email"]
+                }
                 onChange={(e) =>
                   setUserData({ ...userData, email: e.target.value })
                 }

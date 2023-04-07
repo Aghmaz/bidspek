@@ -21,3 +21,9 @@ border-width: 1px;
 #last{
   color: black;
 }
+
+
+.nav-links.active {
+  color: #b2ff0b;
+  background-color: #ced712;
+}

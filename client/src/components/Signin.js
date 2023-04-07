@@ -19,7 +19,6 @@ import { ToastContainer, toast } from "react-toastify";
 
 const Signin = ({ setUser }) => {
   // For Google
-
   const googleAuth = () => {
     window.open(
       `${process.env.REACT_APP_API_URL}/auth/google/callback`,
@@ -66,16 +65,21 @@ const Signin = ({ setUser }) => {
         `${process.env.REACT_APP_API_URL}/engineer/login`,
         { email, password }
       );
-      console.log(response.data);
+      console.log(response.data, "hey");
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("engineerId", response.data.engineerId);
       navigate("/");
       setUser(response.data.token);
       setUser(response.data.engineerId);
+      setUser(response.data.email);
     } catch (error) {
       console.error(error);
       if (error.response && error.response.status === 400) {
         emailNotRegistered();
+      }
+      // new line
+      else if (error.response && error.response.status === 401) {
+        passwordMatch();
       } else if (error.response && error.response.status === 500) {
         loginFailed();
       }
@@ -83,7 +87,10 @@ const Signin = ({ setUser }) => {
   };
 
   const emailNotRegistered = () => {
-    toast("This email is not registered", { type: "error" });
+    toast("Invalid Credentials", { type: "error" });
+  };
+  const passwordMatch = () => {
+    toast("Password does not match! please Enter Valid", { type: "error" });
   };
 
   const loginFailed = () => {
