@@ -8,6 +8,11 @@ import "@fortawesome/fontawesome-free/css/all.css";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import Owners from "./components/owners/Owners";
+import ForgotPassword from "./components/ForgotPassword";
+import ResetPassword from "./components/ResetPassword";
+import Uploader from "./components/Uploader";
+import Parking from "./components/owners/Parking";
+import Building from "./components/owners/Building";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -56,24 +61,6 @@ function App() {
 
   return (
     <div className="App">
-      {/* <Routes>
-        <Route
-          exact
-          path="/"
-          element={user ? <Layout user={user} /> : <Navigate to="/login" />}
-        />
-        <Route
-          exact
-          path="/login"
-          element={user ? <Navigate to="/" /> : <Signin />}
-        />
-        <Route
-          path="/signup"
-          element={user ? <Navigate to="/" /> : <Signup />}
-        />
-      </Routes> */}
-      {/* ===========================   */}
-
       <Routes>
         <Route
           exact
@@ -109,6 +96,14 @@ function App() {
           }
         />
         <Route path="/owners" element={<Owners />} />
+        <Route
+          path="/login/reset-password/:token"
+          element={<ResetPassword />}
+        />
+        <Route path="/login/forgot-password" element={<ForgotPassword />} />
+        <Route path="/login/uploader" element={<Uploader />} />
+        <Route path="/parking-garage" element={<Parking />} />
+        <Route path="/building-exterior" element={<Building />} />
       </Routes>
     </div>
   );

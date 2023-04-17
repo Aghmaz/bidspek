@@ -283,8 +283,8 @@ const Signup = () => {
           </div>
         </div>
       </div>
-      <div className="pic">
-        <img src={first} alt="Construction building" />
+      <div className="pic" style={{ marginBottom: "-2rem" }}>
+        <img className="img-fluid" src={first} alt="Construction building" />
       </div>
     </div>
   );

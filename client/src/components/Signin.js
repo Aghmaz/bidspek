@@ -1,14 +1,12 @@
 import React from "react";
 import Navbar from "./navbar";
 import first from "../images/first.png";
-import google from "../images/google.svg";
-import emailPic from "../images/email.svg";
-import linkedin from "../images/linkedin.svg";
+
 import "./GoogleLogin.css";
 import "./signin.css";
 import Button from "@mui/material/Button";
-import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import { useNavigate } from "react-router-dom";
@@ -195,6 +193,22 @@ const Signin = ({ setUser }) => {
                     </Form.Control.Feedback>
                   </Form.Group>
                 </div>
+                <Link
+                  style={{ textDecoration: "none" }}
+                  to="/login/forgot-password"
+                >
+                  <h6
+                    className="mt-2"
+                    style={{
+                      float: "right",
+                      fontFamily: "Montserrat",
+                      fontSize: "1.1rem",
+                    }}
+                  >
+                    Forgot Password ?
+                  </h6>
+                </Link>
+
                 <Button
                   className="mt-3 w-25 "
                   style={{ textTransform: "initial", fontSize: "1.2rem" }}
@@ -267,7 +281,7 @@ const Signin = ({ setUser }) => {
       </div>
 
       <div className="pic">
-        <img src={first} alt="Construction building" />
+        <img className="img-fluid" src={first} alt="Construction building" />
       </div>
     </div>
   );

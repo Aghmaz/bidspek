@@ -3,12 +3,16 @@ const errorHandler = require("../../middleware/error");
 const Engineer = require("../../models/Engineer");
 // const NewUser = require("../../models/NewUser");
 const createUserSchema = require("./validationSchema"); //.default;
-
+const crypto = require("crypto");
+const nodemailer = require("nodemailer");
 //const upload = require("../../middleware/upload");
 const { FormateUserObj } = require("./UserFormatter");
 const router = express.Router();
 const upload = require("../../utils/multer");
 const cloudinary = require("cloudinary").v2;
+const MailtrapClient = require("mailtrap");
+const { msgDetails } = require("../../utils/email");
+
 cloudinary.config({
   cloud_name: "dimh97csd",
   api_key: "627913742987235",
@@ -98,7 +102,6 @@ router.patch(
       });
     } catch (err) {
       console.log(err);
-      m;
     }
   }
 );
@@ -226,4 +229,60 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+// forgot password
+router.post("/forgot-password", async (req, res) => {
+  const { email } = req.body;
+
+  // Check if user with this email exists
+  const user = await Engineer.findOne({ email });
+  if (!user) {
+    return res.status(400).send({ message: "Engineer not found" });
+  }
+
+  // Generate password reset token
+  const token = crypto.randomBytes(20).toString("hex");
+
+  // Save password reset token in database
+  user.resetPasswordToken = token;
+  user.resetPasswordExpires = Date.now() + 3600000; // Token expires in 1 hour
+  await user.save();
+  password = `<p>You have requested a password reset. Please click the following link to reset your password:</p>
+  //          <p><a href="${process.env.CLIENT_URL}login/reset-password/${token}">Reset Password</a></p>`;
+
+  msgDetails(email, password)
+    .then((result) => {
+      return res
+        .status(200)
+        .send({ message: "Email has been Sent Successfully" });
+    })
+    .catch((error) => {
+      return res.status(400).send({ message: `Error sending email` });
+    });
+});
+
+// Route to handle password reset request
+router.put("/reset-password", async (req, res) => {
+  const { token, password } = req.body;
+
+  // Check if password reset token is valid and has not expired
+  const user = await Engineer.findOne({
+    resetPasswordToken: token,
+    resetPasswordExpires: { $gt: Date.now() },
+  });
+  if (!user) {
+    return res.status(400).send({ message: "Invalid or expired token" });
+  }
+
+  // Update user's password in the database
+  const salt = await bcrypt.genSalt(1);
+  const hashedPassword = await bcrypt.hash(password, salt);
+  user.password = hashedPassword;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpires = undefined;
+  await user.save();
+
+  res.send({ message: "Password reset successful" });
+});
+
 module.exports = router;

@@ -10,8 +10,6 @@ const passportStrategy = require("./passport");
 const app = express();
 const routerUser = require("./routes/Engineer/user.controller");
 const contractorRouter = require("./routes/Contractor/user.controller");
-const session = require("express-session");
-const MemoryStore = require("memorystore")(session);
 
 app.use(
   cookieSession({
@@ -20,19 +18,6 @@ app.use(
     maxAge: 24 * 60 * 60 * 100,
   })
 );
-
-// app.use(
-//   session({
-//     cookie: { maxAge: 86400000 },
-//     store: new MemoryStore({
-//       checkPeriod: 86400000, // prune expired entries every 24h
-//     }),
-//     secret:
-//       "AQWZTJVp-P7jmIAX-WVx6TU6i5g-2XuAw0iUWOnFHjTsDEMbFyFxSBKUj3jmADcisF4BuYgVK4RNeoQ_Ngzvv-uPnKr2-an2DoV9VcsIf7grDaAnI2HCYHr8V8nljfkhOZj1TdM0Wvkr39NZWpGT5HNW4Jty48shY7vQ3xcUBppKjaEjMWyw7L_unkvy9drVKPXm4B3VROYOCTZaeX8h8VUP-ad9enoWR3cNe5KOXUC57MPj4hXcvT9GmdeFmC2RTK8h4RzhpEIcqx05wrLlDj627dEDnndEWGHZmpMWV8HKR1OoBHjPOioJ51GlVu_-3_pwKp1WNytn9CvAB8xq2rivZdH6tQ",
-//     resave: true,
-//     saveUninitialized: true,
-//   })
-// );
 
 const bodyParser = require("body-parser");
 
