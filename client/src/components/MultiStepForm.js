@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({}));
 const steps = ["Personal ", "Professional", "Services", "Portfolio"];
 
 export default function MultiStepForm({ user, setHeaderText }) {
-  console.log(user, "multistep");
+  // console.log(user, "multistep");
   // usecontext
   const { currentStep, setStep, finalData } = useContext(multiStepContext);
 

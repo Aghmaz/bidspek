@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import Button from "@mui/material/Button";
 import { multiStepContext } from "../StepContext";
 import { ToastContainer, toast } from "react-toastify";
+import axios from "axios";
 
 const Portfolio = () => {
   const { setStep, userData, setUserData } = useContext(multiStepContext);
@@ -15,12 +16,84 @@ const Portfolio = () => {
   const [numBoxesWithFiles, setNumBoxesWithFiles] = useState(0);
   const [selectedBox, setSelectedBox] = useState(null);
 
-  const handleFileChange = (e, index) => {
+  useEffect(() => {
+    const tempFileContents = Array(4).fill(null);
+    const tempfiles = Array(4).fill(null);
+    const tempShowFiles = Array(4).fill(false);
+    for (let i = 0; i < numBoxes; i++) {
+      const tempFileURL = localStorage.getItem(`image_url${i}`);
+      console.log(tempFileURL);
+      if (tempFileURL && tempFileURL?.includes("txt")) {
+        tempFileContents[i] = tempFileURL;
+        tempShowFiles[i] = true;
+      } else if (tempFileURL) {
+        tempfiles[i] = tempFileURL;
+        tempShowFiles[i] = true;
+      }
+    }
+    setFileContents(tempFileContents);
+    setFiles(tempfiles);
+    setShowFiles(tempShowFiles);
+  }, []);
+
+  console.log("fileContents", fileContents);
+  console.log("files", files);
+
+  const handleFileChange = async (e, index) => {
     const selectedFile = e.target.files[0];
+    let imageUrl;
     const reader = new FileReader();
-    reader.onload = () => {
+    reader.onload = async () => {
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+
+      // Check if a file already exists at the selected index
+      try {
+        if (files[index]) {
+          const engineerId = localStorage.getItem("engineerId");
+          const fileId = JSON.parse(localStorage.getItem(`fileId${index}`));
+          console.log(
+            `update fileId${index}:`,
+            localStorage.getItem(`fileId${index}`)
+          );
+          const url = `${process.env.REACT_APP_API_URL}/engineer/updatefile/${engineerId}/${fileId}`;
+          const response = await fetch(url, {
+            method: "PATCH",
+            body: formData,
+          });
+          const data = await response.json();
+          // console.log(data);
+          // Handle response
+        } else {
+          // Upload new file
+
+          const engineerId = localStorage.getItem("engineerId");
+          const url = `${process.env.REACT_APP_API_URL}/engineer/addfile/${engineerId}`;
+          const response = await fetch(url, {
+            method: "PATCH",
+            body: formData,
+          });
+          const data = await response.json();
+          console.log({ data });
+          const fileId = data.data.fileId;
+          localStorage.setItem(`fileId${index}`, JSON.stringify(fileId));
+          console.log(
+            `add file fileId${index}:`,
+            localStorage.getItem(`fileId${index}`)
+          );
+          imageUrl = data.data.secure_url_file;
+          localStorage.setItem(`image_url${index}`, imageUrl);
+          console.log("imageUrl", imageUrl);
+          // Store the file ID in localStorage
+          // Handle response
+        }
+      } catch (error) {
+        // Handle error
+      }
+
       const filesCopy = [...files];
-      filesCopy[index] = selectedFile;
+      console.log("hiiii>>>", selectedFile);
+      filesCopy[index] = imageUrl;
       setFiles(filesCopy);
       setShowFiles((prevShowFiles) => {
         const updatedShowFiles = [...prevShowFiles];
@@ -32,12 +105,36 @@ const Portfolio = () => {
         updatedFileContents[index] = reader.result;
         return updatedFileContents;
       });
-      // localStorage.setItem("files", JSON.stringify(filesCopy));
+      setIsImageUploaded(true);
       setNumBoxesWithFiles(
         (prevNumBoxesWithFiles) => prevNumBoxesWithFiles + 1
       );
     };
     reader.readAsText(selectedFile);
+  };
+
+  const handleDeleteFile = async (index) => {
+    const engineerId = localStorage.getItem("engineerId");
+
+    const fileId = JSON.parse(localStorage.getItem(`fileId${index}`));
+    console.log(
+      `delete fileId${index}:`,
+      localStorage.getItem(`fileId${index}`)
+    );
+    if (!fileId) {
+      console.log(`No file found for index ${index}`);
+      return;
+    }
+    try {
+      const response = await axios.delete(
+        `${process.env.REACT_APP_API_URL}/engineer/deletefile/${engineerId}/${fileId}`
+      );
+
+      console.log(response.data);
+      // handle successful response
+    } catch (error) {
+      // handle error
+    }
   };
 
   const handleAddBox = () => {
@@ -197,7 +294,7 @@ const Portfolio = () => {
                 )}
                 {showFiles[index] && (
                   <div>
-                    {files[index].type.includes("image") && (
+                    {files[index]?.includes("png") && (
                       <div>
                         <img
                           style={{
@@ -206,46 +303,78 @@ const Portfolio = () => {
                             position: "absolute",
                             // objectFit: "cover",
                           }}
-                          src={URL.createObjectURL(files[index])}
+                          src={files[index]}
+                          // src={URL.createObjectURL(files[index])}
                           alt="uploaded file"
                         />
                       </div>
                     )}
-                    {files[index].type.includes("pdf") && (
+                    {files[index]?.includes("jpg") && (
+                      <div>
+                        <img
+                          style={{
+                            width: "70px",
+                            height: "70px",
+                            position: "absolute",
+                            // objectFit: "cover",
+                          }}
+                          src={files[index]}
+                          // src={URL.createObjectURL(files[index])}
+                          alt="uploaded file"
+                        />
+                      </div>
+                    )}
+                    {files[index]?.includes("pdf") && (
                       <div>
                         <object
-                          data={URL.createObjectURL(files[index])}
+                          // data={URL.createObjectURL(files[index])}
+                          data={files[index]}
                           type="application/pdf"
                           width="70px"
                           height="70px"
                         >
-                          <p>
-                            PDF cannot be displayed. Please download the file.
-                          </p>
+                          <img
+                            style={{
+                              padding: "5px",
+                              width: "74px",
+                              height: "70px",
+                            }}
+                            src="https://res.cloudinary.com/df8fsfjad/image/upload/v1682613030/PDF_file_icon.svg_kdsp9v.png"
+                          />
+                          {/* <p
+                            style={{
+                              margin: "8px",
+                              color: "#1976d2",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}
+                          >
+                            PDF <br /> File.
+                          </p> */}
                         </object>
                       </div>
                     )}
-                    {files[index].type.includes("powerpoint") && (
+                    {files[index]?.includes("pptx") && (
                       <div
                         style={{
                           position: "absolute",
                         }}
                       >
                         <iframe
-                          src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(
-                            URL.createObjectURL(files[index])
-                          )}`}
+                          // src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(
+                          //   URL.createObjectURL(files[index])
+                          // )}`}
+                          src={files[index]}
                           width="70px"
                           height="70px"
                           frameborder="0"
                         >
-                          <p>
-                            PPT cannot be displayed. Please download the file.
-                          </p>
+                          <p>PPT is uploaded.</p>
                         </iframe>
                       </div>
                     )}
-                    {files[index].type.includes("text") && (
+                    {files[index]?.includes("txt") && (
                       <div>
                         <pre
                           style={{
@@ -258,12 +387,15 @@ const Portfolio = () => {
                             marginTop: "0.2px",
                           }}
                         >
-                          {fileContents[index]}
+                          src={files[index]}
+                          <p>Text File is uploaded.</p>
                         </pre>
                       </div>
                     )}
                   </div>
+                  //////
                 )}
+                {/* ========= */}
               </div>
             </div>
           ))}
@@ -304,6 +436,7 @@ const Portfolio = () => {
             onClick={() => {
               handleRemoveBox(selectedBox);
               handleImageCancel();
+              handleDeleteFile(selectedBox);
             }}
           >
             delete Photo

@@ -13,6 +13,7 @@ import ResetPassword from "./components/ResetPassword";
 import Uploader from "./components/Uploader";
 import Parking from "./components/owners/Parking";
 import Building from "./components/owners/Building";
+import { Testing } from "./components/Testing";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -104,6 +105,7 @@ function App() {
         <Route path="/login/uploader" element={<Uploader />} />
         <Route path="/parking-garage" element={<Parking />} />
         <Route path="/building-exterior" element={<Building />} />
+        <Route path="/testing" element={<Testing />} />
       </Routes>
     </div>
   );

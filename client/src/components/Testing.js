@@ -1,154 +1,90 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Stepper from '@mui/material/Stepper';
-import StepConnector from '@mui/material/StepConnector';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Personal from "../pages/Personal"
-import Professional from '../pages/Professional';
-import Services from '../pages/Services';
-import Portfolio from '../pages/Portfolio';
-import "./Multistepform.css";
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import StyledEngineProvider from "@mui/material/StyledEngineProvider";
-import { useState } from "react";
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useState, useEffect } from "react";
+import { Button } from "react-bootstrap";
+import axios from "axios";
 
+export const Testing = () => {
+  const [files, setFiles] = useState(Array(4).fill(null));
 
-const useStyles = makeStyles((theme) => ({
+  useEffect(() => {
+    // get files from local storage and set state
+    const storedFiles = JSON.parse(localStorage.getItem("files"));
+    if (storedFiles) {
+      setFiles(storedFiles);
+    }
+  }, []);
 
-  // stepper: {
-  //   backgroundColor: 'red',
-  //   padding: '20px'
-  // },
-  // step: {
-  //   backgroundColor: '#ffffff',
-  //   padding: '2px'
-  // },
-  // 
+  const handleFileUpload = async (e, boxIndex) => {
+    try {
+      const file = e.target.files[0];
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", "your_cloudinary_upload_preset");
+      const engineerId = localStorage.getItem("engineerId");
 
+      const response = await axios.patch(
+        `${process.env.REACT_APP_API_URL}/engineer/addfile/${engineerId}`,
+        formData
+      );
 
-}));
+      console.log("Upload response", response);
 
-const steps = ['Personal ', 'Professional', 'Services', 'Portfolio'];
-
-
-
-export default function Testing() {
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [skipped, setSkipped] = React.useState(new Set());
-
-  
-  const handleData = (data) => {
-    console.log(data);}
-  // const isStepOptional = (step) => {
-  //   return step === 1;
-  // };
-
-  const handleNext = () => {
-    let newSkipped = skipped;
-
-
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped(newSkipped);
+      const fileUrl = response.data.data.updatedUser.profileImage;
+      localStorage.setItem(`file${boxIndex}`, fileUrl);
+      const newFiles = [...files];
+      newFiles[boxIndex] = fileUrl;
+      localStorage.setItem("files", JSON.stringify(newFiles));
+      setFiles(newFiles);
+    } catch (error) {
+      console.error("Upload error", error);
+    }
   };
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  const handleRefresh = () => {
+    const storedFiles = JSON.parse(localStorage.getItem("files"));
+    if (storedFiles) {
+      setFiles(storedFiles);
+    }
   };
 
-
-
-  const handleReset = () => {
-    setActiveStep(0);
-  };
-  const classes = useStyles();
   return (
-    <Box sx={{ width: '100%' }} className="mt-5">
-
-      <StyledEngineProvider injectFirst>
-        <Stepper className={classes.stepper} activeStep={activeStep}>
-          {/* {steps.map((label, index) => {
-          const stepProps = {};
-          const labelProps = {};
-          
-          
-          return (
-            <Step className={classes.step} key={label} {...stepProps}>
-            <StepLabel className={classes.stepLabel} {...labelProps}>{label}</StepLabel>
-            </Step>
-            );
-          })} */}
-          <Step> <StepLabel> Personal <ChevronRightIcon /> </StepLabel>  </Step>
-
-          <Step> <StepLabel> Professional<ChevronRightIcon /></StepLabel> </Step>
-          <Step> <StepLabel> Services <ChevronRightIcon /></StepLabel></Step>
-          <Step> <StepLabel> Portfolio </StepLabel>
-
-          </Step>
-          <StepConnector className={classes.root} style={{ display: "none" }} />
-        </Stepper>
-      </StyledEngineProvider>
-
-      {activeStep === 0 && (
-        <Personal
-        handleData={handleData}
-        />
-      )}
-      {activeStep === 1 && (
-        <Professional
-         
-        />
-      )}
-      {activeStep === 2 && (
-        <Services
-          
-        />
-      )}
-      {activeStep === 3 && (
-        <Portfolio
-         
-        />
-      )}
-      {activeStep === steps.length ? (
-        <React.Fragment>
-          <Typography sx={{ mt: 2, mb: 1 }}>
-            All steps completed - you&apos;re finished
-          </Typography>
-          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-            <Box sx={{ flex: '1 1 auto' }} />
-            <Button onClick={handleReset}>Reset</Button>
-          </Box>
-        </React.Fragment>
-      ) : (
-        <React.Fragment>
-          <br />
-          {/* {activeStep === 0 ? <Personal /> : <Professional /> && activeStep === 1 ? <Professional /> : <Personal /> && activeStep === 2 ? <Services /> : <Portfolio />} */}
-          {/* <Typography sx={{ mt: 2, mb: 1 }}>Step    {activeStep + 1}</Typography> */}
-          {/* <Personal/> */}
-
-          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-            <Button
-              variant="outlined"
-              color="inherit"
-              disabled={activeStep === 0}
-              onClick={handleBack}
-              sx={{ mr: 1 }}
-            >
-              Back
-            </Button>
-            <Box sx={{ flex: '1 1 auto' }} />
-
-
-
-            <Button variant="contained" onClick={handleNext}>
-              {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-            </Button>
-          </Box>
-        </React.Fragment>
-      )}
-    </Box>
+    <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
+      {Array(4)
+        .fill(null)
+        .map((_, index) => (
+          <div
+            className="mt-5 ms-5"
+            key={index}
+            style={{
+              width: "100px",
+              height: "100px",
+              border: "2px solid blue",
+              borderRadius: "5px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            {files[index] ? (
+              <a href={files[index]} target="_blank" rel="noopener noreferrer">
+                View file
+              </a>
+            ) : (
+              <label
+                htmlFor={`file-input-${index}`}
+                style={{ cursor: "pointer" }}
+              >
+                +
+              </label>
+            )}
+            <input
+              id={`file-input-${index}`}
+              type="file"
+              style={{ display: "none" }}
+              onChange={(e) => handleFileUpload(e, index)}
+            />
+          </div>
+        ))}
+      <Button onClick={handleRefresh}>Refresh</Button>
+    </div>
   );
-}
+};

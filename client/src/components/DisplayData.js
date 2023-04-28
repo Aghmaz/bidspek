@@ -12,7 +12,7 @@ import { ToastContainer, toast } from "react-toastify";
 import Button from "@mui/material/Button";
 import axios from "axios";
 
-const DisplayData = ({ user, props }) => {
+const DisplayData = ({ user, props, index }) => {
   // toaster messages
   const notify = () => toast("You Form has been Submited");
   // const welcomeBack = () => toast("Welcome Back");
@@ -65,9 +65,16 @@ const DisplayData = ({ user, props }) => {
   const corrosionEngineer = localStorage.getItem("corrosion");
   // ==== Builing permits ====
   const BuilingPermits = localStorage.getItem("buildingPermit");
-
-  const images = JSON.parse(localStorage.getItem("images")) || [];
-  const numImages = images.filter((img) => img !== null).length;
+  useEffect(() => {
+    for (let i = 0; i < 10; i++) {
+      const tempFileURL = localStorage.getItem(`image_url${i}`);
+      console.log("tempFileURL for display Data", tempFileURL);
+    }
+  }, []);
+  // const images = localStorage.getItem(`image_url${index}`);
+  // console.log("images", images);
+  // const imageArray = images.split(","); // split string into array
+  // const numImages = imageArray.filter((img) => img !== null).length;
 
   // =============form sending ==========
   const handleSubmit = (e) => {
@@ -799,34 +806,7 @@ const DisplayData = ({ user, props }) => {
               // justifyContent: "center",
             }}
           >
-            {[...Array(numImages)].map((_, index) => (
-              <div key={index} style={{ margin: "10px" }}>
-                <div
-                  style={{
-                    border: "1px solid blue",
-                    width: "80px",
-                    height: "80px",
-                    position: "relative",
-                    borderRadius: "0.5rem",
-                  }}
-                >
-                  {images[index] && (
-                    <>
-                      <img
-                        src={images[index]}
-                        // src={URL.createObjectURL(images[index])}
-                        alt="uploaded"
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          objectFit: "cover",
-                        }}
-                      />
-                    </>
-                  )}
-                </div>
-              </div>
-            ))}
+            {/* here */}
           </div>
         </div>
       </div>

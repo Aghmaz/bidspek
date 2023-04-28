@@ -12,10 +12,70 @@ import axios from "axios";
 
 const Layout = ({ user }) => {
   // const user = userDetails.user;
-  console.log(user, "layout");
+  // console.log(user, "layout");
+  const storedValue = localStorage.getItem("switchValue");
+
+  const storedCompanyValue = localStorage.getItem("company_name");
+  const storeOccupation = localStorage.getItem("occupation");
+
+  // ====== professional ====
+  const jobTitle = localStorage.getItem("selectedValue");
+
+  // for selection list
+
+  // Retrieve data from local storage
+  const data = JSON.parse(localStorage.getItem("professionalData"));
+
+  // console.log("data", data);
+  // Filter selected items
+  const selectedItems = data?.filter((item) => item.flag);
+  // console.log("selectedItems", selectedItems);
+
+  // =============services ===========
+  const serviceData = JSON.parse(localStorage.getItem("servicesData"));
+
+  // console.log("serviceData", serviceData);
+  // Filter selected items
+  const selectedServiceItems = serviceData?.filter((item) => item.flag);
+  // console.log("selectedServiceItems", selectedServiceItems);
+
+  // ==== billing radio ====
+  const billing = localStorage.getItem("billing");
+  // ==== hourly slider ====
+  const hourly = localStorage.getItem("hourly");
+  // ==== peLicense ====
+  const peLicense = localStorage.getItem("pieLicense");
+  // ==== corrosion Engineer ====
+  const corrosionEngineer = localStorage.getItem("corrosion");
+  // ==== Builing permits ====
+  const BuilingPermits = localStorage.getItem("buildingPermit");
+  let i = 0;
+  const tempFileURL = localStorage.getItem(`image_url${i}`);
 
   const logout = () => {
     window.open(`${process.env.REACT_APP_API_URL}/auth/logout`, "_self");
+    localStorage.removeItem(`image_url${i}`);
+    localStorage.removeItem("engineerId");
+    localStorage.removeItem("occupation");
+    localStorage.removeItem("pieLicense");
+    localStorage.removeItem("corrosion");
+    localStorage.removeItem("company_name");
+    localStorage.removeItem("buildingPermit");
+    localStorage.removeItem("isInputField");
+    localStorage.removeItem("uploadedImage");
+    localStorage.removeItem("isInputField3");
+    localStorage.removeItem("selectedvalue");
+    localStorage.removeItem("isImageUploaded");
+    localStorage.removeItem("isInputField2");
+    localStorage.removeItem("hourly");
+    localStorage.removeItem("billing");
+    localStorage.removeItem("switchValue");
+    localStorage.removeItem("selectedValue");
+    localStorage.removeItem("boxCount");
+    localStorage.removeItem("images");
+    localStorage.removeItem("servicesData");
+    localStorage.removeItem("professionalData");
+    localStorage.removeItem("token");
   };
 
   const [anchorEl, setAnchorEl] = React.useState(null);

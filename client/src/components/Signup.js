@@ -62,7 +62,9 @@ const Signup = () => {
 
       successRegisteration();
       console.log(response.data.message);
-      navigate("/");
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
     } catch (error) {
       if (error.response && error.response.status === 409) {
         errorRegisteration();
@@ -81,7 +83,7 @@ const Signup = () => {
     toast("Registration Failed.", { type: "error" });
   };
   const errorRegisteration = () => {
-    toast("Email is already in use", { type: "error" });
+    toast("Email is already Registered", { type: "error" });
   };
 
   const emptyField = () =>

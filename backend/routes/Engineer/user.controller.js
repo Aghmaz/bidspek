@@ -12,7 +12,6 @@ const upload = require("../../utils/multer");
 const cloudinary = require("cloudinary").v2;
 const MailtrapClient = require("mailtrap");
 const { msgDetails } = require("../../utils/email");
-
 cloudinary.config({
   cloud_name: "dimh97csd",
   api_key: "627913742987235",
@@ -106,6 +105,36 @@ router.patch(
   }
 );
 
+// Delete Image
+router.delete("/deleteimage/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const engineer = await Engineer.findById(id);
+    if (!engineer) {
+      return res.status(404).json({ msg: "Engineer not found" });
+    }
+
+    const { profileImage } = engineer;
+
+    // check if profile image exists
+    if (!profileImage) {
+      return res.status(400).json({ msg: "Profile image does not exist" });
+    }
+
+    // delete profile image from cloudinary
+    const public_id = profileImage.split("/").slice(-1)[0].split(".")[0];
+    await cloudinary.uploader.destroy(public_id);
+
+    // remove profile image from engineer document
+    engineer.profileImage = undefined;
+    await engineer.save();
+
+    return res.status(200).json({ msg: "Profile image deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ msg: "Server Error" });
+  }
+});
 //  build profile API
 
 router.patch(
@@ -284,5 +313,241 @@ router.put("/reset-password", async (req, res) => {
 
   res.send({ message: "Password reset successful" });
 });
+
+//add file
+
+router.patch(
+  "/addfile/:engineerId",
+  upload.single("file"),
+  async (req, res) => {
+    // Upload file to Cloudinary
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      resource_type:
+        req.file.mimetype === "image/jpeg" ||
+        req.file.mimetype === "image/png" ||
+        req.file.mimetype === "application/pdf" ||
+        req.file.mimetype === "application/vnd.ms-powerpoint" ||
+        req.file.mimetype ===
+          "application/vnd.openxmlformats-officedocument.presentationml.presentation" ||
+        req.file.mimetype === "text/plain"
+          ? "raw"
+          : "auto",
+      format: req.file.originalname.split(".").pop(),
+    });
+    const secure_url_file = result.secure_url;
+    // Create new user
+    const fileId = result.public_id; // Store the file ID in a variable
+    const updatedUser = await Engineer.findByIdAndUpdate(
+      req.params.engineerId,
+      {
+        $push: {
+          caseImage: JSON.stringify({
+            url: result.secure_url,
+            public_id: fileId, // Use the file ID in the database update
+            format: result.format,
+          }),
+        },
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    try {
+      res.status(200).json({
+        status: "Success",
+        data: {
+          updatedUser,
+          fileId,
+          secure_url_file,
+        },
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
+
+//updateFile
+
+// router.patch(
+//   "/updatefile/:engineerId/:fileId",
+//   upload.single("file"),
+//   async (req, res) => {
+//     console.log("Update file API called");
+//     console.log("req.params.engineerId of update file", req.params.engineerId);
+//     console.log("req.params.fileId of update file", req.params.fileId);
+//     console.log("req.file of update file", req.file);
+
+//     // Upload new file to Cloudinary
+//     const result = await cloudinary.uploader.upload(req.file.path, {
+//       resource_type: "auto",
+//     });
+
+//     console.log("Cloudinary response of update file", result);
+
+//     // Update the existing file in the database
+//     const query = {
+//       _id: req.params.engineerId,
+//       "caseImage.public_id": req.params.fileId,
+//     };
+//     const update = {
+//       $set: {
+//         "caseImage.$.url": result.secure_url,
+//         "caseImage.$.public_id": result.public_id,
+//       },
+//     };
+//     const options = { new: true, runValidators: true };
+
+//     console.log("Query:", query);
+//     console.log("Update:", update);
+
+//     const updatedUser = await Engineer.findOneAndUpdate(query, update, options);
+
+//     console.log("Updated user of update file", updatedUser);
+
+//     if (!updatedUser) {
+//       return res.status(404).json({
+//         status: "Error",
+//         message: "User not found or file not associated with user",
+//       });
+//     }
+
+//     try {
+//       res.status(200).json({
+//         status: "Success",
+//         data: {
+//           updatedUser,
+//           fileId: result.public_id,
+//         },
+//       });
+//     } catch (err) {
+//       console.log(err);
+//       res
+//         .status(500)
+//         .json({ status: "Error", message: "Internal server error" });
+//     }
+//   }
+// );
+router.patch(
+  "/updatefile/:engineerId/:fileId",
+  upload.single("file"),
+  async (req, res) => {
+    // Upload file to Cloudinary
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      resource_type:
+        req.file.mimetype === "image/jpeg" ||
+        req.file.mimetype === "image/png" ||
+        req.file.mimetype === "application/pdf" ||
+        req.file.mimetype === "application/vnd.ms-powerpoint" ||
+        req.file.mimetype ===
+          "application/vnd.openxmlformats-officedocument.presentationml.presentation" ||
+        req.file.mimetype === "text/plain"
+          ? "raw"
+          : "auto",
+      format: req.file.originalname.split(".").pop(),
+    });
+
+    console.log("result of update file", result);
+
+    // Update user
+    const updatedUser = await Engineer.findByIdAndUpdate(
+      req.params.engineerId,
+      {
+        $set: {
+          "caseImage.$[elem].url": result.secure_url,
+          "caseImage.$[elem].public_id": result.public_id,
+          "caseImage.$[elem].format": result.format,
+        },
+      },
+      {
+        new: true,
+        runValidators: true,
+        arrayFilters: [
+          { "elem.public_id": req.params.fileId },
+          { "elem.url": req.body.url }, // add this condition to match the original url
+        ],
+      }
+    );
+
+    console.log("req.params.engineerId of update file", req.params.engineerId);
+    console.log("result.secure_url of update file", result.secure_url);
+
+    if (!updatedUser) {
+      return res.status(404).json({
+        status: "Error",
+        message: "User not found or file not associated with user",
+      });
+    }
+    console.log("updatedUser of update file", updatedUser);
+    try {
+      res.status(200).json({
+        status: "Success",
+        data: {
+          updatedUser,
+          fileId: req.params.fileId,
+        },
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
+
+//===========================================
+//==========================================
+
+router.delete("/deletefile/:engineerId/:fileId", async (req, res) => {
+  const fileId = req.params.fileId;
+  console.log("req.params.fileId", req.params.fileId);
+  try {
+    // Delete file from Cloudinary
+    await cloudinary.uploader.destroy(fileId);
+
+    // Remove file from user record
+    const updatedUser = await Engineer.findByIdAndUpdate(
+      req.params.engineerId,
+      { $pull: { caseImage: { public_id: fileId } } },
+      { new: true, runValidators: true }
+    );
+
+    res.status(200).json({
+      status: "Success",
+      data: {
+        message: "File successfully deleted",
+        updatedUser,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      status: "Error",
+      message: "Failed to delete file",
+    });
+  }
+});
+
+//==========================================
+//==========================================
+
+//delete Case Files
+// router.patch("/deletefile/:engineerId/:fileId", async (req, res) => {
+//   const updatedUser = await Engineer.findById(req.params.engineerId);
+//   const fileUrl = updatedUser.caseImage[req.params.fileId];
+//   // Delete the file from Cloudinary, if it exists
+//   if (fileUrl) {
+//     const publicId = fileUrl.split("/").pop().split(".")[0];
+//     await cloudinary.uploader.destroy(publicId);
+//     // Remove the file URL from the caseImage array
+//     updatedUser.caseImage.splice(req.params.fileId, 1);
+//     await updatedUser.save();
+//   }
+//   res.status(200).json({
+//     status: "Success",
+//     data: {
+//       updatedUser,
+//     },
+//   });
+// });
 
 module.exports = router;

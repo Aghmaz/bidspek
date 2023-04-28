@@ -434,7 +434,7 @@ const Personal = ({ user }) => {
 
           <Row className="mb-3">
             <Form.Group as={Col} md="12">
-              <Form.Label>Address*</Form.Label>
+              <Form.Label>Address</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="optional"
@@ -502,7 +502,7 @@ const Personal = ({ user }) => {
               {/* <Form.Label>Zip</Form.Label> */}
               <Form.Control
                 type="text"
-                placeholder="Zip code"
+                placeholder="Zip code*"
                 required
                 // onChange={handleChange}
                 value={userData["zip"]}

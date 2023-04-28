@@ -1,3 +1,4 @@
+const { boolean } = require("joi");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
@@ -94,6 +95,12 @@ const UserSchema = new Schema({
   },
   resetPasswordExpires: {
     type: Date,
+  },
+  company: {
+    type: Boolean,
+  },
+  companyName: {
+    type: String,
   },
 });
 

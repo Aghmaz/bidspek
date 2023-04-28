@@ -6,6 +6,7 @@ import axios from "axios";
 import StyledEngineProvider from "@mui/material/StyledEngineProvider";
 import "./ImageUploader.css";
 import { avatarImage } from "../images/avatarImage.png";
+import { ToastContainer, toast } from "react-toastify";
 
 function ImageUploader({ user }) {
   const [image, setImage] = useState(localStorage.getItem("uploadedImmage"));
@@ -46,7 +47,6 @@ function ImageUploader({ user }) {
         `${process.env.REACT_APP_API_URL}/engineer/profileupload/${engineerId}`,
         formData
       );
-
       console.log("Upload response", response);
 
       localStorage.setItem(
@@ -54,6 +54,7 @@ function ImageUploader({ user }) {
         response.data.data.updatedUser.profileImage
       );
       setImage(response.data.data.updatedUser.profileImage);
+      notify();
     } catch (error) {
       console.error("Upload error", error);
     } finally {
@@ -61,20 +62,79 @@ function ImageUploader({ user }) {
     }
   };
 
+  const notify = () => toast("SuccessFull !.Your Photo has been Uploaded");
+  const errorNotify = () => toast("SuccessFull !.Your Photo has been Deleted");
+
   const handleChange = async (event) => {
     const file = event.target.files[0];
     handleImageUpload(file);
   };
 
-  const handleDelete = () => {
-    setImage(
-      user && user.picture
-        ? user.picture
-        : "https://res.cloudinary.com/df8fsfjad/image/upload/v1680808803/stock_profile710_kqbbgk.png"
-      // "https://picsum.photos/200"
-    );
-    localStorage.removeItem("uploadedImage");
+  // const handleDelete = async () => {
+  //   try {
+  //     const engineerId = localStorage.getItem("engineerId");
+
+  //     const response = await axios.delete(
+  //       `${process.env.REACT_APP_API_URL}/deleteimage/${engineerId}`
+  //     );
+
+  //     // Check the response status to see if the delete was successful.
+  //     if (response.status === 200) {
+  //       // Handle success.
+  //       console.log("Image deleted successfully.");
+  //     } else {
+  //       // Handle error.
+  //       console.error("Error deleting image.");
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+
+  //   setImage(
+  //     user && user.picture
+  //       ? user.picture
+  //       : "https://res.cloudinary.com/df8fsfjad/image/upload/v1680808803/stock_profile710_kqbbgk.png"
+  //     // "https://picsum.photos/200"
+  //   );
+  //   localStorage.removeItem("uploadedImage");
+  // };
+
+  const handleDelete = async () => {
+    try {
+      const engineerId = localStorage.getItem("engineerId");
+
+      if (!engineerId) {
+        console.error(
+          "Error deleting image: engineerId not found in localStorage."
+        );
+        return;
+      }
+
+      const response = await axios.delete(
+        `${process.env.REACT_APP_API_URL}/engineer/deleteimage/${engineerId}`
+      );
+
+      // Check the response status to see if the delete was successful.
+      if (response.status === 200) {
+        // Handle success.
+        console.log("Image deleted successfully.");
+        errorNotify();
+        setImage(
+          user && user.picture
+            ? user.picture
+            : "https://res.cloudinary.com/df8fsfjad/image/upload/v1680808803/stock_profile710_kqbbgk.png"
+          // "https://picsum.photos/200"
+        );
+        localStorage.removeItem("uploadedImage");
+      } else {
+        // Handle error.
+        console.error("Error deleting image.");
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
+
   return (
     <div className="d-flex align-items-center" style={{ flexWrap: "wrap" }}>
       <input
@@ -121,6 +181,7 @@ function ImageUploader({ user }) {
           >
             {loading ? "Uploading..." : "Change Photo"}
           </Button>
+          <ToastContainer />
 
           {image && (
             <Button
