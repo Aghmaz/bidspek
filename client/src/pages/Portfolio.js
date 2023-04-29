@@ -117,20 +117,28 @@ const Portfolio = () => {
     const engineerId = localStorage.getItem("engineerId");
 
     const fileId = JSON.parse(localStorage.getItem(`fileId${index}`));
+    const image_url = localStorage.getItem(`image_url${index}`);
     console.log(
       `delete fileId${index}:`,
       localStorage.getItem(`fileId${index}`)
     );
-    if (!fileId) {
+    console.log(
+      `delete image_url${index}:`,
+      localStorage.getItem(`image_url${index}`)
+    );
+    if (!fileId && !image_url) {
       console.log(`No file found for index ${index}`);
       return;
     }
+
     try {
       const response = await axios.delete(
         `${process.env.REACT_APP_API_URL}/engineer/deletefile/${engineerId}/${fileId}`
       );
 
       console.log(response.data);
+      localStorage.removeItem(`fileId${index}`);
+      localStorage.removeItem(`image_url${index}`);
       // handle successful response
     } catch (error) {
       // handle error
@@ -388,7 +396,7 @@ const Portfolio = () => {
                           }}
                         >
                           src={files[index]}
-                          <p>Text File is uploaded.</p>
+                          <p style={{ color: "red" }}>Text File.</p>
                         </pre>
                       </div>
                     )}

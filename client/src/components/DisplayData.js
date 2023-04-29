@@ -65,11 +65,18 @@ const DisplayData = ({ user, props, index }) => {
   const corrosionEngineer = localStorage.getItem("corrosion");
   // ==== Builing permits ====
   const BuilingPermits = localStorage.getItem("buildingPermit");
+
+  const [fileURLs, setFileURLs] = useState([]);
+
   useEffect(() => {
+    const tempFileURLs = [];
     for (let i = 0; i < 10; i++) {
       const tempFileURL = localStorage.getItem(`image_url${i}`);
-      console.log("tempFileURL for display Data", tempFileURL);
+      if (tempFileURL) {
+        tempFileURLs.push(tempFileURL);
+      }
     }
+    setFileURLs(tempFileURLs);
   }, []);
   // const images = localStorage.getItem(`image_url${index}`);
   // console.log("images", images);
@@ -806,7 +813,57 @@ const DisplayData = ({ user, props, index }) => {
               // justifyContent: "center",
             }}
           >
-            {/* here */}
+            {fileURLs.map((fileURL, index) => (
+              <div
+                key={index}
+                style={{
+                  width: "80px",
+                  height: "80px",
+                  border: "2px solid blue",
+                  borderRadius: "0.5rem",
+
+                  margin: "10px",
+                }}
+              >
+                {fileURL?.includes(".pdf") && (
+                  <object data={fileURL} type="application/pdf">
+                    <img
+                      style={{
+                        padding: "5px",
+                        width: "74px",
+                        height: "70px",
+                      }}
+                      src="https://res.cloudinary.com/df8fsfjad/image/upload/v1682613030/PDF_file_icon.svg_kdsp9v.png"
+                    />
+                  </object>
+                )}
+                {fileURL?.includes(".txt") && (
+                  <iframe>src={fileURL} type="application/txt"</iframe>
+                )}
+                {fileURL?.includes(".png") && (
+                  <img
+                    style={{
+                      width: "70px",
+                      height: "70px",
+                      position: "absolute",
+                      // objectFit: "cover",
+                    }}
+                    src={fileURL}
+                  />
+                )}
+                {fileURL?.includes(".jpg") && (
+                  <img
+                    style={{
+                      width: "70px",
+                      height: "70px",
+                      position: "absolute",
+                      // objectFit: "cover",
+                    }}
+                    src={fileURL}
+                  />
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </div>
