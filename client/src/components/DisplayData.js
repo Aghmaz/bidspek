@@ -11,12 +11,13 @@ import TextField from "@mui/material/TextField";
 import { ToastContainer, toast } from "react-toastify";
 import Button from "@mui/material/Button";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const DisplayData = ({ user, props, index }) => {
   // toaster messages
   const notify = () => toast("You Form has been Submited");
   // const welcomeBack = () => toast("Welcome Back");
-
+  const navigate = useNavigate();
   // for avatar picture
   const [image, setImage] = useState(null);
 
@@ -36,7 +37,7 @@ const DisplayData = ({ user, props, index }) => {
 
   // ====== professional ====
   const jobTitle = localStorage.getItem("selectedValue");
-
+  console.log("storedValue=====>>>", storedValue);
   // for selection list
 
   // Retrieve data from local storage
@@ -102,8 +103,8 @@ const DisplayData = ({ user, props, index }) => {
     formData.append("address", userData.address);
     formData.append("city", userData.city);
     formData.append("zipCode", userData.zip);
+    formData.append("companyName", storedCompanyValue);
     formData.append("role", jobTitle);
-    formData.append("role", selectedItems);
     formData.append("hourlyRate", hourly);
     formData.append("licensePE", peLicense);
     formData.append("corroionEngineer", corrosionEngineer);
@@ -111,7 +112,8 @@ const DisplayData = ({ user, props, index }) => {
     formData.append("permitsRegion", userData.region);
     formData.append("permitsCountry", userData.country);
     formData.append("permitsStates", userData.state);
-    // formData.append("image", image);
+    formData.append("hasSubmittedForm", true);
+    formData.append("switchPhone", storedValue);
     formData.append("preferences", JSON.stringify(selectedItems));
     formData.append("services", JSON.stringify(selectedServiceItems));
 
@@ -153,6 +155,7 @@ const DisplayData = ({ user, props, index }) => {
           localStorage.removeItem("token");
         }, 10000);
         notify();
+        navigate("/Submitted-Sucess");
       })
       .catch(function (error) {
         errorToast();
@@ -424,10 +427,21 @@ const DisplayData = ({ user, props, index }) => {
             Pick the job title you identify with the most
           </p>
 
-          <div style={{ display: "flex", gap: "5px" }}>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              // justifyContent: "center",
+              gap: "5px",
+            }}
+          >
             {jobTitle === "engineer" && (
               <Card
-                style={{ width: "35%" }}
+                style={{
+                  width: "100%",
+                  maxWidth: "250px",
+                  marginBottom: "5px",
+                }}
                 className="bg-white  p-2 "
                 md="4"
                 variant="outline-primary"
@@ -444,7 +458,11 @@ const DisplayData = ({ user, props, index }) => {
             )}
             {jobTitle === "contractor" && (
               <Card
-                style={{ width: "35%" }}
+                style={{
+                  width: "100%",
+                  maxWidth: "250px",
+                  marginBottom: "5px",
+                }}
                 className="bg-white  p-2"
                 md="4"
                 variant="outline-primary"
@@ -562,7 +580,7 @@ const DisplayData = ({ user, props, index }) => {
               <Form.Check
                 style={{ color: "blue" }}
                 inline
-                label="Hourly Rate"
+                label={`Hourly Rate : $${hourly}`}
                 name="billing"
                 value="hourlyRate"
                 type="radio"
@@ -573,7 +591,7 @@ const DisplayData = ({ user, props, index }) => {
             </Card>{" "}
           </div>
           <div className="col-sm-6">
-            <Box width={300}>
+            <Box width={235}>
               <Slider
                 value={hourly}
                 // onChange={handleHourlyRateChange}
@@ -587,12 +605,12 @@ const DisplayData = ({ user, props, index }) => {
 
               {/* <Slider defaultValue={50} aria-label="Default" valueLabelDisplay="auto" /> */}
             </Box>
-            <div>Hourly rate: ${hourly}</div>{" "}
+            {/* <div>Hourly rate: ${hourly}</div>{" "} */}
           </div>
         </div>
         {/* =====Licenses & Certificates====  */}
         {peLicense && (
-          <div className="row">
+          <div className="row mt-2">
             <h1>Licenses & Certificates</h1>
             <h4>{heading4}</h4>
             <h6>{heading1}</h6>
@@ -733,60 +751,39 @@ const DisplayData = ({ user, props, index }) => {
       </div>
       <div className="row mt-4">
         <h6>{heading}</h6>
-        <div className="col-lg-2 col-sm-4 ">
-          <Box
-            component="form"
-            sx={{
-              "& > :not(style)": {},
-            }}
-            noValidate
-            autoComplete="off"
-          >
-            <TextField
-              id="outlined-basic"
-              label="Region"
-              variant="outlined"
+
+        <Row className="mb-3">
+          <Form.Group as={Col} md="4">
+            {/* <Form.Label>City</Form.Label> */}
+            <Form.Control
+              type="text"
+              placeholder="City"
+              disabled
+              // onChange={handleChange}
               value={userData.region}
-              disabled
             />
-          </Box>
-        </div>{" "}
-        <div className="col-lg-2 col-sm-4 ">
-          <Box
-            component="form"
-            sx={{
-              "& > :not(style)": {},
-            }}
-            noValidate
-            autoComplete="off"
-          >
-            <TextField
-              id="outlined-basic"
-              label="country"
-              variant="outlined"
+          </Form.Group>
+          <Form.Group as={Col} md="4" controlId="validationCustom04">
+            {/* <Form.Label>State</Form.Label> */}
+            <Form.Control
+              type="text"
+              placeholder="State"
+              disabled
+              // onChange={handleChange}
               value={userData.country}
-              disabled
             />
-          </Box>
-        </div>{" "}
-        <div className="col-lg-2 col-sm-4">
-          <Box
-            component="form"
-            sx={{
-              "& > :not(style)": {},
-            }}
-            noValidate
-            autoComplete="off"
-          >
-            <TextField
-              id="outlined-basic"
-              label="state"
-              variant="outlined"
+          </Form.Group>
+          <Form.Group as={Col} md="4">
+            {/* <Form.Label>Zip</Form.Label> */}
+            <Form.Control
+              type="text"
+              placeholder="Country"
+              disabled
+              // onChange={handleChange}
               value={userData.state}
-              disabled
             />
-          </Box>
-        </div>
+          </Form.Group>
+        </Row>
       </div>
       {/* =============portfolio ================  */}
       <div
@@ -796,7 +793,7 @@ const DisplayData = ({ user, props, index }) => {
           // maxWidth: "1270px",
           marginBottom: "5rem",
         }}
-        className="mb-3 mt-5 "
+        className="mb-3 mt-2 "
       >
         <h3> Project Case Study</h3>
         <span>

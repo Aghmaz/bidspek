@@ -58,6 +58,7 @@
         display: none;
     }
     .customIcon {
+        display: none;
         color: red;
         font-size: 24px;
       }

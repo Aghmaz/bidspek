@@ -87,7 +87,7 @@ const UserSchema = new Schema({
   },
   caseImage: [
     {
-      type: String,
+      type: Object,
     },
   ],
   resetPasswordToken: {
@@ -96,11 +96,18 @@ const UserSchema = new Schema({
   resetPasswordExpires: {
     type: Date,
   },
-  company: {
-    type: Boolean,
-  },
+
   companyName: {
     type: String,
+  },
+  role: {
+    type: String,
+  },
+  switchPhone: {
+    type: Boolean,
+  },
+  hasSubmittedForm: {
+    type: Boolean,
   },
 });
 

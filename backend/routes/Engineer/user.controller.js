@@ -71,7 +71,7 @@ router.post(
     let engineer = new Engineer(payload);
 
     engineer = await engineer.save();
-    res.status(200).send({ engineer });
+    res.status(200).send({ engineer, message: "Registration successful!" });
   })
 );
 
@@ -149,6 +149,9 @@ router.patch(
         LastName: req.body.LastName,
         phone: req.body.phone,
         address: req.body.address,
+        company: req.body.company,
+        companyName: req.body.companyName,
+        switchPhone: req.body.switchPhone,
         city: req.body.city,
         state: req.body.state,
         zipCode: req.body.zipCode,
@@ -162,6 +165,7 @@ router.patch(
         permitsStates: req.body.permitsStates,
         preferences: req.body.preferences,
         services: req.body.services,
+        hasSubmittedForm: true,
       },
       {
         new: true,
@@ -170,6 +174,7 @@ router.patch(
     );
     try {
       res.status(200).json({
+        message: "Form submitted successfully",
         status: "Success",
         data: {
           updatedUser,
@@ -190,6 +195,20 @@ router.get(
   })
 );
 
+router.get("/check-form-submission/:useremail", async (req, res) => {
+  try {
+    const user = await Engineer.findOne({ email: req.params.useremail });
+
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    return res.status(200).json({ hasSubmittedForm: user.hasSubmittedForm });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
 // Login route
 // router.post("/login", async (req, res) => {
 //   try {
@@ -341,11 +360,11 @@ router.patch(
       req.params.engineerId,
       {
         $push: {
-          caseImage: JSON.stringify({
+          caseImage: {
             url: result.secure_url,
             public_id: fileId, // Use the file ID in the database update
             format: result.format,
-          }),
+          },
         },
       },
       {

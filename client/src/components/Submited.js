@@ -4,8 +4,7 @@ import Navbar from "./navbar";
 
 import Card from "react-bootstrap/Card";
 
-
-export const Testing = () => {
+export const Submited = () => {
   return (
     <div className="w-100" style={{ overflow: "hidden" }}>
       <Navbar />
@@ -31,7 +30,7 @@ export const Testing = () => {
                 justifyContent: "center",
               }}
             >
-              You already have Submited Form data
+              You have Submited the Form.
             </h6>
           </Card.Body>
         </Card>

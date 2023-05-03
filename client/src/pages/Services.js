@@ -16,7 +16,8 @@ import Button from "@mui/material/Button";
 import { ToastContainer, toast } from "react-toastify";
 import DownloadDoneIcon from "@mui/icons-material/DownloadDone";
 import CloseIcon from "@mui/icons-material/Close";
-
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
 // country names array
 
 const inisialState = [
@@ -94,7 +95,7 @@ function Services(props) {
 
   // declaring a state for Region global state
   const { setStep, userData, setUserData } = useContext(multiStepContext);
-
+  const [state, SetState] = useState("");
   // useEffect for all states because of mounting unmounting prevention
   useEffect(() => {
     // Update local storage when state variables change
@@ -253,7 +254,10 @@ function Services(props) {
               </button>
             </div>
           ) : (
-            <button className="btn btn-link add-btn"  onClick={() => setShowInput(true)}>
+            <button
+              className="btn btn-link add-btn"
+              onClick={() => setShowInput(true)}
+            >
               <u>Add new</u>
             </button>
           )}
@@ -429,7 +433,7 @@ function Services(props) {
                 <Form.Check
                   style={{ color: "blue" }}
                   inline
-                  label="Hourly Rate"
+                  label={`Hourly Rate : $${hourlyRate}`}
                   name="billing"
                   value="hourlyRate"
                   type="radio"
@@ -439,7 +443,7 @@ function Services(props) {
               </Card>{" "}
             </div>
             <div className="col-sm-6">
-              <Box width={300}>
+              <Box width={210}>
                 <Slider
                   value={hourlyRate}
                   onChange={handleHourlyRateChange}
@@ -452,9 +456,9 @@ function Services(props) {
 
                 {/* <Slider defaultValue={50} aria-label="Default" valueLabelDisplay="auto" /> */}
               </Box>
-              <div>Hourly rate: ${hourlyRate}</div>
+              {/* <div>Hourly rate: ${hourlyRate}</div> */}
             </div>
-            <div className="row">
+            <div className="row mt-2">
               <h1>Licenses & Certificates</h1>
               <h4>{heading4}</h4>
               <h6>{heading1}</h6>
@@ -583,67 +587,48 @@ function Services(props) {
             <div className="row mt-3">
               <h6 className="mb-3">{heading}</h6>
 
-              <div className="col-lg-3 col-md-6 col-sm-4">
-                <Box
-                  component="form"
-                  sx={{
-                    "& > :not(style)": {},
-                  }}
-                  noValidate
-                  autoComplete="off"
-                >
-                  <TextField
-                    id="outlined-basic"
-                    label="Region"
-                    variant="outlined"
-                    value={userData["region"]}
+              <Row className="mb-3">
+                <Form.Group as={Col} md="4">
+                  {/* <Form.Label>City</Form.Label> */}
+                  <Form.Control
+                    type="text"
+                    placeholder="City"
+                    optional
+                    // onChange={handleChange}
+                    value={userData["city"]}
                     onChange={(e) =>
-                      setUserData({ ...userData, region: e.target.value })
+                      setUserData({ ...userData, city: e.target.value })
                     }
                   />
-                </Box>
-              </div>
-              <div className="col-lg-3 col-md-6 col-sm-4">
-                <Box
-                  component="form"
-                  sx={{
-                    "& > :not(style)": {},
-                  }}
-                  noValidate
-                  autoComplete="off"
-                >
-                  <TextField
-                    id="outlined-basic"
-                    label="country"
-                    variant="outlined"
-                    value={userData["country"]}
-                    onChange={(e) =>
-                      setUserData({ ...userData, country: e.target.value })
-                    }
-                  />
-                </Box>
-              </div>
-              <div className="col-lg-3 col-md-6 col-sm-4">
-                <Box
-                  component="form"
-                  sx={{
-                    "& > :not(style)": {},
-                  }}
-                  noValidate
-                  autoComplete="off"
-                >
-                  <TextField
-                    id="outlined-basic"
-                    label="state"
-                    variant="outlined"
+                </Form.Group>
+                <Form.Group as={Col} md="4" controlId="validationCustom04">
+                  {/* <Form.Label>State</Form.Label> */}
+                  <Form.Control
+                    type="text"
+                    placeholder="State"
+                    required
+                    // onChange={handleChange}
                     value={userData["state"]}
                     onChange={(e) =>
                       setUserData({ ...userData, state: e.target.value })
                     }
+                  />
+                </Form.Group>
+                <Form.Group as={Col} md="4">
+                  {/* <Form.Label>Zip</Form.Label> */}
+                  <Form.Control
+                    type="text"
+                    placeholder="Country"
+                    required
+                    // onChange={handleChange}
+                    value={userData["country"]}
+                    onChange={(e) =>
+                      setUserData({ ...userData, country: e.target.value })
+                    }
                     onFocus={() => setIsInputField(true)}
                   />
-                </Box>
-              </div>
+                </Form.Group>
+              </Row>
               {/* <div className="col-lg-4 col-sm-4">
                 <Autocomplete
                   id="country"

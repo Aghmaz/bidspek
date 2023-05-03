@@ -14,6 +14,7 @@ import Uploader from "./components/Uploader";
 import Parking from "./components/owners/Parking";
 import Building from "./components/owners/Building";
 import { Testing } from "./components/Testing";
+import { Submited } from "./components/Submited";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -105,7 +106,8 @@ function App() {
         <Route path="/login/uploader" element={<Uploader />} />
         <Route path="/parking-garage" element={<Parking />} />
         <Route path="/building-exterior" element={<Building />} />
-        <Route path="/testing" element={<Testing />} />
+        <Route path="/form-Submitted" element={<Testing />} />
+        <Route path="/Submitted-Sucess" element={<Submited />} />
       </Routes>
     </div>
   );

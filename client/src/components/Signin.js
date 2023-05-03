@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "./navbar";
 import first from "../images/first.png";
-
+import Modal from "@mui/material/Modal";
 import "./GoogleLogin.css";
 import "./signin.css";
 import Button from "@mui/material/Button";
@@ -16,6 +16,8 @@ import { ToastContainer, toast } from "react-toastify";
 // const clientId = "711717933333-vf2d5qject036er2sdms5u9983mq3l0r.apps.googleusercontent.com";
 
 const Signin = ({ setUser }) => {
+  const tokenDel = localStorage.getItem("token");
+
   // For Google
   const googleAuth = () => {
     window.open(
@@ -58,6 +60,7 @@ const Signin = ({ setUser }) => {
     // console.log("Email:", email);
     // console.log("Password:", password);
     // Add your sign-in logic here
+
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/engineer/login`,
@@ -82,6 +85,32 @@ const Signin = ({ setUser }) => {
         loginFailed();
       }
     }
+    const checkFormSubmission = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/engineer/check-form-submission/${email}`
+        );
+
+        if (response.data.hasSubmittedForm) {
+          setShowModal(true);
+          alreadySubmitted();
+          navigate("/form-Submitted");
+          // localStorage.removeItem("token");
+          console.log(
+            "response.data.hasSubmittedForm>>>>>>",
+            response.data.hasSubmittedForm
+          );
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    checkFormSubmission();
+  };
+
+  const alreadySubmitted = () => {
+    toast("Form already Submitted", { type: "error" });
   };
 
   const emailNotRegistered = () => {
@@ -98,7 +127,15 @@ const Signin = ({ setUser }) => {
   const handleButtonClick = () => {
     setShowForm(true);
   };
-
+  const [hasSubmittedForm, setHasSubmittedForm] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  useEffect(() => {
+    console.log("i am working ");
+    // Check if the user has already submitted the form
+  }, [email]);
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
   return (
     <div className="w-100" style={{ overflow: "hidden" }}>
       <Navbar />
@@ -246,7 +283,7 @@ const Signin = ({ setUser }) => {
             </Button>
             <Button
               className=" FONT"
-              disabled
+              // disabled
               style={{
                 textTransform: "initial",
                 fontSize: "1.3rem",
@@ -283,6 +320,14 @@ const Signin = ({ setUser }) => {
       <div className="pic">
         <img className="img-fluid" src={first} alt="Construction building" />
       </div>
+      <Modal open={showModal} onClose={handleCloseModal}>
+        <div>
+          <h3>You have already submitted the form.</h3>
+          <Button variant="contained" color>
+            {" "}
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 };

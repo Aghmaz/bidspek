@@ -7,7 +7,14 @@ import StyledEngineProvider from "@mui/material/StyledEngineProvider";
 import "./ImageUploader.css";
 import { avatarImage } from "../images/avatarImage.png";
 import { ToastContainer, toast } from "react-toastify";
+import { makeStyles } from "@material-ui/core/styles";
 
+const useStyles = makeStyles((theme) => ({
+  icon: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(-1),
+  },
+}));
 function ImageUploader({ user }) {
   const [image, setImage] = useState(localStorage.getItem("uploadedImmage"));
   const [loading, setLoading] = useState(false);
@@ -134,7 +141,7 @@ function ImageUploader({ user }) {
       console.error(error);
     }
   };
-
+  const classes = useStyles();
   return (
     <div className="d-flex align-items-center" style={{ flexWrap: "wrap" }}>
       <input
@@ -177,7 +184,7 @@ function ImageUploader({ user }) {
             color="primary"
             component="span"
             disabled={loading}
-            style={{ width: "80%" }}
+            style={{ width: "100%", fontSize: "0.8rem" }}
           >
             {loading ? "Uploading..." : "Change Photo"}
           </Button>
@@ -190,12 +197,16 @@ function ImageUploader({ user }) {
               //   marginLeft: "-9.4rem",
               //   paddingRight: "2.3rem",
               // }}
+              style={{
+                width: "100%",
+                marginTop: "0.5rem",
+                paddingRight: "2rem",
+              }}
               variant="outlined"
               color="primary"
               onClick={handleDelete}
-              startIcon={<DeleteIcon />}
+              startIcon={<DeleteIcon className={classes.icon} />}
               disabled={loading}
-              style={{ width: "80%", marginTop: "0.5rem" }}
             >
               Delete
             </Button>

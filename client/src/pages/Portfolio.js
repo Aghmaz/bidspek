@@ -436,8 +436,8 @@ const Portfolio = () => {
         <div className="col-sm-3 col-lg-3">
           <Button
             style={{
-              paddingLeft: "1.4rem",
-              paddingRight: "1.4rem",
+              paddingLeft: "1.9rem",
+              paddingRight: "1.9rem",
               textTransform: "capitalize",
             }}
             variant="outlined"

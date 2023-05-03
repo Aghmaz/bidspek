@@ -1,6 +1,8 @@
 import React from "react";
 import Navbar from "./navbar";
 import first from "../images/second.png";
+import { Toast } from "react-bootstrap";
+
 // import google from "../images/google.svg";
 // import emailPic from "../images/email.svg";
 // import linkedin from "../images/linkedin.svg";
@@ -19,6 +21,7 @@ import { ToastContainer, toast } from "react-toastify";
 // const clientId = "711717933333-vf2d5qject036er2sdms5u9983mq3l0r.apps.googleusercontent.com";
 
 const Signup = () => {
+  const [toastMessage, setToastMessage] = useState("");
   // For Google
   const googleAuth = () => {
     window.open(
@@ -60,8 +63,11 @@ const Signup = () => {
         }
       );
 
+      // successRegisteration();
       successRegisteration();
+      setToastMessage(response.data.message);
       console.log(response.data.message);
+
       setTimeout(() => {
         navigate("/");
       }, 1500);
@@ -78,7 +84,9 @@ const Signup = () => {
   const handleButtonClick = () => {
     setShowForm(true);
   };
-
+  const handleToastClose = () => {
+    setToastMessage("");
+  };
   const registerationFailed = () => {
     toast("Registration Failed.", { type: "error" });
   };
@@ -252,7 +260,7 @@ const Signup = () => {
             </Button>
             <Button
               className=" FONT"
-              disabled
+              // disabled
               style={{
                 textTransform: "initial",
                 fontSize: "1.3rem",
@@ -287,6 +295,21 @@ const Signup = () => {
       </div>
       <div className="pic" style={{ marginBottom: "-2rem" }}>
         <img className="img-fluid" src={first} alt="Construction building" />
+      </div>
+      <div className="mt-3" style={{ float: "right" }}>
+        {toastMessage !== "" && (
+          <Toast
+            onClose={handleToastClose}
+            show={true}
+            autohide={true}
+            delay={1500}
+          >
+            <Toast.Header>
+              <strong className="mr-auto">Success</strong>
+            </Toast.Header>
+            <Toast.Body>{toastMessage}</Toast.Body>
+          </Toast>
+        )}
       </div>
     </div>
   );

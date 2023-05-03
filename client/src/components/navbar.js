@@ -10,7 +10,7 @@ const navbar = () => {
   return (
     <div className="contianer mt-2">
       <Navbar expand="lg">
-        <Navbar.Brand className="ms-4" as={Link} to="http://localhost:3000/">
+        <Navbar.Brand className="ms-4" as={Link} to="http://www.bidspek.com/">
           {" "}
           <img src={logo} style={{ width: "100px" }} />
         </Navbar.Brand>

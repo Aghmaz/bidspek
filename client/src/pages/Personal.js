@@ -139,6 +139,9 @@ const Personal = ({ user }) => {
 
   const handleSend = () => {
     if (isInputField) {
+      mandatory();
+    }
+    if (validateField("zip", "email", "lastname", "firstname")) {
       setStep(2);
     } else {
       // check all input fields for validation
@@ -163,44 +166,28 @@ const Personal = ({ user }) => {
       if (!isPhoneValid) {
         phone();
       }
-      if (!isStateValid) {
-        state();
-      }
+
       if (!isZipValid) {
         zip();
       }
-
-      // if (!user && !isFirstNameValid) {
-      //   firstName();
-      // }
-      // if (!user && !isLastNameValid) {
-      //   lastName();
-      // }
-      // if (!user && !isEmailValid) {
-      //   email();
-      // }
-      // if (!user && !isPhoneValid) {
-      //   phone();
-      // }
-      // if (!user && !isStateValid) {
-      //   state();
-      // }
-      // if (!user && !isZipValid) {
-      //   zip();
-      // }
     }
   };
 
   // toaster messages
   const firstName = () =>
-    toast("Please Enter the First Name", { type: "error" });
+    toast("First Name length should be more than 5 characters.", {
+      type: "error",
+    });
   const lastName = () =>
-    toast("Please Enter Your Last Name", { type: "error" });
-  const email = () => toast("Please Enter Your Email", { type: "error" });
+    toast("Last Name length should be more than 5 characters", {
+      type: "error",
+    });
+  const email = () => toast("Please enter a valid email.", { type: "error" });
   const phone = () =>
-    toast("Please Enter Your Phone Number", { type: "error" });
-  const state = () => toast("Please Enter Your State Name", { type: "error" });
-  const zip = () => toast("Please Enter the Zip Code", { type: "error" });
+    toast("Only Numbers are acceptable ,length more than 6", { type: "error" });
+  const mandatory = () =>
+    toast("All Mandatory fields must fill", { type: "error" });
+  const zip = () => toast(" Please provide a valid zip.", { type: "error" });
   const occupation = () =>
     toast("Please Choose company or person", { type: "error" });
 
@@ -287,16 +274,16 @@ const Personal = ({ user }) => {
                   setUserData({ ...userData, firstname: e.target.value });
                 }}
                 isValid={validateField("firstname")}
-                isInvalid={!validateField("firstname")}
+                // isInvalid={!validateField("firstname")}
               />
 
               {/* <ToastContainer /> */}
-              <Form.Control.Feedback type="valid">
+              {/* <Form.Control.Feedback type="valid">
                 Looks good!
               </Form.Control.Feedback>
               <Form.Control.Feedback type="invalid">
                 First Name length should be more than 5 characters
-              </Form.Control.Feedback>
+              </Form.Control.Feedback> */}
             </Form.Group>
 
             <Form.Group as={Col} md="6">
@@ -323,14 +310,14 @@ const Personal = ({ user }) => {
                   setUserData({ ...userData, lastname: e.target.value })
                 }
                 isValid={validateField("lastname")}
-                isInvalid={!validateField("lastname")}
+                // isInvalid={!validateField("lastname")}
               />
-              <Form.Control.Feedback type="valid">
+              {/* <Form.Control.Feedback type="valid">
                 Looks good!
               </Form.Control.Feedback>
               <Form.Control.Feedback type="invalid">
                 Last Name length should be more than 5 characters
-              </Form.Control.Feedback>
+              </Form.Control.Feedback> */}
             </Form.Group>
           </Row>
 
@@ -360,14 +347,14 @@ const Personal = ({ user }) => {
                   setUserData({ ...userData, email: e.target.value })
                 }
                 isValid={validateField("email")}
-                isInvalid={!validateField("email")}
+                // isInvalid={!validateField("email")}
               />
-              <Form.Control.Feedback type="valid">
+              {/* <Form.Control.Feedback type="valid">
                 Looks good!
               </Form.Control.Feedback>
               <Form.Control.Feedback type="invalid">
                 Please enter a valid email.
-              </Form.Control.Feedback>
+              </Form.Control.Feedback> */}
 
               <Form.Check
                 inline
@@ -413,14 +400,14 @@ const Personal = ({ user }) => {
                   setUserData({ ...userData, phone: e.target.value })
                 }
                 isValid={validateField("phone")}
-                isInvalid={!validateField("phone")}
+                // isInvalid={!validateField("phone")}
               />
-              <Form.Control.Feedback type="valid">
+              {/* <Form.Control.Feedback type="valid">
                 Looks good!
               </Form.Control.Feedback>
               <Form.Control.Feedback type="invalid">
                 Only Numbers are acceptable ,length more than 6
-              </Form.Control.Feedback>
+              </Form.Control.Feedback> */}
               <Form.Check
                 className="mt-2 check"
                 type="switch"
@@ -482,7 +469,8 @@ const Personal = ({ user }) => {
               <Form.Control
                 type="text"
                 placeholder="State"
-                required
+                // required
+                optional
                 // onChange={handleChange}
                 value={userData["state"]}
                 onChange={(e) =>
@@ -506,11 +494,11 @@ const Personal = ({ user }) => {
                 required
                 // onChange={handleChange}
                 value={userData["zip"]}
-                onChange={(e) =>
-                  setUserData({ ...userData, zip: e.target.value })
-                }
+                onChange={(e) => {
+                  setUserData({ ...userData, zip: e.target.value });
+                  setIsInputField(true);
+                }}
                 isValid={validateField("zip")}
-                onFocus={() => setIsInputField(true)}
                 // isInvalid={!validateField("zip")}
               />
               {/* <Form.Control.Feedback type="valid">
