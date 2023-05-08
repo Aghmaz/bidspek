@@ -330,7 +330,7 @@ const Signup = () => {
         </div>
       </div>
       <div className="pic" style={{ marginBottom: "-2rem" }}>
-        <img className="img-fluid" src={first} alt="Construction building" />
+        <img className="img" src={first} alt="Construction building" />
       </div>
       {/* <div className="mt-3" style={{ float: "right" }}>
         {toastMessage !== "" && (
