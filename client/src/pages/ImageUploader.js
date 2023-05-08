@@ -42,7 +42,6 @@ function ImageUploader({ user }) {
   }, [user && user.picture]);
 
   const handleImageUpload = async (file) => {
-    debugger;
     setLoading(true);
 
     try {

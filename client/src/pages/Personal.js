@@ -276,7 +276,27 @@ const Personal = ({ user }) => {
                     : userData["firstname"]
                 }
                 onChange={(e) => {
-                  setUserData({ ...userData, firstname: e.target.value });
+                  if (user && user.given_name) {
+                    setUserData({
+                      ...userData,
+                      [user.given_name]: e.target.value,
+                    });
+                  } else if (user && user.firstName) {
+                    setUserData({
+                      ...userData,
+                      [user.firstName.localized["en_US"]]: e.target.value,
+                    });
+                  } else if (user && user.FirstName) {
+                    setUserData({
+                      ...userData,
+                      [user.FirstName]: e.target.value,
+                    });
+                  } else {
+                    setUserData({
+                      ...userData,
+                      firstname: e.target.value,
+                    });
+                  }
                 }}
                 isValid={validateField("firstname")}
                 // isInvalid={!validateField("firstname")}
@@ -307,9 +327,29 @@ const Personal = ({ user }) => {
                     ? userData[user.LastName]
                     : userData["lastname"]
                 }
-                onChange={(e) =>
-                  setUserData({ ...userData, lastname: e.target.value })
-                }
+                onChange={(e) => {
+                  if (user && user.family_name) {
+                    setUserData({
+                      ...userData,
+                      [user.family_name]: e.target.value,
+                    });
+                  } else if (user && user.lastName) {
+                    setUserData({
+                      ...userData,
+                      [user.lastName.localized["en_US"]]: e.target.value,
+                    });
+                  } else if (user && user.LastName) {
+                    setUserData({
+                      ...userData,
+                      [user.LastName]: e.target.value,
+                    });
+                  } else {
+                    setUserData({
+                      ...userData,
+                      lastname: e.target.value,
+                    });
+                  }
+                }}
                 isValid={validateField("lastname")}
                 // isInvalid={!validateField("lastname")}
               />
@@ -331,14 +371,29 @@ const Personal = ({ user }) => {
                 }
                 value={
                   user && user.email
-                    ? user.email
+                    ? userData[user.email]
                     : user && user.Email
                     ? userData[user.Email]
                     : userData["email"]
                 }
-                onChange={(e) =>
-                  setUserData({ ...userData, email: e.target.value })
-                }
+                onChange={(e) => {
+                  if (user && user.email) {
+                    setUserData({
+                      ...userData,
+                      [user.email]: e.target.value,
+                    });
+                  } else if (user && user.Email) {
+                    setUserData({
+                      ...userData,
+                      [user.Email]: e.target.value,
+                    });
+                  } else {
+                    setUserData({
+                      ...userData,
+                      email: e.target.value,
+                    });
+                  }
+                }}
                 isValid={validateField("email")}
                 // isInvalid={!validateField("email")}
               />

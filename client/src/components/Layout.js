@@ -125,7 +125,15 @@ const Layout = ({ user }) => {
   //   };
   //   handleSubmit();
   // }, []);
+  const reloadKey = "hasReloadedOnce";
+  const hasAlreadyReloaded = localStorage.getItem(reloadKey);
 
+  useEffect(() => {
+    if (!hasAlreadyReloaded) {
+      localStorage.setItem(reloadKey, "true");
+      window.location.reload();
+    }
+  }, [hasAlreadyReloaded]);
   return (
     <div className="container-fluid">
       <Navbar />
@@ -148,7 +156,6 @@ const Layout = ({ user }) => {
               : user && user.FirstName
               ? user.FirstName.slice(0, 2)
               : "B"}
-           
           </Avatar>
           {user && user.name
             ? user.name
@@ -157,7 +164,6 @@ const Layout = ({ user }) => {
             : user && user.FirstName
             ? user.FirstName
             : "Bidspek"}
-        
 
           <ArrowDropDownIcon onClick={handleClick} />
         </Button>
