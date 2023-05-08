@@ -164,8 +164,7 @@ const Signin = ({ setUser }) => {
                       type="text"
                       value={email}
                       onChange={handleEmailChange}
-                      // isValid={validateField('lastname')}
-                      // isInvalid={!validateField('lastname')}
+                      
                     />
                     <Form.Control.Feedback type="valid">
                       Looks good!
@@ -183,8 +182,7 @@ const Signin = ({ setUser }) => {
                       type="password"
                       value={password}
                       onChange={handlePasswordChange}
-                      // isValid={validateField('lastname')}
-                      // isInvalid={!validateField('lastname')}
+                     
                     />
                     <Form.Control.Feedback type="valid">
                       Looks good!

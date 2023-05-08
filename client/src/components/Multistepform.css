@@ -42,6 +42,10 @@
 }
 
 @media screen and (max-width:780px){
+    #check{
+        display: grid;
+        margin-left: "20rem";
+    }
     .css-i4bv87-MuiSvgIcon-root{
         margin-left: 0.1rem;
         display: none;
@@ -57,10 +61,14 @@
  .css-i4bv87-MuiSvgIcon{
         display: none;
     }
-    .customIcon {
-        display: none;
-        color: red;
-        font-size: 24px;
+.customIcon {
+        /* display: none; */
+        /* color: red; */
+        font-size: 124px;
       }
-    
+ .css-1hv8oq8-MuiStepLabel-label{
+    font-weight: 600;
+    color: black;
+
+}  
   }

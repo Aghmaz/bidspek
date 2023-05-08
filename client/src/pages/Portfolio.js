@@ -3,10 +3,11 @@ import Button from "@mui/material/Button";
 import { multiStepContext } from "../StepContext";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
+import Loader from "../components/Loader";
 
 const Portfolio = () => {
   const { setStep, userData, setUserData } = useContext(multiStepContext);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [files, setFiles] = useState(Array(4).fill(null));
   const [showFiles, setShowFiles] = useState(Array(4).fill(false));
   const [fileContents, setFileContents] = useState(Array(4).fill(null));
@@ -40,6 +41,7 @@ const Portfolio = () => {
   console.log("files", files);
 
   const handleFileChange = async (e, index) => {
+    setIsLoading(true);
     const selectedFile = e.target.files[0];
     let imageUrl;
     const reader = new FileReader();
@@ -89,6 +91,8 @@ const Portfolio = () => {
         }
       } catch (error) {
         // Handle error
+      } finally {
+        setIsLoading(false);
       }
 
       const filesCopy = [...files];
@@ -252,6 +256,7 @@ const Portfolio = () => {
         Share images of your previous work helps your potential clients see the
         quality of your work
       </span>
+
       <div style={{ width: "100%" }}>
         <div style={{ display: "flex", flexWrap: "wrap" }}>
           {[...Array(numBoxes)].map((_, index) => (
@@ -428,6 +433,9 @@ const Portfolio = () => {
               </div>
             </div>
           )}
+          <div style={{ marginLeft: "-14rem", marginTop: "-2rem" }}>
+            {isLoading && <Loader />}
+          </div>
         </div>
       </div>
 

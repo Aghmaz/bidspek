@@ -1,4 +1,10 @@
-import React, { useContext, useState, useEffect, useLayoutEffect } from "react";
+import React, {
+  useContext,
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+} from "react";
 import Button from "@mui/material/Button";
 import axios from "axios";
 import Col from "react-bootstrap/Col";
@@ -8,17 +14,17 @@ import { multiStepContext } from "../StepContext";
 import ImageUploader from "./ImageUploader";
 import "./personal.css";
 import { ToastContainer, toast } from "react-toastify";
-
+import { useNavigate } from "react-router-dom";
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faCheckSquareO } from '@fortawesome/free-solid-svg-icons';
 localStorage.setItem("switchValue", JSON.stringify(true));
 const Personal = ({ user }) => {
-  // console.log(user,"personal")
+  console.log(user, "personal");
 
   const [selectedValue, setSelectedValue] = useState(
     localStorage.getItem("occupation") || ""
   );
-
+  const navigate = useNavigate();
   // new code for Occuptation
   const handleChange = (event) => {
     const value = event.target.value;
@@ -31,7 +37,7 @@ const Personal = ({ user }) => {
 
   const handleInputChange = (event) => {
     const value = event.target.value;
-    setInputValue(value);
+    setInputValue(value.length > 0);
     localStorage.setItem("company_name", value);
   };
   useEffect(() => {
@@ -80,52 +86,49 @@ const Personal = ({ user }) => {
 
   // Validation checks on each input
 
-  const validateField = (fieldName) => {
+  const validateField = (user) => {
     // setIsInputValid(validateField(fieldName));
 
-    const value = userData[fieldName];
+    const value = userData[user];
 
     if (!value) {
       // If the value is empty, the field is invalid
       return false;
     }
-    if (fieldName === "lastname") {
+    if (user === "firstname") {
+      const namePattern = /^[\p{L}\p{M}'\-\s]{5,12}$/u;
+      return namePattern.test(value);
+    }
+    if (user === "lastname") {
       const pattern = /^[\p{L}\p{M}'\-\s]{5,12}$/u;
 
       return pattern.test(value);
     }
-    if (fieldName === "email") {
+    if (user === "email") {
       // Check if the value is a valid email address
       const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return pattern.test(value);
     }
-    if (fieldName === "phone") {
-      // Check if the value is a valid phone number
-      // const pattern = /^(\+91|91)?[6-9]\d{9}$/;
+    if (user === "phone") {
       const pattern = /^(?:\+)?(?:[0-9]){7,15}$/;
       return pattern.test(value);
     }
-    if (fieldName === "address") {
+    if (user === "address") {
       // Check if the value is a valid address
       const pattern = /^[a-zA-Z0-9\s,'-]*$/;
       return pattern.test(value);
     }
-    if (fieldName === "city" || fieldName === "state") {
+    if (user === "city" || user === "state") {
       // Check if the value contains only letters and spaces
       const pattern = /^[a-zA-Z\s]*$/;
       return pattern.test(value);
     }
-    if (fieldName === "zip") {
+    if (user === "zip") {
       // Check if the value is a valid zip code
       const pattern = /^\d{5}(?:[-\s]\d{4})?$/;
       return pattern.test(value);
     }
-
-    // Check if the value contains only letters, first character capital, and length is more than three
-    const namePattern = /^[\p{L}\p{M}'\-\s]{5,12}$/u;
-    return namePattern.test(value);
   };
-  const firstNameError = () => toast("enter correct name");
 
   // const [isInputField, setIsInputField] = useState(false);
 
@@ -138,10 +141,13 @@ const Personal = ({ user }) => {
   }, [isInputField]);
 
   const handleSend = () => {
-    if (isInputField) {
-      mandatory();
-    }
-    if (validateField("zip", "email", "lastname", "firstname")) {
+    // if (isInputField) {
+    //   mandatory();
+    // }
+    if (
+      isInputField &&
+      validateField("zip", "email", "lastname", "firstname")
+    ) {
       setStep(2);
     } else {
       // check all input fields for validation
@@ -154,15 +160,15 @@ const Personal = ({ user }) => {
 
       // show toast message if any of the input fields are invalid
 
-      if (!isFirstNameValid) {
-        firstName();
-      }
-      if (!isLastNameValid) {
-        lastName();
-      }
-      if (!isEmailValid) {
-        email();
-      }
+      // if (!isFirstNameValid) {
+      //   firstName();
+      // }
+      // if (!isLastNameValid) {
+      //   lastName();
+      // }
+      // if (!isEmailValid) {
+      //   email();
+      // }
       if (!isPhoneValid) {
         phone();
       }
@@ -174,15 +180,15 @@ const Personal = ({ user }) => {
   };
 
   // toaster messages
-  const firstName = () =>
-    toast("First Name length should be more than 5 characters.", {
-      type: "error",
-    });
-  const lastName = () =>
-    toast("Last Name length should be more than 5 characters", {
-      type: "error",
-    });
-  const email = () => toast("Please enter a valid email.", { type: "error" });
+  // const firstName = () =>
+  //   toast("First Name length should be more than 5 characters.", {
+  //     type: "error",
+  //   });
+  // const lastName = () =>
+  //   toast("Last Name length should be more than 5 characters", {
+  //     type: "error",
+  //   });
+  // const email = () => toast("Please enter a valid email.", { type: "error" });
   const phone = () =>
     toast("Only Numbers are acceptable ,length more than 6", { type: "error" });
   const mandatory = () =>
@@ -193,8 +199,6 @@ const Personal = ({ user }) => {
 
   // ====================Google data=============
 
-  // const [userEmail, setUserEmail] = useState(user.email);
-  // console.log(userEmail, "userEmail");
   const [userEmail, setUserEmail] = useState(user.email);
 
   useLayoutEffect(() => {
@@ -239,10 +243,7 @@ const Personal = ({ user }) => {
       </p>
       <h5 className="mt-4">Profile Photo</h5>
       <div className="rounded">
-        <ImageUploader
-          user={user}
-          //  handleApi={handleApi}
-        />
+        <ImageUploader user={user} />
         <p className="mt-3" style={{ fontSize: "11px" }}>
           Add your profile photo.The recommended size is 300 x 300px.
         </p>
@@ -261,13 +262,17 @@ const Personal = ({ user }) => {
                     ? user.given_name
                     : user && user.firstName
                     ? user.firstName.localized["en_US"]
-                    : " "
+                    : user && user.FirstName
+                    ? user.FirstName
+                    : userData["firstname"]
                 }
                 value={
                   user && user.given_name
                     ? userData[user.given_name]
                     : user && user.firstName
                     ? userData[user.firstName.localized["en_US"]]
+                    : user && user.FirstName
+                    ? userData[user.FirstName]
                     : userData["firstname"]
                 }
                 onChange={(e) => {
@@ -276,14 +281,6 @@ const Personal = ({ user }) => {
                 isValid={validateField("firstname")}
                 // isInvalid={!validateField("firstname")}
               />
-
-              {/* <ToastContainer /> */}
-              {/* <Form.Control.Feedback type="valid">
-                Looks good!
-              </Form.Control.Feedback>
-              <Form.Control.Feedback type="invalid">
-                First Name length should be more than 5 characters
-              </Form.Control.Feedback> */}
             </Form.Group>
 
             <Form.Group as={Col} md="6">
@@ -297,13 +294,17 @@ const Personal = ({ user }) => {
                     ? user.family_name
                     : user && user.lastName
                     ? user.lastName.localized["en_US"]
-                    : " "
+                    : user && user.LastName
+                    ? user.LastName
+                    : user.lastName
                 }
                 value={
                   user && user.family_name
                     ? userData[user.family_name]
                     : user && user.lastName
                     ? userData[user.lastName.localized["en_US"]]
+                    : user && user.LastName
+                    ? userData[user.LastName]
                     : userData["lastname"]
                 }
                 onChange={(e) =>
@@ -312,12 +313,6 @@ const Personal = ({ user }) => {
                 isValid={validateField("lastname")}
                 // isInvalid={!validateField("lastname")}
               />
-              {/* <Form.Control.Feedback type="valid">
-                Looks good!
-              </Form.Control.Feedback>
-              <Form.Control.Feedback type="invalid">
-                Last Name length should be more than 5 characters
-              </Form.Control.Feedback> */}
             </Form.Group>
           </Row>
 
@@ -327,20 +322,18 @@ const Personal = ({ user }) => {
               <Form.Control
                 required
                 type="email"
-                // placeholder="jack.offer@joengineering.com"
                 defaultValue={
                   user && user.email
                     ? user.email
-                    : user && user
-                    ? userData[user]
+                    : user && user.Email
+                    ? user.Email
                     : userData["email"]
                 }
-                // disabled
                 value={
                   user && user.email
                     ? user.email
-                    : user && user
-                    ? userData[user]
+                    : user && user.Email
+                    ? userData[user.Email]
                     : userData["email"]
                 }
                 onChange={(e) =>
@@ -349,12 +342,6 @@ const Personal = ({ user }) => {
                 isValid={validateField("email")}
                 // isInvalid={!validateField("email")}
               />
-              {/* <Form.Control.Feedback type="valid">
-                Looks good!
-              </Form.Control.Feedback>
-              <Form.Control.Feedback type="invalid">
-                Please enter a valid email.
-              </Form.Control.Feedback> */}
 
               <Form.Check
                 inline

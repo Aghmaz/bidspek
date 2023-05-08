@@ -14,6 +14,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const DisplayData = ({ user, props, index }) => {
+  console.log("display>>>>>>>>>>", user.FirstName);
   // toaster messages
   const notify = () => toast("You Form has been Submited");
   // const welcomeBack = () => toast("Welcome Back");
@@ -261,7 +262,13 @@ const DisplayData = ({ user, props, index }) => {
               type="text"
               placeholder="First Name"
               disabled
-              value={userData.firstname ? userData.firstname : user.given_name}
+              value={
+                userData.firstname
+                  ? userData.firstname
+                  : user.given_name
+                  ? userData.FirstName
+                  : user.FirstName
+              }
             />
           </Form.Group>
         </Row>
@@ -273,7 +280,13 @@ const DisplayData = ({ user, props, index }) => {
               type="text"
               placeholder="First Name"
               disabled
-              value={userData.lastname ? userData.lastname : user.family_name}
+              value={
+                userData.lastname
+                  ? userData.lastname
+                  : user.family_name
+                  ? userData.LastName
+                  : user.LastName
+              }
             />
           </Form.Group>
         </Row>
@@ -285,7 +298,13 @@ const DisplayData = ({ user, props, index }) => {
               type="Email"
               // placeholder="First Name"
               disabled
-              value={userData.email ? userData.email : user.email}
+              value={
+                userData.email
+                  ? userData.email
+                  : user.email
+                  ? userData.Email
+                  : user.Email
+              }
             />
           </Form.Group>
           {/* =======radio buttons ========*/}

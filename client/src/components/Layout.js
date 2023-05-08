@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "./navbar";
 import MultiStepForm from "./MultiStepForm";
 import Button from "@mui/material/Button";
@@ -12,7 +12,7 @@ import axios from "axios";
 
 const Layout = ({ user }) => {
   // const user = userDetails.user;
-  // console.log(user, "layout");
+  console.log(user, "layout");
   const storedValue = localStorage.getItem("switchValue");
 
   const storedCompanyValue = localStorage.getItem("company_name");
@@ -89,6 +89,7 @@ const Layout = ({ user }) => {
   // console.log("hey i am");
   // Create profile into review
   //
+
   const [headerText, setHeaderText] = useState("Create a Profile");
 
   // API call for linkedin
@@ -144,15 +145,19 @@ const Layout = ({ user }) => {
               ? user.name.slice(0, 2)
               : user && user.firstName
               ? user.firstName.localized["en_US"].slice(0, 2)
+              : user && user.FirstName
+              ? user.FirstName.slice(0, 2)
               : "B"}
-            {/* {user && user.name ? user.name.slice(0, 2) : "B"} */}
+           
           </Avatar>
           {user && user.name
             ? user.name
             : user && user.firstName
             ? user.firstName.localized["en_US"]
+            : user && user.FirstName
+            ? user.FirstName
             : "Bidspek"}
-          {/* {user && user.name ? user.name : "Bidspek"} */}
+        
 
           <ArrowDropDownIcon onClick={handleClick} />
         </Button>

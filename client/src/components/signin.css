@@ -186,7 +186,8 @@ width:430px;
 
    .pic{
   width:300px;
-  margin-top: -11.5rem;
+  margin-top: -11.4rem;
+  display: none;
 }
    .buttonnn{
       margin-top: 28rem;

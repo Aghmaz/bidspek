@@ -58,6 +58,8 @@ const Signup = () => {
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/engineer/emailregister`,
         {
+          firstName: userData["firstName"],
+          lastName: userData["lastName"],
           email: userData["email"],
           password: userData["password"],
         }
@@ -106,6 +108,12 @@ const Signup = () => {
     if (!value) {
       // If the value is empty, the field is invalid
       return false;
+    }
+
+    if (fieldName === "lastname" && "firstName") {
+      const pattern = /^[\p{L}\p{M}'\-\s]{5,12}$/u;
+
+      return pattern.test(value);
     }
     if (fieldName === "email") {
       // Check if the value is a valid email address
@@ -186,6 +194,34 @@ const Signup = () => {
               <form onSubmit={handleSubmit}>
                 <div className="row">
                   <Form.Group as={Col} md="6">
+                    <Form.Label>First Name*</Form.Label>
+                    <Form.Control
+                      style={{ background: "transparent" }}
+                      required
+                      type="text"
+                      value={userData["firstName"]}
+                      onChange={(e) =>
+                        setUserData({ ...userData, firstName: e.target.value })
+                      }
+                      isValid={validateField("email")}
+                      // isInvalid={!validateField("email")}
+                    />
+                  </Form.Group>
+                  <Form.Group as={Col} md="6">
+                    <Form.Label>Last Name*</Form.Label>
+                    <Form.Control
+                      style={{ background: "transparent" }}
+                      required
+                      type="text"
+                      value={userData["lastName"]}
+                      onChange={(e) =>
+                        setUserData({ ...userData, lastName: e.target.value })
+                      }
+                      // isValid={validateField("email")}
+                      // isInvalid={!validateField("email")}
+                    />
+                  </Form.Group>
+                  <Form.Group as={Col} md="6">
                     <Form.Label>Email*</Form.Label>
                     <Form.Control
                       style={{ background: "transparent" }}
@@ -223,8 +259,8 @@ const Signup = () => {
                   </Form.Group>
                 </div>
                 <Button
-                  className="mt-3 w-25 "
-                  style={{ textTransform: "initial", fontSize: "1.1rem" }}
+                  className="mt-2 w-25 "
+                  style={{ textTransform: "initial", fontSize: "0.9rem" }}
                   type="submit"
                   variant="contained"
                   onClick={handleSubmit}
@@ -296,7 +332,7 @@ const Signup = () => {
       <div className="pic" style={{ marginBottom: "-2rem" }}>
         <img className="img-fluid" src={first} alt="Construction building" />
       </div>
-      <div className="mt-3" style={{ float: "right" }}>
+      {/* <div className="mt-3" style={{ float: "right" }}>
         {toastMessage !== "" && (
           <Toast
             onClose={handleToastClose}
@@ -310,7 +346,7 @@ const Signup = () => {
             <Toast.Body>{toastMessage}</Toast.Body>
           </Toast>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

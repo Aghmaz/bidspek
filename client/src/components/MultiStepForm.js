@@ -72,8 +72,8 @@ export default function MultiStepForm({ user, setHeaderText }) {
           activeStep={currentStep - 1}
           style={{
             width: "50%",
-            textAlign: "center",
-            justifyContent: "center",
+            // textAlign: "center",
+            // justifyContent: "center",
             margin: "auto",
           }}
         >
@@ -81,7 +81,8 @@ export default function MultiStepForm({ user, setHeaderText }) {
             {" "}
             <StepLabel>
               {" "}
-              Personal <ChevronRightIcon className={styles.customIcon} />{" "}
+              Personal
+              {/* <ChevronRightIcon className={styles.customIcon} />{" "} */}
             </StepLabel>{" "}
           </Step>
 
@@ -90,14 +91,15 @@ export default function MultiStepForm({ user, setHeaderText }) {
             <StepLabel>
               {" "}
               Professional
-              <ChevronRightIcon className={styles.customIcon} />
+              {/* <ChevronRightIcon className={styles.customIcon} /> */}
             </StepLabel>{" "}
           </Step>
           <Step>
             {" "}
             <StepLabel>
               {" "}
-              Services <ChevronRightIcon className={styles.customIcon} />
+              Services
+              {/* <ChevronRightIcon className={styles.customIcon} /> */}
             </StepLabel>
           </Step>
           <Step>

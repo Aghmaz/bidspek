@@ -46,32 +46,56 @@ router.get(
 
 // register a engineer
 
+// router.post(
+//   "/emailregister",
+//   errorHandler(async (req, res) => {
+//     // console.log(req.body.password);
+//     const payload = req.body;
+//     const salt = await bcrypt.genSalt(1);
+//     const hashedPassword = await bcrypt.hash(req.body.password, salt);
+//     payload["password"] = hashedPassword;
+
+//     const existingEngineer = await Engineer.findOne({ email: payload.email });
+//     if (existingEngineer) {
+//       return res.status(409).send({ message: "Email is already in use" });
+//     }
+
+//     let engineer = new Engineer(payload);
+
+//     engineer = await engineer.save();
+//     res.status(200).send({ engineer, message: "Registration successful!" });
+//   })
+// );
 router.post(
   "/emailregister",
   errorHandler(async (req, res) => {
-    // console.log(req.body.password);
-    const payload = req.body;
-    const salt = await bcrypt.genSalt(1);
-    const hashedPassword = await bcrypt.hash(req.body.password, salt);
-    payload["password"] = hashedPassword;
-    //console.log(payload);
-    // const { error } = createUserSchema(payload);
+    const { firstName, lastName, email, password } = req.body;
 
-    // if (error) {
-    //   return res.status(400).send({ message: error.details[0].message });
-    // }
-
-    // ===========Sahil code======
-    // Check if an engineer with the given email already exists
-    const existingEngineer = await Engineer.findOne({ email: payload.email });
+    const existingEngineer = await Engineer.findOne({ email });
     if (existingEngineer) {
       return res.status(409).send({ message: "Email is already in use" });
     }
 
-    let engineer = new Engineer(payload);
+    const salt = await bcrypt.genSalt(1);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-    engineer = await engineer.save();
-    res.status(200).send({ engineer, message: "Registration successful!" });
+    const newEngineer = new Engineer({
+      firstName,
+      lastName,
+      email,
+      password: hashedPassword,
+    });
+
+    const savedEngineer = await newEngineer.save();
+
+    res.status(200).send({
+      message: "Registration successful!",
+      engineer: {
+        firstName: savedEngineer.firstName,
+        lastName: savedEngineer.lastName,
+        email: savedEngineer.email,
+      },
+    });
   })
 );
 
@@ -271,6 +295,8 @@ router.post("/login", async (req, res) => {
       password: engineer.password,
       email: engineer.email,
       engineerId: engineer._id,
+      firstName: engineer.firstName,
+      lastName: engineer.lastName,
     });
   } catch (err) {
     console.error(err);

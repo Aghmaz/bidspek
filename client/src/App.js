@@ -3,7 +3,7 @@ import Signin from "./components/Signin";
 import Layout from "./components/Layout";
 import Signup from "./components/Signup";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useLayoutEffect } from "react";
 import "@fortawesome/fontawesome-free/css/all.css";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
@@ -15,9 +15,12 @@ import Parking from "./components/owners/Parking";
 import Building from "./components/owners/Building";
 import { Testing } from "./components/Testing";
 import { Submited } from "./components/Submited";
+import { useNavigate } from "react-router-dom";
 
 function App() {
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
   const getUser = async () => {
     try {
       const url = `${process.env.REACT_APP_API_URL}/auth/login/success`;
@@ -28,8 +31,9 @@ function App() {
         data.user.provider === "linkedin"
       ) {
         setUser(data.user._json);
-        // console.log(data.user._json);
-        // localStorage.setItem("engineerId", data.user._json.sub);
+        console.log(data.user._json.email);
+        console.log(">>>>>>>", data.user._json);
+        localStorage.setItem("email", data.user._json.email);
       } else if (data.user.provider === "local") {
         // Modify this part to handle email login
         const email = data.user.email;
@@ -60,7 +64,34 @@ function App() {
   useEffect(() => {
     getUser();
   }, []);
+  //
 
+  useEffect(() => {
+    const checkFormSubmission = async () => {
+      try {
+        const email = localStorage.getItem("email");
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/engineer/check-form-submission/${email}`
+        );
+
+        if (response.data.hasSubmittedForm) {
+          // setShowModal(true);
+          // alreadySubmitted();
+          navigate("/form-Submitted");
+          // localStorage.removeItem("token");
+          console.log(
+            "response.data.hasSubmittedForm>>>>>>",
+            response.data.hasSubmittedForm
+          );
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    checkFormSubmission();
+  }, []);
+  // console.log("user app", user);
   return (
     <div className="App">
       <Routes>
@@ -106,11 +137,12 @@ function App() {
         <Route path="/login/uploader" element={<Uploader />} />
         <Route path="/parking-garage" element={<Parking />} />
         <Route path="/building-exterior" element={<Building />} />
-        <Route path="/form-Submitted" element={<Testing />} />
-        <Route path="/Submitted-Sucess" element={<Submited />} />
+        <Route path="/form-Submitted" element={<Testing user={user} />} />
+        <Route path="/Submitted-Sucess" element={<Submited user={user} />} />
       </Routes>
     </div>
   );
 }
 
 export default App;
+

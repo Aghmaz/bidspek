@@ -12,6 +12,7 @@ import Col from "react-bootstrap/Col";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import Loader from "./Loader.js";
 
 // const clientId = "711717933333-vf2d5qject036er2sdms5u9983mq3l0r.apps.googleusercontent.com";
 
@@ -24,6 +25,7 @@ const Signin = ({ setUser }) => {
       `${process.env.REACT_APP_API_URL}/auth/google/callback`,
       "_self"
     );
+    setIsLoading(true);
   };
 
   // For Linkedin
@@ -32,6 +34,7 @@ const Signin = ({ setUser }) => {
       `${process.env.REACT_APP_API_URL}/auth/linkedin/callback`,
       "_self"
     );
+    setIsLoading(true);
   };
 
   // sign with email
@@ -39,6 +42,8 @@ const Signin = ({ setUser }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
   };
@@ -51,28 +56,30 @@ const Signin = ({ setUser }) => {
     toast("Please fill in all fields", { type: "error" });
 
   const handleSubmit = async (event) => {
+    setIsLoading(true);
     if (!email || !password) {
       emptyField();
       return;
     }
 
     event.preventDefault();
-    // console.log("Email:", email);
-    // console.log("Password:", password);
-    // Add your sign-in logic here
 
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/engineer/login`,
         { email, password }
       );
-      console.log(response.data, "hey");
+      // console.log(response.data, "hey");
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("engineerId", response.data.engineerId);
       navigate("/");
-      setUser(response.data.token);
-      setUser(response.data.engineerId);
-      setUser(response.data.email);
+      setUser({
+        token: response.data.token,
+        FirstName: response.data.firstName,
+        LastName: response.data.lastName,
+        engineerId: response.data.engineerId,
+        Email: response.data.email,
+      });
     } catch (error) {
       console.error(error);
       if (error.response && error.response.status === 400) {
@@ -84,8 +91,12 @@ const Signin = ({ setUser }) => {
       } else if (error.response && error.response.status === 500) {
         loginFailed();
       }
+    } finally {
+      setIsLoading(false);
     }
     const checkFormSubmission = async () => {
+      console.log("called 2");
+      setIsLoading(true);
       try {
         const response = await axios.get(
           `${process.env.REACT_APP_API_URL}/engineer/check-form-submission/${email}`
@@ -103,6 +114,8 @@ const Signin = ({ setUser }) => {
         }
       } catch (error) {
         console.error(error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -129,16 +142,15 @@ const Signin = ({ setUser }) => {
   };
   const [hasSubmittedForm, setHasSubmittedForm] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  useEffect(() => {
-    console.log("i am working ");
-    // Check if the user has already submitted the form
-  }, [email]);
+
   const handleCloseModal = () => {
     setShowModal(false);
   };
+
   return (
     <div className="w-100" style={{ overflow: "hidden" }}>
       <Navbar />
+
       <div className="buttonnn">
         <Button
           style={{ paddingLeft: "2rem", paddingRight: "2rem" }}
@@ -167,6 +179,7 @@ const Signin = ({ setUser }) => {
           Sign in
         </h1>
         {/* <span style={{ fontWeight: "400", fontSize: "16px", fontFamily: "Montserrat" }}> Don't have an account yet? Create one now!</span> */}
+
         <div class="col-md-12 buto mt-4">
           <div
             style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
@@ -188,6 +201,7 @@ const Signin = ({ setUser }) => {
                 {/* <img src={emailPic} style={{ width: "2rem", height: "2rem" }} />{" "} */}
               </Button>
             )}
+
             {showForm && (
               <form onSubmit={handleSubmit}>
                 <div className="row">
@@ -199,8 +213,7 @@ const Signin = ({ setUser }) => {
                       type="text"
                       value={email}
                       onChange={handleEmailChange}
-                      // isValid={validateField('lastname')}
-                      // isInvalid={!validateField('lastname')}
+                     
                     />
                     <Form.Control.Feedback type="valid">
                       Looks good!
@@ -218,8 +231,7 @@ const Signin = ({ setUser }) => {
                       type="password"
                       value={password}
                       onChange={handlePasswordChange}
-                      // isValid={validateField('lastname')}
-                      // isInvalid={!validateField('lastname')}
+                     
                     />
                     <Form.Control.Feedback type="valid">
                       Looks good!
@@ -247,8 +259,8 @@ const Signin = ({ setUser }) => {
                 </Link>
 
                 <Button
-                  className="mt-3 w-25 "
-                  style={{ textTransform: "initial", fontSize: "1.2rem" }}
+                  className="mt-2 w-25 "
+                  style={{ textTransform: "initial", fontSize: "0.9rem" }}
                   type="submit"
                   variant="contained"
                   onClick={handleSubmit}
@@ -318,7 +330,7 @@ const Signin = ({ setUser }) => {
       </div>
 
       <div className="pic">
-        <img className="img-fluid" src={first} alt="Construction building" />
+        <img className="img" src={first} alt="Construction building" />
       </div>
       <Modal open={showModal} onClose={handleCloseModal}>
         <div>
@@ -328,6 +340,17 @@ const Signin = ({ setUser }) => {
           </Button>
         </div>
       </Modal>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: "12rem",
+          marginLeft: "35rem",
+        }}
+      >
+        {isLoading && <Loader />}
+      </div>
     </div>
   );
 };
