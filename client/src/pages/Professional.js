@@ -192,50 +192,6 @@ const Professional = (props) => {
           })}
         </div>
 
-        {/* <Button
-          // style={{
-          //   paddingLeft: "4rem",
-          //   paddingRight: "4rem",
-          //   marginBottom: "1rem",
-          //   border: "2px solid rgb(25, 118, 210)",
-          // }}
-          style={{
-            width: "50%",
-            minWidth: "120px",
-            marginBottom: "1rem",
-            border: "2px solid rgb(25, 118, 210)",
-          }}
-          className=" mb-3 mt-3"
-          variant="outline-primary"
-          type="submit"
-          onClick={() => setStep(1)}
-        >
-          back
-        </Button>
-        <Button
-          // style={{
-          //   float: "right",
-          //   paddingLeft: "4rem",
-          //   paddingRight: "4rem",
-          //   marginBottom: "1rem",
-          //   backgroundColor: "rgb(25, 118, 210)",
-          //   color: "white",
-          // }}
-          style={{
-            width: "50%",
-            minWidth: "120px",
-            marginBottom: "1rem",
-            backgroundColor: "rgb(25, 118, 210)",
-            color: "white",
-          }}
-          className=" mb-3 mt-3"
-          type="submit"
-          onClick={handleSend}
-        >
-          next
-        </Button>
-        <ToastContainer /> */}
-
         <div
           style={{
             display: "flex",

@@ -13,12 +13,13 @@ import ResetPassword from "./components/ResetPassword";
 import Uploader from "./components/Uploader";
 import Parking from "./components/owners/Parking";
 import Building from "./components/owners/Building";
-import { Testing } from "./components/Testing";
+import { AlreadyFromSubmited } from "./components/AlreadyFromSubmited";
 import { Submited } from "./components/Submited";
 import { useNavigate } from "react-router-dom";
 
 function App() {
   const [user, setUser] = useState(null);
+  console.log("user<<<<<<<<>>>>>>>>>", user);
   const navigate = useNavigate();
 
   const getUser = async () => {
@@ -35,6 +36,7 @@ function App() {
         console.log(">>>>>>>", data.user._json);
         localStorage.setItem("email", data.user._json.email);
       } else if (data.user.provider === "local") {
+        debugger;
         // Modify this part to handle email login
         const email = data.user.email;
         const password = data.user.password;
@@ -75,10 +77,8 @@ function App() {
         );
 
         if (response.data.hasSubmittedForm) {
-          // setShowModal(true);
-          // alreadySubmitted();
           navigate("/form-Submitted");
-          // localStorage.removeItem("token");
+
           console.log(
             "response.data.hasSubmittedForm>>>>>>",
             response.data.hasSubmittedForm
@@ -91,7 +91,7 @@ function App() {
 
     checkFormSubmission();
   }, []);
-  // console.log("user app", user);
+
   return (
     <div className="App">
       <Routes>
@@ -137,7 +137,10 @@ function App() {
         <Route path="/login/uploader" element={<Uploader />} />
         <Route path="/parking-garage" element={<Parking />} />
         <Route path="/building-exterior" element={<Building />} />
-        <Route path="/form-Submitted" element={<Testing user={user} />} />
+        <Route
+          path="/form-Submitted"
+          element={<AlreadyFromSubmited user={user} />}
+        />
         <Route path="/Submitted-Sucess" element={<Submited user={user} />} />
       </Routes>
     </div>
@@ -145,4 +148,3 @@ function App() {
 }
 
 export default App;
-

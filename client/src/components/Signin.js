@@ -69,10 +69,11 @@ const Signin = ({ setUser }) => {
         `${process.env.REACT_APP_API_URL}/engineer/login`,
         { email, password }
       );
-      // console.log(response.data, "hey");
+      console.log(response.data, "hey");
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("engineerId", response.data.engineerId);
       navigate("/");
+      // localStorage.removeItem("hasReloadedOnce");
       setUser({
         token: response.data.token,
         FirstName: response.data.firstName,
@@ -213,7 +214,6 @@ const Signin = ({ setUser }) => {
                       type="text"
                       value={email}
                       onChange={handleEmailChange}
-                     
                     />
                     <Form.Control.Feedback type="valid">
                       Looks good!
@@ -231,7 +231,6 @@ const Signin = ({ setUser }) => {
                       type="password"
                       value={password}
                       onChange={handlePasswordChange}
-                     
                     />
                     <Form.Control.Feedback type="valid">
                       Looks good!

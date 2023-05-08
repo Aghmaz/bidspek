@@ -55,6 +55,8 @@ const Layout = ({ user }) => {
   const logout = () => {
     window.open(`${process.env.REACT_APP_API_URL}/auth/logout`, "_self");
     localStorage.removeItem(`image_url${i}`);
+    localStorage.removeItem("hasReloadedOnce");
+
     localStorage.removeItem("engineerId");
     localStorage.removeItem("occupation");
     localStorage.removeItem("pieLicense");

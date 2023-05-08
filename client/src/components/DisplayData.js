@@ -67,6 +67,7 @@ const DisplayData = ({ user, props, index }) => {
   const corrosionEngineer = localStorage.getItem("corrosion");
   // ==== Builing permits ====
   const BuilingPermits = localStorage.getItem("buildingPermit");
+  const Builing = localStorage.getItem("hasReloadedOnce");
 
   const [fileURLs, setFileURLs] = useState([]);
 
@@ -93,14 +94,29 @@ const DisplayData = ({ user, props, index }) => {
     const formData = new FormData();
     formData.append(
       "firstName",
-      userData.firstname ? userData.firstname : user.given_name
+      userData.firstname
+        ? userData.firstname
+        : user.given_name
+        ? userData.FirstName
+        : user.FirstName
     );
     formData.append(
       "lastName",
-      userData.lastname ? userData.lastname : user.given_name
+      userData.lastname
+        ? userData.lastname
+        : user.given_name
+        ? userData.LastName
+        : user.LastName
     );
     formData.append("phone", userData.phone);
-    formData.append("email", userData.email ? userData.email : user.given_name);
+    formData.append(
+      "email",
+      userData.email
+        ? userData.email
+        : user.given_name
+        ? userData.Email
+        : user.Email
+    );
     formData.append("address", userData.address);
     formData.append("city", userData.city);
     formData.append("zipCode", userData.zip);
@@ -152,9 +168,10 @@ const DisplayData = ({ user, props, index }) => {
         localStorage.removeItem("images");
         localStorage.removeItem("servicesData");
         localStorage.removeItem("professionalData");
-        setTimeout(() => {
-          localStorage.removeItem("token");
-        }, 10000);
+        // localStorage.removeItem("hasReloadedOnce");
+        // setTimeout(() => {
+        //   localStorage.removeItem("token");
+        // }, 10000);
         notify();
         navigate("/Submitted-Sucess");
       })
@@ -789,7 +806,7 @@ const DisplayData = ({ user, props, index }) => {
               placeholder="State"
               disabled
               // onChange={handleChange}
-              value={userData.country}
+              value={userData.state}
             />
           </Form.Group>
           <Form.Group as={Col} md="4">
@@ -799,7 +816,7 @@ const DisplayData = ({ user, props, index }) => {
               placeholder="Country"
               disabled
               // onChange={handleChange}
-              value={userData.state}
+              value={userData.country}
             />
           </Form.Group>
         </Row>

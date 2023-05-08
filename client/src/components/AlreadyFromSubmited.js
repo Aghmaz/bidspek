@@ -10,7 +10,8 @@ import MenuItem from "@mui/material/MenuItem";
 import StyledEngineProvider from "@mui/material/StyledEngineProvider";
 import { useNavigate } from "react-router-dom";
 
-export const Testing = ({ user }) => {
+export const AlreadyFromSubmited = ({ user }) => {
+  console.log("user>>>>>>>>>", user);
   const navigate = useNavigate();
 
   let i = 0;
@@ -20,12 +21,12 @@ export const Testing = ({ user }) => {
   const logout = () => {
     window.open(`${process.env.REACT_APP_API_URL}/auth/logout`, "_self");
     localStorage.removeItem(`image_url${i}`);
+
     localStorage.removeItem("engineerId");
     localStorage.removeItem("email");
     localStorage.removeItem("uploadedImage");
     localStorage.removeItem("isInputField");
     localStorage.removeItem("switchValue");
-    localStorage.removeItem("token");
     navigate("http://www.bidspek.com");
   };
 

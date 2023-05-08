@@ -253,8 +253,8 @@ const Portfolio = () => {
       <h3> Project Case Study</h3>
       <span>
         {" "}
-        Share images of your previous work helps your potential clients see the
-        quality of your work
+        Share images and Pdf of your previous work helps your potential clients
+        see the quality of your work
       </span>
 
       <div style={{ width: "100%" }}>
