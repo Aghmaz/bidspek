@@ -23,6 +23,7 @@ cloudinary.config({
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { verifyAuthToken } = require("../../utils/helpers");
+const { log } = require("console");
 
 // get all engineers
 
@@ -264,18 +265,21 @@ router.get("/check-form-submission/:useremail", async (req, res) => {
 // });
 
 // verify token route
-router.get('/verify-token', async (req, res) => {
+router.get("/verify/token", async (req, res) => {
   try {
-    const token = req.headers.authorization.split(' ')[1]; // assuming the token is passed in the Authorization header
-    const isTokenValid = verifyAuthToken(token); 
+    const token = req.headers.authorization.split(" ")[1]; // assuming the token is passed in the Authorization header
+    console.log(token);
+    const isTokenValid = verifyAuthToken(token);
+    console.log("heheheheheh");
+
     if (isTokenValid) {
-      return res.status(200).json({ message: 'Token is valid' });
+      return res.status(200).json({ message: "Token is valid" });
     } else {
-      return res.status(401).json({ error: 'Invalid token' });
+      return res.status(401).json({ error: "Invalid token" });
     }
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ error: 'Internal server error' });
+    return res.status(500).json({ error: "Internal server error" });
   }
 });
 

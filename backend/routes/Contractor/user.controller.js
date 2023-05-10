@@ -4,7 +4,7 @@ const Contractor = require("../../models/Contractor");
 const createUserSchema = require("./validationSchema"); //.default;
 
 //const upload = require("../../middleware/upload");
-const { FormateUserObj } = require("./UserFormatter");
+// const { FormateUserObj } = require("./UserFormatter");
 const router = express.Router();
 const upload = require("../../utils/multer");
 const cloudinary = require("cloudinary").v2;

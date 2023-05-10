@@ -84,20 +84,20 @@ function App() {
     checkFormSubmission();
   }, []);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    console.log(token, "<<<<<<<<<<<<<<<<< hello");
-    if (token) {
-      VerifyToken(token).then((isValid) => {
-        if (!isValid) {
-          navigate("/");
-        }
-      });
-    } else {
-      // Handle missing token here, e.g. redirect to login page
-      navigate("/login");
-    }
-  }, []);
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   console.log(token, "<<<<<<<<<<<<<<<<< hello");
+  //   if (token) {
+  //     VerifyToken(token).then((isValid) => {
+  //       if (!isValid) {
+  //         navigate("/");
+  //       }
+  //     });
+  //   } else {
+  //     // Handle missing token here, e.g. redirect to login page
+  //     navigate("/login");
+  //   }
+  // }, []);
 
   // Rest of your code
 

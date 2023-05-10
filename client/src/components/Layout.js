@@ -127,15 +127,15 @@ const Layout = ({ user }) => {
   //   };
   //   handleSubmit();
   // }, []);
-  const reloadKey = "hasReloadedOnce";
-  const hasAlreadyReloaded = localStorage.getItem(reloadKey);
+  // const reloadKey = "hasReloadedOnce";
+  // const hasAlreadyReloaded = localStorage.getItem(reloadKey);
 
-  useEffect(() => {
-    if (!hasAlreadyReloaded) {
-      localStorage.setItem(reloadKey, "true");
-      window.location.reload();
-    }
-  }, [hasAlreadyReloaded]);
+  // useEffect(() => {
+  //   if (!hasAlreadyReloaded) {
+  //     localStorage.setItem(reloadKey, "true");
+  //     window.location.reload();
+  //   }
+  // }, [hasAlreadyReloaded]);
   return (
     <div className="container-fluid">
       <Navbar />
