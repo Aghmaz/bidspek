@@ -1,30 +1,36 @@
-const { verifyAuthToken } = require("../utils/helpers");
+const { verifyAuthToken, verifyRefreshToken } = require("../utils/helpers");
 
 const authHandler = (req, res, next) => {
-  if (!req.headers.token) {
+  if (!req.headers.authorization) {
     return res
       .status(400)
       .send({ message: "Access denied, Auth token is not provided" });
   }
 
-  try {
-    const token = req.headers.token;
-    const isTokenValid = verifyAuthToken(token);
-    if (isTokenValid) {
-      next();
-    }
-  } catch (error) {
-    return res.status(400).send({ message: error.message });
-    next();
+  const authHeader = req.headers.authorization;
+  const authHeaderParts = authHeader.split(" ");
+  if (authHeaderParts.length !== 2) {
+    return res.status(400).send({ message: "Invalid authorization header" });
   }
 
-  // if (
-  //   req.headers.api !== undefined
-  // ) {
-  //   next();
-  // } else {
-  //   return res.status(404).send({ message: "API key is not valid!" });
-  // }
+  const tokenType = authHeaderParts[0];
+  const token = authHeaderParts[1];
+  let payload;
+
+  try {
+    if (tokenType === "Bearer") {
+      payload = verifyAuthToken(token);
+    } else if (tokenType === "Refresh") {
+      payload = verifyRefreshToken(token);
+    } else {
+      return res.status(400).send({ message: "Invalid token type" });
+    }
+
+    req.user = payload.user;
+    next();
+  } catch (error) {
+    return res.status(400).send({ message: error.message });
+  }
 };
-// 2864de72-1451-44f8-8882-38e6d3c3fd0f
+
 module.exports = authHandler;

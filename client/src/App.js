@@ -16,6 +16,7 @@ import Building from "./components/owners/Building";
 import { AlreadyFromSubmited } from "./components/AlreadyFromSubmited";
 import { Submited } from "./components/Submited";
 import { useNavigate } from "react-router-dom";
+import { VerifyToken } from "./VerifyToken";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -36,27 +37,18 @@ function App() {
         console.log(">>>>>>>", data.user._json);
         localStorage.setItem("email", data.user._json.email);
       } else if (data.user.provider === "local") {
-        debugger;
         // Modify this part to handle email login
-        const email = data.user.email;
-        const password = data.user.password;
 
         // Make a POST request to the /engineer/login route with the email and password
-        const loginUrl = `${process.env.REACT_APP_API_URL}/engineer/login`;
-        const loginData = { email, password };
-        const { data: loginResult } = await axios.post(loginUrl, loginData, {
-          withCredentials: true,
-        });
-
-        if (loginResult.error) {
-          // Handle login error
-        } else {
-          setUser({
-            id: loginResult.user.id,
-            email: loginResult.user.email,
-            password: loginResult.user.password,
-          });
-        }
+        axios.post(
+          `${process.env.REACT_APP_API_URL}/engineer/verify-token`,
+          data,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
       }
     } catch (err) {
       console.log(err);
@@ -91,6 +83,23 @@ function App() {
 
     checkFormSubmission();
   }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    console.log(token, "<<<<<<<<<<<<<<<<< hello");
+    if (token) {
+      VerifyToken(token).then((isValid) => {
+        if (!isValid) {
+          navigate("/");
+        }
+      });
+    } else {
+      // Handle missing token here, e.g. redirect to login page
+      navigate("/login");
+    }
+  }, []);
+
+  // Rest of your code
 
   return (
     <div className="App">
