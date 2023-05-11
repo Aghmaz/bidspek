@@ -199,40 +199,40 @@ const Personal = ({ user }) => {
 
   // ====================Google data=============
 
-  const [userEmail, setUserEmail] = useState(user.email);
+  // const [userEmail, setUserEmail] = useState(user.email);
 
-  useLayoutEffect(() => {
-    const handleSubmit = async (event) => {
-      // console.log("Submitting form...");
+  // useLayoutEffect(() => {
+  //   const handleSubmit = async (event) => {
+  //     // console.log("Submitting form...");
 
-      // event.preventDefault();
+  //     // event.preventDefault();
 
-      try {
-        const response = await axios.post(
-          `${process.env.REACT_APP_API_URL}/engineer/emailregister/`,
-          {
-            email: userEmail,
-            password: "",
-          }
-        );
-        console.log(response);
-        console.log(response.data.engineer._id);
-        localStorage.setItem("engineerId", response.data.engineer._id);
-        console.log("done");
-      } catch (error) {
-        console.log("Error submitting form:", error);
-        if (error.response && error.response.status === 409) {
-          console.log(error);
-        } else {
-          console.log(error);
-        }
-      }
+  //     try {
+  //       const response = await axios.post(
+  //         `${process.env.REACT_APP_API_URL}/engineer/emailregister/`,
+  //         {
+  //           email: userEmail,
+  //           password: "",
+  //         }
+  //       );
+  //       console.log(response);
+  //       console.log(">>>>>>>>>>>>>>>>hey<<<<<<<<", response.data.engineer._id);
+  //       localStorage.setItem("engineerId", response.data.engineer._id);
+  //       console.log("done");
+  //     } catch (error) {
+  //       console.log("Error submitting form:", error);
+  //       if (error.response && error.response.status === 409) {
+  //         console.log(error);
+  //       } else {
+  //         console.log(error);
+  //       }
+  //     }
 
-      // console.log("Form submitted.");
-    };
+  //     // console.log("Form submitted.");
+  //   };
 
-    handleSubmit();
-  }, [userEmail]);
+  //   handleSubmit();
+  // }, [userEmail]);
 
   return (
     <div style={{ margin: "auto", width: "60%" }} className="mb-3 mt-5 ">

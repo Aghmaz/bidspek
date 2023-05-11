@@ -13,8 +13,11 @@ import Button from "@mui/material/Button";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const DisplayData = ({ user, props, index }) => {
-  console.log("display>>>>>>>>>>", user.FirstName);
+const DisplayData = ({ user }) => {
+  console.log("display>>>>>>>>>>", user);
+  console.log("display email>>>>>>>>>>", user.email);
+  console.log("display email>>>>>>>>>>", user.family_name);
+  console.log("display email>>>>>>>>>>", user.given_name);
   // toaster messages
   const notify = () => toast("You Form has been Submited");
   // const welcomeBack = () => toast("Welcome Back");
@@ -29,7 +32,9 @@ const DisplayData = ({ user, props, index }) => {
 
   // for input fields of personal form
   const { userData, setStep } = useContext(multiStepContext);
-  // console.log(user);
+
+  console.log(user, "user<<<<>>>>>>>>>>>>");
+  console.log(userData, "userData<<<<>>>>>>>>>>>>");
 
   const storedValue = localStorage.getItem("switchValue");
 
@@ -94,28 +99,31 @@ const DisplayData = ({ user, props, index }) => {
     const formData = new FormData();
     formData.append(
       "firstName",
-      userData.firstname
-        ? userData.firstname
-        : user.given_name
-        ? userData.FirstName
-        : user.FirstName
+      // userData.firstname
+      //   ? userData.firstname
+      //   : user.given_name
+      //   ? userData.FirstName
+      //   : user.FirstName
+      userData.firstname || user.given_name || user.FirstName
     );
     formData.append(
       "lastName",
-      userData.lastname
-        ? userData.lastname
-        : user.given_name
-        ? userData.LastName
-        : user.LastName
+      // userData.lastname
+      //   ? userData.lastname
+      //   : user.given_name
+      //   ? userData.LastName
+      //   : user.LastName
+      userData.lastname || user.given_name || user.LastName
     );
     formData.append("phone", userData.phone);
     formData.append(
       "email",
-      userData.email
-        ? userData.email
-        : user.given_name
-        ? userData.Email
-        : user.Email
+      // userData.email
+      //   ? userData.email
+      //   : user.given_name
+      //   ? userData.Email
+      //   : user.Email
+      userData.email || user.email || user.Email
     );
     formData.append("address", userData.address);
     formData.append("city", userData.city);
@@ -126,7 +134,7 @@ const DisplayData = ({ user, props, index }) => {
     formData.append("licensePE", peLicense);
     formData.append("corroionEngineer", corrosionEngineer);
     formData.append("buildingPermits", BuilingPermits);
-    formData.append("permitsRegion", userData.region);
+    formData.append("permitsRegion", userData.city);
     formData.append("permitsCountry", userData.country);
     formData.append("permitsStates", userData.state);
     formData.append("hasSubmittedForm", true);
@@ -280,11 +288,12 @@ const DisplayData = ({ user, props, index }) => {
               placeholder="First Name"
               disabled
               value={
-                userData.firstname
-                  ? userData.firstname
-                  : user.given_name
-                  ? userData.FirstName
-                  : user.FirstName
+                // userData.firstname
+                //   ? userData.firstname
+                //   : user.given_name
+                //   ? userData.FirstName
+                //   : user.FirstName
+                userData.firstname || user.given_name || user.FirstName
               }
             />
           </Form.Group>
@@ -298,11 +307,12 @@ const DisplayData = ({ user, props, index }) => {
               placeholder="First Name"
               disabled
               value={
-                userData.lastname
-                  ? userData.lastname
-                  : user.family_name
-                  ? userData.LastName
-                  : user.LastName
+                // userData.lastname
+                //   ? userData.lastname
+                //   : user.family_name
+                //   ? userData.LastName
+                //   : user.LastName
+                userData.lastname || user.family_name || user.LastName
               }
             />
           </Form.Group>
@@ -316,11 +326,12 @@ const DisplayData = ({ user, props, index }) => {
               // placeholder="First Name"
               disabled
               value={
-                userData.email
-                  ? userData.email
-                  : user.email
-                  ? userData.Email
-                  : user.Email
+                // userData.email
+                //   ? userData.email
+                //   : user.email
+                //   ? userData.Email
+                //   : user.Email
+                userData.email || user.email || user.Email
               }
             />
           </Form.Group>
@@ -796,7 +807,7 @@ const DisplayData = ({ user, props, index }) => {
               placeholder="City"
               disabled
               // onChange={handleChange}
-              value={userData.region}
+              value={userData.city}
             />
           </Form.Group>
           <Form.Group as={Col} md="4" controlId="validationCustom04">

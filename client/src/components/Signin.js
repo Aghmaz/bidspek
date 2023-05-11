@@ -138,7 +138,10 @@ const Signin = ({ setUser }) => {
     toast("Login failed. Please try again.", { type: "error" });
   };
 
+  const reloadKey = "hasReloadedOnce";
+
   const handleButtonClick = () => {
+    localStorage.setItem(reloadKey, "true");
     setShowForm(true);
   };
   const [hasSubmittedForm, setHasSubmittedForm] = useState(false);

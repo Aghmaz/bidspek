@@ -34,8 +34,10 @@ function App() {
       ) {
         setUser(data.user._json);
         console.log(data.user._json.email);
+        console.log(data.user.id._id, "<<<<<<<<<<<,check id");
         console.log(">>>>>>>", data.user._json);
         localStorage.setItem("email", data.user._json.email);
+        localStorage.setItem("engineerId", data.user.id._id);
       } else if (data.user.provider === "local") {
         // Modify this part to handle email login
 
@@ -84,6 +86,29 @@ function App() {
     checkFormSubmission();
   }, []);
 
+  useEffect(() => {
+    const checkFormSubmission1 = async () => {
+      try {
+        const email = localStorage.getItem("email");
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/engineer/check-form-submission/${email}`
+        );
+
+        if (response.data.hasSubmittedForm) {
+          navigate("/form-Submitted");
+
+          console.log(
+            "response.data.hasSubmittedForm>>>>>>",
+            response.data.hasSubmittedForm
+          );
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    checkFormSubmission1();
+  }, []);
   // useEffect(() => {
   //   const token = localStorage.getItem("token");
   //   console.log(token, "<<<<<<<<<<<<<<<<< hello");

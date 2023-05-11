@@ -9,7 +9,6 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import StyledEngineProvider from "@mui/material/StyledEngineProvider";
 import axios from "axios";
-
 const Layout = ({ user }) => {
   // const user = userDetails.user;
   console.log(user, "layout");
@@ -57,7 +56,7 @@ const Layout = ({ user }) => {
     localStorage.removeItem(`image_url${i}`);
     localStorage.removeItem("hasReloadedOnce");
 
-    localStorage.removeItem("engineerId");
+    // localStorage.removeItem("engineerId");
     localStorage.removeItem("occupation");
     localStorage.removeItem("pieLicense");
     localStorage.removeItem("corrosion");
@@ -127,15 +126,15 @@ const Layout = ({ user }) => {
   //   };
   //   handleSubmit();
   // }, []);
-  // const reloadKey = "hasReloadedOnce";
-  // const hasAlreadyReloaded = localStorage.getItem(reloadKey);
+  const reloadKey = "hasReloadedOnce";
+  const hasAlreadyReloaded = localStorage.getItem(reloadKey);
 
-  // useEffect(() => {
-  //   if (!hasAlreadyReloaded) {
-  //     localStorage.setItem(reloadKey, "true");
-  //     window.location.reload();
-  //   }
-  // }, [hasAlreadyReloaded]);
+  useEffect(() => {
+    if (!hasAlreadyReloaded) {
+      localStorage.setItem(reloadKey, "true");
+      window.location.reload();
+    }
+  }, [hasAlreadyReloaded]);
   return (
     <div className="container-fluid">
       <Navbar />
