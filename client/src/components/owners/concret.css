@@ -1,0 +1,14 @@
+
+.mybutton{
+    padding-left: 3.5rem;
+    padding-right: 3.5rem;
+    text-transform: initial;
+}
+
+@media screen and (max-width: 420px){
+    .mybutton{
+        padding-left: 0rem;
+    padding-right:0rem;
+        text-transform: initial;
+    }
+    }

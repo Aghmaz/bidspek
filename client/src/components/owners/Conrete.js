@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import { useNavigate } from "react-router-dom";
-import "../concret.css";
+import "./style.css";
 
 const Concrete = () => {
   const [searchData, setSearchData] = useState([
@@ -46,11 +46,12 @@ const Concrete = () => {
             ))}
           </datalist>
           <Button
-            style={{
-              paddingLeft: "3.5rem",
-              paddingRight: "3.5rem",
-              textTransform: "initial",
-            }}
+            className="mybutton"
+            // style={{
+            //   paddingLeft: "3.5rem",
+            //   paddingRight: "3.5rem",
+            //   textTransform: "initial",
+            // }}
             variant="contained"
             id="button-addon2"
             onClick={handleNextClick}

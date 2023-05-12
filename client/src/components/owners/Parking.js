@@ -48,6 +48,8 @@ const Parking = () => {
         <img
           className="img-fluid"
           src="https://res.cloudinary.com/df8fsfjad/image/upload/v1681746000/3976_1000x667_1_1_vf0yqi.png"
+          width={1917}
+          height={863}
           useMap="#my-map"
         />
         <map name="my-map">

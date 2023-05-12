@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import Conrete from "./Conrete";
 import OtherStructure from "./OtherStructure";
+import "./owners.css";
 
 const Owners = () => {
   const [selectedButton, setSelectedButton] = useState("concrete");
@@ -32,19 +33,12 @@ const Owners = () => {
           </Link>
         </Button>
       </div>
+
       <div
         style={{ marginTop: "100px" }}
-        className="container d-flex justify-content-center align-items-center "
+        className="container d-flex justify-content-center align-items-center  "
       >
-        <h1
-          style={{
-            // fontFamily: "Montserrat",
-            fontWeight: "800",
-            fontSize: "60px",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
+        <h1 className="heading">
           Get matched for your next
           <br />{" "}
           <div className=" d-flex justify-content-center align-items-center">
@@ -57,7 +51,7 @@ const Owners = () => {
         </h1>
       </div>
       <div className="row mt-4 justify-content-center align-items-center text-center ">
-        <div className="col-2">
+        <div className="col-lg-2 col-sm-2">
           <Button
             style={{ textTransform: "initial" }}
             defaultValue={selectedButton === "concrete"}
@@ -68,7 +62,7 @@ const Owners = () => {
             Concrete Building
           </Button>
         </div>
-        <div className="col-2">
+        <div className="col-lg-2 col-sm-2">
           <Button
             style={{ textTransform: "initial" }}
             variant={selectedButton === "other" ? "contained" : ""}

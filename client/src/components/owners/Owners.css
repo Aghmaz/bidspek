@@ -1,0 +1,17 @@
+.heading {
+    font-weight: 800;
+    font-size: 60px;
+    align-items: center;
+    justify-content: center;
+  }
+
+
+@media screen and (max-width: 420px){
+    .heading {
+        font-weight: 800;
+        font-size: 27px;
+        align-items: center;
+        justify-content: center;
+      }
+    
+    }
