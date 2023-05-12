@@ -27,6 +27,8 @@ export const AlreadyFromSubmited = ({ user }) => {
     localStorage.removeItem("uploadedImage");
     localStorage.removeItem("isInputField");
     localStorage.removeItem("switchValue");
+    localStorage.removeItem("hasReloadedOnce");
+
     navigate("http://www.bidspek.com");
   };
 

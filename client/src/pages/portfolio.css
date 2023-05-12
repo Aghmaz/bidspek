@@ -1,0 +1,15 @@
+#loader{
+    margin-left: "-24rem";
+     margin-top: "-2rem"; 
+}
+
+
+@media screen and (max-width: 420px){
+   #loader{
+    margin-left: "-11rem";
+    margin-top: "-1.8rem"; 
+
+   }
+   
+   }
+ 

@@ -4,6 +4,7 @@ import { multiStepContext } from "../StepContext";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import Loader from "../components/Loader";
+import "./portfolio.css";
 
 const Portfolio = () => {
   const { setStep, userData, setUserData } = useContext(multiStepContext);
@@ -433,9 +434,7 @@ const Portfolio = () => {
               </div>
             </div>
           )}
-          <div style={{ marginLeft: "-14rem", marginTop: "-2rem" }}>
-            {isLoading && <Loader />}
-          </div>
+          <div id="loader">{isLoading && <Loader />}</div>
         </div>
       </div>
 
