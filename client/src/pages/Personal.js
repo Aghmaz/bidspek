@@ -208,58 +208,6 @@ const Personal = ({ user }) => {
   const occupation = () =>
     toast("Please Choose company or person", { type: "error" });
 
-  // ====================Google data=============
-
-  // const [userEmail, setUserEmail] = useState(user.email);
-
-  // useLayoutEffect(() => {
-  //   const handleSubmit = async (event) => {
-  //     // console.log("Submitting form...");
-
-  //     // event.preventDefault();
-
-  //     try {
-  //       const response = await axios.post(
-  //         `${process.env.REACT_APP_API_URL}/engineer/emailregister/`,
-  //         {
-  //           email: userEmail,
-  //           password: "",
-  //         }
-  //       );
-  //       console.log(response);
-  //       console.log(">>>>>>>>>>>>>>>>hey<<<<<<<<", response.data.engineer._id);
-  //       localStorage.setItem("engineerId", response.data.engineer._id);
-  //       console.log("done");
-  //     } catch (error) {
-  //       console.log("Error submitting form:", error);
-  //       if (error.response && error.response.status === 409) {
-  //         console.log(error);
-  //       } else {
-  //         console.log(error);
-  //       }
-  //     }
-
-  //     // console.log("Form submitted.");
-  //   };
-
-  //   handleSubmit();
-  // }, [userEmail]);
-
-  const [textArea, setTextArea] = useState("");
-  const maxLength = 500;
-
-  const handleChangeTextArea = (e) => {
-    const { value } = e.target;
-    if (value.length <= maxLength) {
-      setTextArea(value);
-      setUserData({ ...userData, textarea: value });
-    }
-  };
-  useEffect(() => {
-    if (userData && userData.textarea) {
-      setTextArea(userData.textarea);
-    }
-  }, [userData]);
   return (
     <div style={{ margin: "auto", width: "60%" }} className="mb-3 mt-5 ">
       <h5> My Profile</h5>
@@ -487,6 +435,22 @@ const Personal = ({ user }) => {
             </Form.Group>
           </Row>
 
+          <div className="row mb-4">
+            <div className="col">
+              <Form.Label>Linkedin</Form.Label>
+              <Form.Control
+                label="Linkedin"
+                className="form-control"
+                placeholder="Please Enter Your LinkedIn URL"
+                value={userData["textarea"]}
+                onChange={(e) => {
+                  setUserData({ ...userData, textarea: e.target.value });
+                }}
+                style={{ width: "100%" }}
+              />
+            </div>
+          </div>
+
           <Row className="mb-3">
             <Form.Group as={Col} md="12">
               <Form.Label>Address</Form.Label>
@@ -564,7 +528,7 @@ const Personal = ({ user }) => {
                 value={userData["zip"]}
                 onChange={(e) => {
                   setUserData({ ...userData, zip: e.target.value });
-                  // setIsInputField(true);
+                  setIsInputField(true);
                 }}
                 isValid={validateField("zip")}
                 // isInvalid={!validateField("zip")}
@@ -577,27 +541,6 @@ const Personal = ({ user }) => {
               </Form.Control.Feedback> */}
             </Form.Group>
           </Row>
-
-          <div className="row mb-4">
-            <div className="col">
-              <Form.Label>Linkedin*</Form.Label>
-              <textarea
-                label="Linkedin"
-                className="form-control"
-                placeholder="Write LinkedIn Profile URL and Personal Information"
-                value={textArea}
-                required
-                onChange={handleChangeTextArea}
-                // }}
-                maxLength={maxLength}
-                style={{ width: "100%" }}
-                isValid={validateField("textarea")}
-              />
-              <small className="ms-2">
-                {maxLength - textArea.length} characters remaining
-              </small>
-            </div>
-          </div>
 
           <Button
             style={{

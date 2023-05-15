@@ -400,24 +400,22 @@ const DisplayData = ({ user }) => {
             </Form.Group>
           )}
         </Row>
-        {/* {storedValue === "true" && (
-          <Form.Check
-            className="mt-2 check"
-            type="switch"
-            id="custom-switch"
-            label="Display Phone number in public profile "
-            checked={true}
-          />
+
+        {userData.textarea && (
+          <div className="row mb-4">
+            <div className="col">
+              <Form.Label>Linkedin</Form.Label>
+              <Form.Control
+                label="Linkedin"
+                className="form-control"
+                value={userData.textarea}
+                disabled
+                style={{ width: "100%" }}
+              />
+            </div>
+          </div>
         )}
-        {storedValue === "false" && (
-          <Form.Check
-            className="mt-2 check"
-            type="switch"
-            id="custom-switch"
-            label="Display Phone number in public profile "
-            checked={false}
-          />
-        )} */}
+
         <Row className="mb-3">
           {userData.address && (
             <Form.Group as={Col} md="12">
@@ -465,24 +463,6 @@ const DisplayData = ({ user }) => {
             />
           </Form.Group>
         </Row>
-        <div className="row mb-4">
-          <div className="col">
-            <Form.Label>Linkedin*</Form.Label>
-            <textarea
-              label="Linkedin"
-              className="form-control"
-              placeholder="Write LinkedIn Profile URL and Personal Information"
-              value={userData.textarea}
-              disabled
-              // value={userData["textarea"]}
-              // onChange={(e) => {
-              //   setUserData({ ...userData, textarea: e.target.value });
-              //   setIsInputField(true);
-              // }}
-              style={{ width: "100%" }}
-            />
-          </div>
-        </div>
       </div>
       {/* =========================Professional form Data ============  */}
       <div className="professional mt-4">
