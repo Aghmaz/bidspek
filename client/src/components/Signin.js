@@ -295,21 +295,7 @@ const Signin = ({ setUser }) => {
                 style={{ width: "2rem", height: "2rem" }}
               />{" "} */}
             </Button>
-            <Button
-              className=" FONT"
-              // disabled
-              style={{
-                textTransform: "initial",
-                fontSize: "1.3rem",
-                color: "#0052CC",
-                border: "2px solid rgb(25, 118, 210)",
-              }}
-              variant="outline"
-              onClick={linkedinAuth}
-            >
-              Sign in via Linkedin
-              {/* <img src={linkedin} style={{ width: "2rem", height: "2rem" }} />{" "} */}
-            </Button>
+            {/* ====linkedin === */}
             <div>
               <span style={{ fontFamily: "Montserrat" }}>
                 {" "}
@@ -358,3 +344,19 @@ const Signin = ({ setUser }) => {
 };
 
 export default Signin;
+
+// <Button
+//               className=" FONT"
+//               // disabled
+//               style={{
+//                 textTransform: "initial",
+//                 fontSize: "1.3rem",
+//                 color: "#0052CC",
+//                 border: "2px solid rgb(25, 118, 210)",
+//               }}
+//               variant="outline"
+//               onClick={linkedinAuth}
+//             >
+//               Sign in via Linkedin
+//               {/* <img src={linkedin} style={{ width: "2rem", height: "2rem" }} />{" "} */}
+//             </Button>

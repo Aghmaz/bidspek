@@ -192,6 +192,7 @@ router.patch(
         preferences: req.body.preferences,
         services: req.body.services,
         hasSubmittedForm: true,
+        linkedin: req.body.linkedin,
       },
       {
         new: true,

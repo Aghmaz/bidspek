@@ -109,6 +109,9 @@ const UserSchema = new Schema({
   hasSubmittedForm: {
     type: Boolean,
   },
+  linkedin: {
+    type: String,
+  },
 });
 
 const Engineer = mongoose.model("Engineer", UserSchema);

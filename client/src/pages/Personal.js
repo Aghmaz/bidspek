@@ -15,6 +15,7 @@ import ImageUploader from "./ImageUploader";
 import "./personal.css";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import TextareaAutosize from "@mui/base/TextareaAutosize";
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faCheckSquareO } from '@fortawesome/free-solid-svg-icons';
 localStorage.setItem("switchValue", JSON.stringify(true));
@@ -128,6 +129,12 @@ const Personal = ({ user }) => {
       const pattern = /^\d{5}(?:[-\s]\d{4})?$/;
       return pattern.test(value);
     }
+    if (user === "textarea") {
+      // Check if the value is a valid zip code
+      const pattern = /^(?!.*\d{5}(?:[-\s]\d{4})?$).{1,500}$/;
+
+      return pattern.test(value);
+    }
   };
 
   // const [isInputField, setIsInputField] = useState(false);
@@ -146,7 +153,7 @@ const Personal = ({ user }) => {
     // }
     if (
       isInputField &&
-      validateField("zip", "email", "lastname", "firstname")
+      validateField("zip", "email", "lastname", "firstname", "textarea")
     ) {
       setStep(2);
     } else {
@@ -157,6 +164,7 @@ const Personal = ({ user }) => {
       const isPhoneValid = validateField("phone");
       const isStateValid = validateField("state");
       const isZipValid = validateField("zip");
+      const isTextAreaValid = validateField("textarea");
 
       // show toast message if any of the input fields are invalid
 
@@ -166,9 +174,9 @@ const Personal = ({ user }) => {
       // if (!isLastNameValid) {
       //   lastName();
       // }
-      // if (!isEmailValid) {
-      //   email();
-      // }
+      if (!isTextAreaValid) {
+        textAreas();
+      }
       if (!isPhoneValid) {
         phone();
       }
@@ -188,7 +196,10 @@ const Personal = ({ user }) => {
   //   toast("Last Name length should be more than 5 characters", {
   //     type: "error",
   //   });
-  // const email = () => toast("Please enter a valid email.", { type: "error" });
+  const textAreas = () =>
+    toast("Please Fill text area & maxlength is 500 character.", {
+      type: "error",
+    });
   const phone = () =>
     toast("Only Numbers are acceptable ,length more than 6", { type: "error" });
   const mandatory = () =>
@@ -234,6 +245,21 @@ const Personal = ({ user }) => {
   //   handleSubmit();
   // }, [userEmail]);
 
+  const [textArea, setTextArea] = useState("");
+  const maxLength = 500;
+
+  const handleChangeTextArea = (e) => {
+    const { value } = e.target;
+    if (value.length <= maxLength) {
+      setTextArea(value);
+      setUserData({ ...userData, textarea: value });
+    }
+  };
+  useEffect(() => {
+    if (userData && userData.textarea) {
+      setTextArea(userData.textarea);
+    }
+  }, [userData]);
   return (
     <div style={{ margin: "auto", width: "60%" }} className="mb-3 mt-5 ">
       <h5> My Profile</h5>
@@ -538,7 +564,7 @@ const Personal = ({ user }) => {
                 value={userData["zip"]}
                 onChange={(e) => {
                   setUserData({ ...userData, zip: e.target.value });
-                  setIsInputField(true);
+                  // setIsInputField(true);
                 }}
                 isValid={validateField("zip")}
                 // isInvalid={!validateField("zip")}
@@ -551,6 +577,27 @@ const Personal = ({ user }) => {
               </Form.Control.Feedback> */}
             </Form.Group>
           </Row>
+
+          <div className="row mb-4">
+            <div className="col">
+              <Form.Label>Linkedin*</Form.Label>
+              <textarea
+                label="Linkedin"
+                className="form-control"
+                placeholder="Write LinkedIn Profile URL and Personal Information"
+                value={textArea}
+                required
+                onChange={handleChangeTextArea}
+                // }}
+                maxLength={maxLength}
+                style={{ width: "100%" }}
+                isValid={validateField("textarea")}
+              />
+              <small className="ms-2">
+                {maxLength - textArea.length} characters remaining
+              </small>
+            </div>
+          </div>
 
           <Button
             style={{

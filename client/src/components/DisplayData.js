@@ -141,6 +141,7 @@ const DisplayData = ({ user }) => {
     formData.append("switchPhone", storedValue);
     formData.append("preferences", JSON.stringify(selectedItems));
     formData.append("services", JSON.stringify(selectedServiceItems));
+    formData.append("linkedin", userData.textarea);
 
     const engineerId = localStorage.getItem("engineerId");
     const config = {
@@ -464,6 +465,24 @@ const DisplayData = ({ user }) => {
             />
           </Form.Group>
         </Row>
+        <div className="row mb-4">
+          <div className="col">
+            <Form.Label>Linkedin*</Form.Label>
+            <textarea
+              label="Linkedin"
+              className="form-control"
+              placeholder="Write LinkedIn Profile URL and Personal Information"
+              value={userData.textarea}
+              disabled
+              // value={userData["textarea"]}
+              // onChange={(e) => {
+              //   setUserData({ ...userData, textarea: e.target.value });
+              //   setIsInputField(true);
+              // }}
+              style={{ width: "100%" }}
+            />
+          </div>
+        </div>
       </div>
       {/* =========================Professional form Data ============  */}
       <div className="professional mt-4">
