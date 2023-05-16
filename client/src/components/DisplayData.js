@@ -14,10 +14,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const DisplayData = ({ user }) => {
-  console.log("display>>>>>>>>>>", user);
-  console.log("display email>>>>>>>>>>", user.email);
-  console.log("display email>>>>>>>>>>", user.family_name);
-  console.log("display email>>>>>>>>>>", user.given_name);
   // toaster messages
   const notify = () => toast("You Form has been Submited");
   // const welcomeBack = () => toast("Welcome Back");

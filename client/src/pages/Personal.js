@@ -466,12 +466,6 @@ const Personal = ({ user }) => {
                 // isValid={validateField('address')}
                 // isInvalid={!validateField('address')}
               />
-              {/* <Form.Control.Feedback type="valid">
-                looks good .!
-              </Form.Control.Feedback>
-              <Form.Control.Feedback type="invalid">
-                Please Enter a address
-              </Form.Control.Feedback> */}
             </Form.Group>
           </Row>
           <Row className="mb-3">

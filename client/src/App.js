@@ -17,6 +17,8 @@ import { AlreadyFromSubmited } from "./components/AlreadyFromSubmited";
 import { Submited } from "./components/Submited";
 import { useNavigate } from "react-router-dom";
 import { VerifyToken } from "./VerifyToken";
+import OnwerLogin from "./components/OwnerLogin";
+import Dashboard from "./components/Dashboard";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -176,6 +178,8 @@ function App() {
           element={<AlreadyFromSubmited user={user} />}
         />
         <Route path="/Submitted-Sucess" element={<Submited user={user} />} />
+        <Route path="/owner-login" element={<OnwerLogin />} />
+        <Route path="/owner-dashboard" element={<Dashboard />} />
       </Routes>
     </div>
   );

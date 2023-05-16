@@ -5,6 +5,16 @@
     justify-content: center;
   }
 
+  @media screen and (max-width: 780px){
+    .heading {
+        font-weight: 800;
+        font-size: 50px;
+        align-items: center;
+        justify-content: center;
+      }
+    
+    }
+
 
 @media screen and (max-width: 420px){
     .heading {
