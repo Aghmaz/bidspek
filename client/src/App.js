@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { VerifyToken } from "./VerifyToken";
 import OnwerLogin from "./components/OwnerLogin";
 import Dashboard from "./components/Dashboard";
+import Profile from "./components/Profile";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -180,6 +181,7 @@ function App() {
         <Route path="/Submitted-Sucess" element={<Submited user={user} />} />
         <Route path="/owner-login" element={<OnwerLogin />} />
         <Route path="/owner-dashboard" element={<Dashboard />} />
+        <Route path="/profile/:id" element={<Profile />} />
       </Routes>
     </div>
   );

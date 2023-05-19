@@ -38,7 +38,11 @@ const Personal = ({ user }) => {
 
   const handleInputChange = (event) => {
     const value = event.target.value;
-    setInputValue(value.length > 0);
+    if (value.length === 0) {
+      setInputValue(false);
+    } else {
+      setInputValue(value);
+    }
     localStorage.setItem("company_name", value);
   };
   useEffect(() => {

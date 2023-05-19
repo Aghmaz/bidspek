@@ -1,5 +1,5 @@
-import React, { useContext, useState, useEffect } from "react";
-import { multiStepContext } from "../StepContext";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
@@ -7,215 +7,27 @@ import Avatar from "@material-ui/core/Avatar";
 import { Card, TabContainer } from "react-bootstrap";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
-import TextField from "@mui/material/TextField";
-import { ToastContainer, toast } from "react-toastify";
 import Button from "@mui/material/Button";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
-const DisplayData = ({ user }) => {
-  // toaster messages
-  const notify = () => toast("You Form has been Submited");
-  // const welcomeBack = () => toast("Welcome Back");
+const Profile = () => {
+  const { id } = useParams();
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
-  // for avatar picture
-  const [image, setImage] = useState(null);
-
-  useEffect(() => {
-    const uploadedImage = localStorage.getItem("uploadedImage" || user.picture);
-    setImage(uploadedImage);
-  }, []);
-
-  // for input fields of personal form
-  const { userData, setStep } = useContext(multiStepContext);
-
-  // console.log(user, "user<<<<>>>>>>>>>>>>");
-  // console.log(userData, "userData<<<<>>>>>>>>>>>>");
-
-  const storedValue = localStorage.getItem("switchValue");
-
-  const storedCompanyValue = localStorage.getItem("company_name");
-  const storeOccupation = localStorage.getItem("occupation");
-
-  // ====== professional ====
-  const jobTitle = localStorage.getItem("selectedValue");
-  console.log("storedValue=====>>>", storedValue);
-  // for selection list
-
-  // Retrieve data from local storage
-  const data = JSON.parse(localStorage.getItem("professionalData"));
-
-  // console.log("data", data);
-  // Filter selected items
-  const selectedItems = data?.filter((item) => item.flag);
-  // console.log("selectedItems", selectedItems);
-
-  // =============services ===========
-  const serviceData = JSON.parse(localStorage.getItem("servicesData"));
-
-  // console.log("serviceData", serviceData);
-  // Filter selected items
-  const selectedServiceItems = serviceData?.filter((item) => item.flag);
-  // console.log("selectedServiceItems", selectedServiceItems);
-
-  // ==== billing radio ====
-  const billing = localStorage.getItem("billing");
-  // ==== hourly slider ====
-  const hourly = localStorage.getItem("hourly");
-  // ==== peLicense ====
-  const peLicense = localStorage.getItem("pieLicense");
-  // ==== corrosion Engineer ====
-  const corrosionEngineer = localStorage.getItem("corrosion");
-  // ==== Builing permits ====
-  const BuilingPermits = localStorage.getItem("buildingPermit");
-  const Builing = localStorage.getItem("hasReloadedOnce");
-
-  const [fileURLs, setFileURLs] = useState([]);
-
-  useEffect(() => {
-    const tempFileURLs = [];
-    for (let i = 0; i < 10; i++) {
-      const tempFileURL = localStorage.getItem(`image_url${i}`);
-      if (tempFileURL) {
-        tempFileURLs.push(tempFileURL);
-      }
-    }
-    setFileURLs(tempFileURLs);
-  }, []);
-  // const images = localStorage.getItem(`image_url${index}`);
-  // console.log("images", images);
-  // const imageArray = images.split(","); // split string into array
-  // const numImages = imageArray.filter((img) => img !== null).length;
-
-  // =============form sending ==========
-  const handleSubmit = (e) => {
-    if (e) {
-      e.preventDefault();
-    }
-    const formData = new FormData();
-    formData.append(
-      "firstName",
-      // userData.firstname
-      //   ? userData.firstname
-      //   : user.given_name
-      //   ? userData.FirstName
-      //   : user.FirstName
-      userData.firstname || user.given_name || user.FirstName
-    );
-    formData.append(
-      "lastName",
-      // userData.lastname
-      //   ? userData.lastname
-      //   : user.given_name
-      //   ? userData.LastName
-      //   : user.LastName
-      userData.lastname || user.given_name || user.LastName
-    );
-    formData.append("phone", userData.phone);
-    formData.append(
-      "email",
-      // userData.email
-      //   ? userData.email
-      //   : user.given_name
-      //   ? userData.Email
-      //   : user.Email
-      userData.email || user.email || user.Email
-    );
-    formData.append("address", userData.address);
-    formData.append("city", userData.city);
-    formData.append("zipCode", userData.zip);
-    formData.append("companyName", storedCompanyValue);
-    formData.append("role", jobTitle);
-    formData.append("hourlyRate", hourly);
-    formData.append("licensePE", peLicense);
-    formData.append("corroionEngineer", corrosionEngineer);
-    formData.append("buildingPermits", BuilingPermits);
-    formData.append("permitsRegion", userData.city);
-    formData.append("permitsCountry", userData.country);
-    formData.append("permitsStates", userData.state);
-    formData.append("hasSubmittedForm", true);
-    formData.append("switchPhone", storedValue);
-    formData.append("preferences", JSON.stringify(selectedItems));
-    formData.append("services", JSON.stringify(selectedServiceItems));
-    formData.append("linkedin", userData.textarea);
-
-    const engineerId = localStorage.getItem("engineerId");
-    const config = {
-      method: "patch",
-      url: `${process.env.REACT_APP_API_URL}/engineer/updateprofile/${engineerId}`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: formData,
-    };
-
-    axios(config)
-      .then(function (response) {
-        console.log(response.data);
-        // localStorage.clear();
-        localStorage.removeItem("engineerId");
-        localStorage.removeItem("occupation");
-        localStorage.removeItem("pieLicense");
-        localStorage.removeItem("corrosion");
-        localStorage.removeItem("company_name");
-        localStorage.removeItem("buildingPermit");
-        localStorage.removeItem("isInputField");
-        localStorage.removeItem("uploadedImage");
-        localStorage.removeItem("isInputField3");
-        localStorage.removeItem("selectedvalue");
-        localStorage.removeItem("isImageUploaded");
-        localStorage.removeItem("isInputField2");
-        localStorage.removeItem("hourly");
-        localStorage.removeItem("billing");
-        localStorage.removeItem("switchValue");
-        localStorage.removeItem("selectedValue");
-        localStorage.removeItem("boxCount");
-        localStorage.removeItem("images");
-        localStorage.removeItem("servicesData");
-        localStorage.removeItem("professionalData");
-        // localStorage.removeItem("hasReloadedOnce");
-        // setTimeout(() => {
-        //   localStorage.removeItem("token");
-        // }, 10000);
-        notify();
-        navigate("/Submitted-Sucess");
-      })
-      .catch(function (error) {
-        errorToast();
-        console.log(error);
-      });
-  };
-  const errorToast = () => toast("this is error", { Type: "error" });
-  // ==============image
-
-  // function handleApi() {
-  //   console.log("i am there");
-  //   const formData = new FormData();
-  //   formData.append("image", image);
-  //   const engineerId = localStorage.getItem("engineerId");
-  //   axios
-  //     .patch(
-  //       `${process.env.REACT_APP_API_URL}/engineer/profileupload/${engineerId}`,
-  //       formData,
-  //       {
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //         },
-  //       }
-  //     )
-  //     .then((response) => {
-  //       console.log(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // }
+  console.log("engineers user>>>>>>>>", user);
 
   const [heading, setHeading] = useState("");
   const [heading1, setHeading1] = useState("");
   const [heading2, setHeading2] = useState("");
   const [heading3, setHeading3] = useState("");
   const [heading4, setHeading4] = useState("");
+
+  const jobTitle = localStorage.getItem("jobTitle");
+  const peLicense = localStorage.getItem("peLicense");
+  const corrosionEngineer = localStorage.getItem("corrosionEngineer");
+  const buildingPermits = localStorage.getItem("buildingPermits");
+
+  console.log("jobTile>>>>>>>>>>>>", jobTitle);
   useEffect(() => {
     if (jobTitle === "engineer") {
       setHeading("If Yes, please specify the region, country & states * ?");
@@ -240,10 +52,43 @@ const DisplayData = ({ user }) => {
     }
   }, [jobTitle]);
 
+  // console.log("engineers user>>>>>>>>", user.services);
+  console.log("engineers user preferences >>>>>>>>", user?.preferences);
+  const preferencesArray =
+    user && user?.preferences.length > 0 ? JSON.parse(user?.preferences) : [];
+
+  const servicesArray =
+    user && user?.services.length > 0 ? JSON.parse(user?.services) : [];
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const engineerId = id;
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/engineer/${engineerId}`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch user's information");
+        }
+        const data = await response.json();
+        setUser(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchUser();
+  }, [id]);
+
+  if (!user) {
+    return <div>Loading...</div>; // Display a loading state while fetching user's information
+  }
+
+  // ===============
+
   return (
-    <div>
+    <div className="container">
       {/* ================ personal data =========== */}
-      <div>
+      <div className="mt-5">
         <h5> My Profile</h5>
         <p className="mt-3" style={{ fontSize: "11px" }}>
           {" "}
@@ -259,7 +104,7 @@ const DisplayData = ({ user }) => {
           />
 
           <div>
-            {image && (
+            {user.profileImage && (
               <Avatar
                 style={{
                   border: "2px solid blue",
@@ -268,7 +113,7 @@ const DisplayData = ({ user }) => {
                   marginLeft: "2rem",
                   marginRight: "3rem",
                 }}
-                src={image}
+                src={user.profileImage}
                 alt="Uploaded Image"
               />
             )}
@@ -277,42 +122,32 @@ const DisplayData = ({ user }) => {
 
         {/* ======= form data =====  */}
         <Row className="mb-3 mt-3">
-          <Form.Group as={Col} md="6">
-            <Form.Label>First Name*</Form.Label>
-            <Form.Control
-              required
-              type="text"
-              placeholder="First Name"
-              disabled
-              value={
-                // userData.firstname
-                //   ? userData.firstname
-                //   : user.given_name
-                //   ? userData.FirstName
-                //   : user.FirstName
-                userData.firstname || user.given_name || user.FirstName
-              }
-            />
-          </Form.Group>
+          {user.firstName && (
+            <Form.Group as={Col} md="6">
+              <Form.Label>First Name*</Form.Label>
+              <Form.Control
+                required
+                type="text"
+                placeholder="First Name"
+                disabled
+                value={user.firstName}
+              />
+            </Form.Group>
+          )}
         </Row>
         <Row>
-          <Form.Group as={Col} md="6">
-            <Form.Label>Last Name*</Form.Label>
-            <Form.Control
-              required
-              type="text"
-              placeholder="First Name"
-              disabled
-              value={
-                // userData.lastname
-                //   ? userData.lastname
-                //   : user.family_name
-                //   ? userData.LastName
-                //   : user.LastName
-                userData.lastname || user.family_name || user.LastName
-              }
-            />
-          </Form.Group>
+          {user.lastName && (
+            <Form.Group as={Col} md="6">
+              <Form.Label>Last Name*</Form.Label>
+              <Form.Control
+                required
+                type="text"
+                placeholder="First Name"
+                disabled
+                value={user.lastName}
+              />
+            </Form.Group>
+          )}
         </Row>
         <Row className="mb-3 mt-3">
           <Form.Group as={Col} md="6">
@@ -322,19 +157,12 @@ const DisplayData = ({ user }) => {
               type="Email"
               // placeholder="First Name"
               disabled
-              value={
-                // userData.email
-                //   ? userData.email
-                //   : user.email
-                //   ? userData.Email
-                //   : user.Email
-                userData.email || user.email || user.Email
-              }
+              value={user.email}
             />
           </Form.Group>
           {/* =======radio buttons ========*/}
 
-          <div className="row mt-3">
+          {/* <div className="row mt-3">
             <div className="col-1">
               {storeOccupation === "company" && (
                 <Form.Check
@@ -357,9 +185,9 @@ const DisplayData = ({ user }) => {
                 />
               )}
             </div>
-          </div>
+          </div> */}
 
-          <div className="row">
+          {/* <div className="row">
             {storeOccupation === "company" && (
               <div className="col mt-2">
                 <Form.Group as={Col} md="6">
@@ -381,30 +209,25 @@ const DisplayData = ({ user }) => {
                 </Form.Group>{" "}
               </div>
             )}
-          </div>
+          </div> */}
 
           {/* ===== */}
-          {userData.phone && storedValue === "true" && (
-            <Form.Group className="mt-3" as={Col} md="6">
+          {user.phone && (
+            <Form.Group className="" as={Col} md="6">
               <Form.Label>Phone Number*</Form.Label>
-              <Form.Control
-                required
-                type="text"
-                disabled
-                value={userData.phone}
-              />
+              <Form.Control required type="text" disabled value={user.phone} />
             </Form.Group>
           )}
         </Row>
 
-        {userData.textarea && (
+        {user.linkedin && (
           <div className="row mb-4">
             <div className="col">
               <Form.Label>Linkedin</Form.Label>
               <Form.Control
                 label="Linkedin"
                 className="form-control"
-                value={userData.textarea}
+                value={user.linkedin}
                 disabled
                 style={{ width: "100%" }}
               />
@@ -413,51 +236,53 @@ const DisplayData = ({ user }) => {
         )}
 
         <Row className="mb-3">
-          {userData.address && (
+          {user.address && (
             <Form.Group as={Col} md="12">
               <Form.Label>Address*</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="optional"
                 disabled
-                value={userData.address}
+                value={user.address}
               />
             </Form.Group>
           )}
         </Row>
         <Row className="mb-3">
-          {userData.city && (
+          {user.city && (
             <Form.Group as={Col} md="4">
               <Form.Label>City</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="City"
                 disabled
-                value={userData.city}
+                value={user.city}
               />
             </Form.Group>
           )}
 
-          {userData.state && (
+          {user.state && (
             <Form.Group as={Col} md="4" controlId="validationCustom04">
               <Form.Label>State</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="State"
                 disabled
-                value={userData.state}
+                value={user.state}
               />
             </Form.Group>
           )}
-          <Form.Group as={Col} md="4">
-            <Form.Label>Zip</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Zip code"
-              disabled
-              value={userData.zip}
-            />
-          </Form.Group>
+          {user.zip && (
+            <Form.Group as={Col} md="4">
+              <Form.Label>Zip</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Zip code"
+                disabled
+                value={user.zip}
+              />
+            </Form.Group>
+          )}
         </Row>
       </div>
       {/* =========================Professional form Data ============  */}
@@ -477,7 +302,7 @@ const DisplayData = ({ user }) => {
               gap: "5px",
             }}
           >
-            {jobTitle === "engineer" && (
+            {user.role === "engineer" && (
               <Card
                 style={{
                   width: "100%",
@@ -494,11 +319,11 @@ const DisplayData = ({ user }) => {
                   name="job-title"
                   type="radio"
                   disabled
-                  checked={jobTitle === "engineer"}
+                  checked={user.role === "engineer"}
                 />
               </Card>
             )}
-            {jobTitle === "contractor" && (
+            {user.role === "contractor" && (
               <Card
                 style={{
                   width: "100%",
@@ -516,7 +341,7 @@ const DisplayData = ({ user }) => {
                   value="contractor"
                   type="radio"
                   disabled
-                  checked={jobTitle === "contractor"}
+                  checked={user.role === "contractor"}
                 />
               </Card>
             )}
@@ -534,7 +359,53 @@ const DisplayData = ({ user }) => {
               flexWrap: "wrap",
             }}
           >
-            {selectedItems.map((item, index) => {
+            {preferencesArray.length > 0 ? (
+              preferencesArray.map((item, index) => (
+                <div
+                  key={index}
+                  style={{
+                    border: "solid 0.5px #1976d2",
+                    margin: "10px",
+                    paddingLeft: "3rem",
+                    paddingRight: "3rem",
+                    borderRadius: "25px",
+                    paddingTop: "0.5rem",
+                    paddingBottom: "0.5rem",
+                    backgroundColor: `${item.flag ? "#1976d2" : "inherit"}`,
+                    boxShadow: `${
+                      item.flag ? "-1px 2px 10px -1px grey" : "0px 0px 0px 0px"
+                    }`,
+                    cursor: "pointer",
+                  }}
+                >
+                  <p
+                    style={{
+                      margin: "0px",
+                      color: `${item.flag ? "white" : "#1976d2"}`,
+                    }}
+                  >
+                    {item.title}
+                  </p>
+                </div>
+              ))
+            ) : (
+              <p>No preferences found.</p>
+            )}
+          </div>
+        </div>
+      </div>
+      {/* ==================== services=========  */}
+      <div>
+        <h3>Service Offered</h3>
+        <span>What kind of services do you want to provide</span>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+          }}
+        >
+          {servicesArray.length > 0 ? (
+            servicesArray.map((item, index) => {
               return (
                 <div
                   key={index}
@@ -563,100 +434,48 @@ const DisplayData = ({ user }) => {
                   </p>
                 </div>
               );
-            })}
-          </div>
-        </div>
-      </div>
-      {/* ==================== services=========  */}
-      <div>
-        <h3>Service Offered</h3>
-        <span>What kind of services do you want to provide</span>
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-          }}
-        >
-          {selectedServiceItems.map((item, index) => {
-            return (
-              <div
-                key={index}
-                style={{
-                  border: "solid 0.5px #1976d2",
-                  margin: "10px",
-                  paddingLeft: "3rem",
-                  paddingRight: "3rem",
-                  borderRadius: "25px",
-                  paddingTop: "0.5rem",
-                  paddingBottom: "0.5rem",
-                  backgroundColor: `${item.flag ? "#1976d2" : "inherit"}`,
-                  boxShadow: `${
-                    item.flag ? "-1px 2px 10px -1px grey" : "0px 0px 0px 0px"
-                  }`,
-                  cursor: "pointer",
-                }}
-              >
-                <p
-                  style={{
-                    margin: "0px",
-                    color: `${item.flag ? "white" : "#1976d2"}`,
-                  }}
-                >
-                  {item.title}
-                </p>
-              </div>
-            );
-          })}
+            })
+          ) : (
+            <p>No services found.</p>
+          )}
         </div>
         {/* budget Price Range  */}
-        <h3>Budget Price Range</h3>
-        <span>Billing Method</span>
-        <div className="row mt-3">
-          <div className="col-sm-6">
-            <Card
-              style={{ borderColor: "blue" }}
-              className="bg-white p-2 "
-              md="4"
-              variant="outline-primary"
-            >
-              <Form.Check
-                style={{ color: "blue" }}
-                inline
-                label={`Hourly Rate : $${hourly}`}
-                name="billing"
-                value="hourlyRate"
-                type="radio"
-                checked={billing}
-                disabled
-                // onChange={handleChange}
-              />
-            </Card>{" "}
-          </div>
-          <div className="col-sm-6">
-            <Box width={235}>
-              <Slider
-                value={hourly}
-                // onChange={handleHourlyRateChange}
-                min={0}
-                max={300}
-                step={1}
-                valueLabelDisplay="auto"
-                aria-labelledby="hourly-rate-slider"
-                disabled
-              />
+        {user.hourlyRate && (
+          <div>
+            <h3>Budget Price Range</h3>
+            <span>Billing Method</span>
 
-              {/* <Slider defaultValue={50} aria-label="Default" valueLabelDisplay="auto" /> */}
-            </Box>
-            {/* <div>Hourly rate: ${hourly}</div>{" "} */}
+            <div className="row mt-3">
+              <div className="col-sm-6">
+                <Card
+                  style={{ borderColor: "blue" }}
+                  className="bg-white p-2 "
+                  md="4"
+                  variant="outline-primary"
+                >
+                  <Form.Check
+                    style={{ color: "blue" }}
+                    inline
+                    label={`Hourly Rate : $${user.hourlyRate}`}
+                    name="billing"
+                    value="hourlyRate"
+                    // type="radio"
+                    // checked={billing}
+                    disabled
+                    // onChange={handleChange}
+                  />
+                </Card>{" "}
+              </div>
+            </div>
           </div>
-        </div>
+        )}
         {/* =====Licenses & Certificates====  */}
         {peLicense && (
           <div className="row mt-2">
             <h1>Licenses & Certificates</h1>
             <h4>{heading4}</h4>
             <h6>{heading1}</h6>
-            {peLicense === "yes" && (
+            {peLicense === "true" && (
               <div className="col-lg-3 col-sm-6">
                 <Card
                   style={{ borderColor: "blue" }}
@@ -676,7 +495,7 @@ const DisplayData = ({ user }) => {
                 </Card>
               </div>
             )}
-            {peLicense === "no" && (
+            {peLicense === "false" && (
               <div className="col-lg-3 col-sm-6">
                 <Card
                   style={{ borderColor: "blue" }}
@@ -702,7 +521,7 @@ const DisplayData = ({ user }) => {
           <div className="row mt-3">
             <h6> {heading2}</h6>
 
-            {corrosionEngineer === "yes" && (
+            {corrosionEngineer === "true" && (
               <div className="col-lg-3 col-sm-6">
                 <Card
                   style={{ borderColor: "blue" }}
@@ -722,7 +541,7 @@ const DisplayData = ({ user }) => {
                 </Card>
               </div>
             )}
-            {corrosionEngineer === "no" && (
+            {corrosionEngineer === "false" && (
               <div className="col-lg-3 col-sm-6">
                 <Card
                   style={{ borderColor: "blue" }}
@@ -745,10 +564,10 @@ const DisplayData = ({ user }) => {
           </div>
         )}
         {/* building permits  */}
-        {BuilingPermits && (
+        {buildingPermits && (
           <div className="row mt-3">
             <h6>{heading3}</h6>
-            {BuilingPermits === "yes" && (
+            {buildingPermits === "true" && (
               <div className="col-lg-3 col-sm-6">
                 <Card
                   style={{ borderColor: "blue" }}
@@ -763,12 +582,12 @@ const DisplayData = ({ user }) => {
                     name="group3"
                     value="yes"
                     disabled
-                    checked={BuilingPermits}
+                    checked={buildingPermits}
                   />
                 </Card>
               </div>
             )}
-            {BuilingPermits === "no" && (
+            {buildingPermits === "false" && (
               <div className="col-lg-3 col-sm-6">
                 <Card
                   style={{ borderColor: "blue" }}
@@ -783,7 +602,7 @@ const DisplayData = ({ user }) => {
                     name="group3"
                     value="no"
                     disabled
-                    checked={BuilingPermits}
+                    checked={buildingPermits}
                   />
                 </Card>
               </div>
@@ -802,7 +621,7 @@ const DisplayData = ({ user }) => {
               placeholder="City"
               disabled
               // onChange={handleChange}
-              value={userData.city}
+              value={user.city}
             />
           </Form.Group>
           <Form.Group as={Col} md="4" controlId="validationCustom04">
@@ -812,7 +631,7 @@ const DisplayData = ({ user }) => {
               placeholder="State"
               disabled
               // onChange={handleChange}
-              value={userData.state}
+              value={user.permitsStates}
             />
           </Form.Group>
           <Form.Group as={Col} md="4">
@@ -822,7 +641,7 @@ const DisplayData = ({ user }) => {
               placeholder="Country"
               disabled
               // onChange={handleChange}
-              value={userData.country}
+              value={user.permitsCountry}
             />
           </Form.Group>
         </Row>
@@ -840,8 +659,8 @@ const DisplayData = ({ user }) => {
         <h3> Project Case Study</h3>
         <span>
           {" "}
-          Share images of your previous work helps your potential clients see
-          the quality of your work
+          Share images and Pdf of your previous work helps your potential
+          clients see the quality of your work
         </span>
         <div style={{ width: "100%" }}>
           <div
@@ -852,7 +671,7 @@ const DisplayData = ({ user }) => {
               // justifyContent: "center",
             }}
           >
-            {fileURLs.map((fileURL, index) => (
+            {user.caseImage.map((caseImage, index) => (
               <div
                 key={index}
                 style={{
@@ -864,8 +683,8 @@ const DisplayData = ({ user }) => {
                   margin: "10px",
                 }}
               >
-                {fileURL?.includes(".pdf") && (
-                  <object data={fileURL} type="application/pdf">
+                {caseImage?.url.includes(".pdf") && (
+                  <object data={caseImage.url} type="application/pdf">
                     <img
                       style={{
                         padding: "5px",
@@ -876,10 +695,10 @@ const DisplayData = ({ user }) => {
                     />
                   </object>
                 )}
-                {fileURL?.includes(".txt") && (
-                  <iframe>src={fileURL} type="application/txt"</iframe>
+                {caseImage?.url.includes(".txt") && (
+                  <iframe>src={caseImage.url} type="application/txt"</iframe>
                 )}
-                {fileURL?.includes(".png") && (
+                {caseImage?.url.includes(".png") && (
                   <img
                     style={{
                       width: "70px",
@@ -887,10 +706,10 @@ const DisplayData = ({ user }) => {
                       position: "absolute",
                       // objectFit: "cover",
                     }}
-                    src={fileURL}
+                    src={caseImage.url}
                   />
                 )}
-                {fileURL?.includes(".jpg") && (
+                {caseImage?.url.includes(".jpg") && (
                   <img
                     style={{
                       width: "70px",
@@ -898,7 +717,7 @@ const DisplayData = ({ user }) => {
                       position: "absolute",
                       // objectFit: "cover",
                     }}
-                    src={fileURL}
+                    src={caseImage.url}
                   />
                 )}
               </div>
@@ -909,6 +728,7 @@ const DisplayData = ({ user }) => {
       {/* ================buttons========= */}
 
       <div
+        className="mb-5"
         style={{
           display: "flex",
           flexDirection: "row",
@@ -927,32 +747,13 @@ const DisplayData = ({ user }) => {
           }}
           variant="outline-primary"
           type="submit"
-          onClick={() => setStep(4)}
+          onClick={() => navigate("/owner-dashboard")}
         >
-          Review
+          Back
         </Button>
-        <Button
-          style={{
-            flexGrow: 1,
-            margin: "0 5px",
-            maxWidth: "180px",
-            backgroundColor: "rgb(25, 118, 210)",
-            color: "white",
-            marginLeft: "auto",
-          }}
-          type="submit"
-          onClick={() => {
-            notify();
-            handleSubmit();
-            // handleApi();
-          }}
-        >
-          Confirm
-        </Button>
-        <ToastContainer />
       </div>
     </div>
   );
 };
 
-export default DisplayData;
+export default Profile;

@@ -41,8 +41,9 @@ router.get(
   "/:engineerId",
   errorHandler(async (req, res) => {
     const engineer = await Engineer.findOne({ _id: req.params.engineerId });
-    const UserObj = FormateUserObj(engineer);
-    res.status(200).send(UserObj);
+    // const UserObj = FormateUserObj(engineer);
+    res.status(200).send(engineer);
+    // res.status(200).send(UserObj);
   })
 );
 
