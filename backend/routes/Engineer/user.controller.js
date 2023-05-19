@@ -47,6 +47,31 @@ router.get(
   })
 );
 
+//owner login router
+router.post("/owner-login", (req, res) => {
+  const { email, password } = req.body;
+
+  // Check if the provided username and password match the expected values
+  if (email === "muneer@bidspek.com" && password === "muneer@bidspek") {
+    // Authentication successful
+    const token = jwt.sign({ email }, "abcdef");
+
+    res.status(200).json({ message: "Login successful", token });
+  } else {
+    // Authentication failed
+    res.status(401).json({ message: "Invalid username or password" });
+  }
+});
+
+//delete a user by its id 
+//Delete an Engineer
+router.delete(
+  "/:engineerId",
+  errorHandler(async (req, res) => {
+    await Engineer.findByIdAndDelete(req.params.engineerId);
+    res.status(200).send("Engineer deleted successfully");
+  })
+);
 // register a engineer
 
 // router.post(

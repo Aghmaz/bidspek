@@ -50,18 +50,9 @@ const OnwerLogin = ({ setUser }) => {
         `${process.env.REACT_APP_API_URL}/engineer/owner-login`,
         { email, password }
       );
-      console.log(response.data, "hey");
       localStorage.setItem("token", response.data.token);
-      localStorage.setItem("engineerId", response.data.engineerId);
       navigate("/owner-dashboard");
       // localStorage.removeItem("hasReloadedOnce");
-      setUser({
-        token: response.data.token,
-        FirstName: response.data.firstName,
-        LastName: response.data.lastName,
-        engineerId: response.data.engineerId,
-        Email: response.data.email,
-      });
     } catch (error) {
       console.error(error);
       if (error.response && error.response.status === 400) {
