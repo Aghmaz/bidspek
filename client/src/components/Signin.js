@@ -56,7 +56,6 @@ const Signin = ({ setUser }) => {
     toast("Please fill in all fields", { type: "error" });
 
   const handleSubmit = async (event) => {
-    setIsLoading(true);
     if (!email || !password) {
       emptyField();
       return;
@@ -65,6 +64,8 @@ const Signin = ({ setUser }) => {
     event.preventDefault();
 
     try {
+      setIsLoading(true);
+
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/engineer/login`,
         { email, password }
@@ -97,8 +98,8 @@ const Signin = ({ setUser }) => {
     }
     const checkFormSubmission = async () => {
       console.log("called 2");
-      setIsLoading(true);
       try {
+        setIsLoading(true);
         const response = await axios.get(
           `${process.env.REACT_APP_API_URL}/engineer/check-form-submission/${email}`
         );

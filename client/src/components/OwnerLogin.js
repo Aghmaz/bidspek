@@ -37,7 +37,6 @@ const OnwerLogin = ({ setUser }) => {
     toast("Please fill in all fields", { type: "error" });
 
   const handleSubmit = async (event) => {
-    setIsLoading(true);
     if (!email || !password) {
       emptyField();
       return;
@@ -46,6 +45,7 @@ const OnwerLogin = ({ setUser }) => {
     event.preventDefault();
 
     try {
+      setIsLoading(true);
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/engineer/owner-login`,
         { email, password }
