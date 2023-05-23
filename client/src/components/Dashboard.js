@@ -133,8 +133,8 @@ const Dashboard = ({ onClick }) => {
       const token = localStorage.getItem("token");
       console.log("Token:", token);
 
-      // localStorage.removeItem("hasReloadedOnce");
-      // localStorage.removeItem("token");
+      localStorage.removeItem("hasReloadedOnce");
+      localStorage.removeItem("token");
 
       await axios.get(`${process.env.REACT_APP_API_URL}/auth/logout`);
       navigate("/owner-login");
