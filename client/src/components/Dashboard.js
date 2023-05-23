@@ -20,13 +20,15 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import StyledEngineProvider from "@mui/material/StyledEngineProvider";
 import axios from "axios";
+import ConfirmDialog from "./ConfirmDialog";
 
 const Dashboard = ({ onClick }) => {
   const [engineers, setEngineers] = useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [selectedUser, setSelectedUser] = useState(null);
-
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deleteEngineerId, setDeleteEngineerId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -84,27 +86,27 @@ const Dashboard = ({ onClick }) => {
     }
   };
 
-  const handleDeleteProfile = async (id) => {
-    // Add your delete profile logic here
-    try {
-      if (!id) {
-        console.error(
-          "Error deleting image: engineerId not found in localStorage."
-        );
-        return;
-      }
+  const handleDelete = async () => {
+    if (!deleteEngineerId) {
+      console.error(
+        "Error deleting image: engineerId not found in localStorage."
+      );
+      return;
+    }
 
+    try {
       const response = await axios.delete(
-        `${process.env.REACT_APP_API_URL}/engineer/${id}`
+        `${process.env.REACT_APP_API_URL}/engineer/${deleteEngineerId}`
       );
 
       setEngineers((prevEngineers) =>
-        prevEngineers.filter((engineer) => engineer._id !== id)
+        prevEngineers.filter((engineer) => engineer._id !== deleteEngineerId)
       );
+
       // Check the response status to see if the delete was successful.
       if (response.status === 200) {
         // Handle success.
-        console.log("user deleted successfully.");
+        console.log("User deleted successfully.");
       } else {
         // Handle error.
         console.error("Error deleting user.");
@@ -113,13 +115,26 @@ const Dashboard = ({ onClick }) => {
       console.error(error);
     }
 
-    console.log(`Deleting profile with ID: ${id}`);
+    setDeleteDialogOpen(false);
+    console.log(`Deleting profile with ID: ${deleteEngineerId}`);
+  };
+
+  const handleCancel = () => {
+    setDeleteDialogOpen(false);
+  };
+
+  const handleOpenDeleteDialog = (id) => {
+    setDeleteEngineerId(id);
+    setDeleteDialogOpen(true);
   };
 
   const logout = async () => {
     try {
-      localStorage.removeItem("hasReloadedOnce");
-      localStorage.removeItem("token");
+      const token = localStorage.getItem("token");
+      console.log("Token:", token);
+
+      // localStorage.removeItem("hasReloadedOnce");
+      // localStorage.removeItem("token");
 
       await axios.get(`${process.env.REACT_APP_API_URL}/auth/logout`);
       navigate("/owner-login");
@@ -231,8 +246,19 @@ const Dashboard = ({ onClick }) => {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <DeleteIcon
-                        onClick={() => handleDeleteProfile(engineer._id)}
+                      <IconButton
+                        onClick={() => handleOpenDeleteDialog(engineer._id)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                      <ConfirmDialog
+                        open={
+                          deleteDialogOpen && deleteEngineerId === engineer._id
+                        }
+                        title="Confirm Delete"
+                        message="Are you sure you want to delete?"
+                        onCancel={handleCancel}
+                        onConfirm={handleDelete}
                       />
                     </TableCell>
                   </TableRow>

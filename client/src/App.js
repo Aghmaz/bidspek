@@ -60,12 +60,10 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    getUser();
-  }, []);
   //
 
   useEffect(() => {
+    getUser();
     const checkFormSubmission = async () => {
       try {
         const email = localStorage.getItem("email");
@@ -112,22 +110,6 @@ function App() {
 
     checkFormSubmission1();
   }, []);
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   console.log(token, "<<<<<<<<<<<<<<<<< hello");
-  //   if (token) {
-  //     VerifyToken(token).then((isValid) => {
-  //       if (!isValid) {
-  //         navigate("/");
-  //       }
-  //     });
-  //   } else {
-  //     // Handle missing token here, e.g. redirect to login page
-  //     navigate("/login");
-  //   }
-  // }, []);
-
-  // Rest of your code
 
   return (
     <div className="App">
@@ -179,8 +161,30 @@ function App() {
           element={<AlreadyFromSubmited user={user} />}
         />
         <Route path="/Submitted-Sucess" element={<Submited user={user} />} />
-        <Route path="/owner-login" element={<OnwerLogin />} />
-        <Route path="/owner-dashboard" element={<Dashboard />} />
+        {/* <Route path="/owner-dashboard" element={<Dashboard />} /> */}
+        {/* <Route path="/owner-login" element={<OnwerLogin />} />
+        <Route
+          exact
+          path="/owner-dashboard"
+          element={
+            user ? (
+              <Navigate to="/owner-dashboard" replace={true} />
+            ) : (
+              <OnwerLogin setUser={setUser} />
+            )
+          }
+        /> */}
+        <Route path="/owner-login" element={<OnwerLogin setUser={setUser} />} />
+        <Route
+          path="/owner-dashboard"
+          element={
+            user ? (
+              <Dashboard setUser={setUser} />
+            ) : (
+              <Navigate to="/owner-login" replace={true} />
+            )
+          }
+        />
         <Route path="/profile/:id" element={<Profile />} />
       </Routes>
     </div>

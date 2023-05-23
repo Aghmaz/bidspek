@@ -51,6 +51,7 @@ const OnwerLogin = ({ setUser }) => {
         { email, password }
       );
       localStorage.setItem("token", response.data.token);
+      setUser({ token: response.data.token });
       navigate("/owner-dashboard");
       // localStorage.removeItem("hasReloadedOnce");
     } catch (error) {
