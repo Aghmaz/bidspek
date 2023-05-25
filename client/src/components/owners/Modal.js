@@ -1,15 +1,26 @@
 import React from "react";
-// import "./Modal.css";
-const Modal = ({ selectedArea, onClose }) => {
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+} from "@mui/material";
+
+const Modal = ({ open, title, message, onCancel, onConfirm }) => {
   return (
-    <div className="modal">
-      <div className="modal-content">
-        <img src={selectedArea.url} alt={selectedArea.alt} />
-        <button className="close-button" onClick={onClose}>
-          Close
-        </button>
-      </div>
-    </div>
+    <Dialog open={open} onClose={onCancel}>
+      <DialogTitle>{title}</DialogTitle>
+      <DialogContent>{message}</DialogContent>
+      <DialogActions>
+        <Button onClick={onCancel} color="primary">
+          Cancel
+        </Button>
+        <Button onClick={onConfirm} color="secondary">
+          Confirm
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 

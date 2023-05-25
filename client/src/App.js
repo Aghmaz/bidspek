@@ -20,6 +20,10 @@ import { VerifyToken } from "./VerifyToken";
 import OnwerLogin from "./components/OwnerLogin";
 import Dashboard from "./components/Dashboard";
 import Profile from "./components/Profile";
+import Column from "./components/owners/Column";
+import Beam from "./components/owners/Beam";
+import Slab from "./components/owners/Slab";
+import StructuralIssue from "./components/owners/StructuralIssue";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -186,6 +190,13 @@ function App() {
           }
         />
         <Route path="/profile/:id" element={<Profile />} />
+        <Route path="/parking-garage/column" element={<Column />} />
+        <Route path="/parking-garage/beam" element={<Beam />} />
+        <Route path="/parking-garage/slab" element={<Slab />} />
+        <Route
+          path="/parking-garage/slab/StructuralIssue"
+          element={<StructuralIssue />}
+        />
       </Routes>
     </div>
   );

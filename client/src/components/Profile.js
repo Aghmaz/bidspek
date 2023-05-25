@@ -89,11 +89,11 @@ const Profile = () => {
     <div className="container">
       {/* ================ personal data =========== */}
       <div className="mt-5">
-        <h5> My Profile</h5>
+        {/* <h5> My Profile</h5>
         <p className="mt-3" style={{ fontSize: "11px" }}>
           {" "}
           Start by filling your personal information
-        </p>
+        </p> */}
         <h5 className="mt-4">Profile Photo</h5>
         <div className="d-flex align-items-center ">
           <input
