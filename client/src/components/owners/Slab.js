@@ -9,11 +9,11 @@ import structuralenlarged from "../../images/structuralenlarged.png";
 import spallsenlarged from "../../images/spallsenlarged.png";
 import cracksenlarged from "../../images/Cracksenlarged.png";
 import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import CloseIcon from "@mui/icons-material/Close";
 import { makeStyles } from "@material-ui/core/styles";
 import { useNavigate } from "react-router-dom";
+import Form from "react-bootstrap/Form";
 
 const useStyles = makeStyles((theme) => ({
   confirmationPop: {
@@ -52,6 +52,9 @@ const Slab = () => {
 
   const [selectedArea, setSelectedArea] = useState(null);
   const [openConfirmationPop, setOpenConfirmationPop] = useState(false);
+  const [checkBox, setCheckBox] = useState(
+    localStorage.getItem("checkbox") || ""
+  );
 
   const handleClick = (event, area) => {
     event.preventDefault();
@@ -86,6 +89,24 @@ const Slab = () => {
   const handlePopImageClick = () => {
     // setOpenConfirmationPop(false);
     if (selectedArea && selectedArea.alt === "Structural") {
+      navigate("/parking-garage/slab/StructuralIssue");
+    }
+  };
+
+  const handleCheckBox = (event) => {
+    const value = event.target.value;
+    setCheckBox(value);
+    localStorage.setItem("checkbox", value);
+    console.log("checkbox", value);
+  };
+
+  const handleSend = () => {
+    const temp = localStorage.getItem("checkbox");
+    if (temp === "Cracks") {
+      navigate("/parking-garage/slab/local-engineer");
+    } else if (temp === "Spalls") {
+      navigate("/parking-garage/slab/local-engineer");
+    } else if (temp === "Structural Issues") {
       navigate("/parking-garage/slab/StructuralIssue");
     }
   };
@@ -127,8 +148,15 @@ const Slab = () => {
                   className="card mb-3"
                   style={{ background: "transparent" }}
                 >
-                  <FormGroup>
-                    <FormControlLabel control={<Checkbox />} label="Cracks" />
+                  <FormGroup className="ms-2">
+                    <Form.Check
+                      // control={<Checkbox />}
+                      label="Cracks"
+                      value="Cracks"
+                      type="radio"
+                      checked={checkBox === "Cracks"}
+                      onChange={handleCheckBox}
+                    />
                   </FormGroup>
                 </div>
               </div>
@@ -155,8 +183,15 @@ const Slab = () => {
                   className="card mb-3"
                   style={{ background: "transparent" }}
                 >
-                  <FormGroup>
-                    <FormControlLabel control={<Checkbox />} label="Spalls" />
+                  <FormGroup className="ms-2">
+                    <Form.Check
+                      // control={<Checkbox />}
+                      value="Spalls"
+                      type="radio"
+                      label="Spalls"
+                      checked={checkBox === "Spalls"}
+                      onChange={handleCheckBox}
+                    />
                   </FormGroup>
                 </div>
               </div>
@@ -184,17 +219,23 @@ const Slab = () => {
                   className="card mb-3"
                   style={{ background: "transparent" }}
                 >
-                  <FormGroup>
-                    <FormControlLabel
-                      control={<Checkbox />}
+                  <FormGroup className="ms-2">
+                    <Form.Check
+                      // control={<Checkbox />}
+                      value="Structural Issues"
+                      type="radio"
                       label="Structural Issues"
+                      checked={checkBox === "Structural Issues"}
+                      onChange={handleCheckBox}
                     />
                   </FormGroup>
                 </div>
               </div>
             </div>
+            <hr className="mt-5" />
 
             <div
+              className="w-75 mx-auto"
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -216,7 +257,7 @@ const Slab = () => {
               >
                 Back
               </Button>
-              {/* <Button
+              <Button
                 style={{
                   flexGrow: 1,
                   margin: "0 5px",
@@ -226,10 +267,10 @@ const Slab = () => {
                   marginLeft: "auto",
                 }}
                 type="submit"
-                // onClick={handleSend}
+                onClick={handleSend}
               >
                 Next
-              </Button> */}
+              </Button>
             </div>
           </div>
         </div>

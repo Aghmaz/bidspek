@@ -24,6 +24,7 @@ import Column from "./components/owners/Column";
 import Beam from "./components/owners/Beam";
 import Slab from "./components/owners/Slab";
 import StructuralIssue from "./components/owners/StructuralIssue";
+import LocalEngineer from "./components/owners/LocalEngineer";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -196,6 +197,10 @@ function App() {
         <Route
           path="/parking-garage/slab/StructuralIssue"
           element={<StructuralIssue />}
+        />
+        <Route
+          path="/parking-garage/slab/local-engineer"
+          element={<LocalEngineer />}
         />
       </Routes>
     </div>

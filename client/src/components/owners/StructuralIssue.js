@@ -9,11 +9,11 @@ import deflectionenlarged from "../../images/deflectionenlarged.png";
 import cracksenlarge from "../../images/cracksenlarge.png";
 import corrisionenlarge from "../../images/corrisionenlarge.png";
 import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import CloseIcon from "@mui/icons-material/Close";
 import { makeStyles } from "@material-ui/core/styles";
 import { useNavigate } from "react-router-dom";
+import Form from "react-bootstrap/Form";
 
 const useStyles = makeStyles((theme) => ({
   confirmationPop: {
@@ -49,7 +49,9 @@ const StructuralIssue = () => {
   const [selectedArea, setSelectedArea] = useState(null);
   const [clickedArea, setClickedArea] = useState(null);
   const [openConfirmationPop, setOpenConfirmationPop] = useState(false);
-
+  const [checkBox, setCheckBox] = useState(
+    localStorage.getItem("structuralcheckbox") || ""
+  );
   const handleClick = (event, area) => {
     event.preventDefault();
     setClickedArea(area);
@@ -92,6 +94,25 @@ const StructuralIssue = () => {
     return "";
   };
 
+  const handleCheckBox = (event) => {
+    const value = event.target.value;
+    setCheckBox(value);
+    localStorage.setItem("structuralcheckbox", value);
+    console.log("structuralcheckbox", value);
+  };
+
+  const handleSend = () => {
+    const temp = localStorage.getItem("structuralcheckbox");
+    if (temp === "Deflection") {
+      navigate("/parking-garage/slab/local-engineer");
+    } else if (temp === "Excessive Cracking") {
+      navigate("/parking-garage/slab/local-engineer");
+    } else if (temp === "Corrosion") {
+      navigate("/parking-garage/slab/local-engineer");
+    } else {
+      navigate("/parking-garage/slab/StructuralIssue");
+    }
+  };
   return (
     <div className="container-fluid">
       <Navbar />
@@ -130,10 +151,13 @@ const StructuralIssue = () => {
                   className="card mb-3"
                   style={{ background: "transparent" }}
                 >
-                  <FormGroup>
-                    <FormControlLabel
-                      control={<Checkbox />}
+                  <FormGroup className="ms-2">
+                    <Form.Check
                       label="Deflection"
+                      value="Deflection"
+                      type="radio"
+                      checked={checkBox === "Deflection"}
+                      onChange={handleCheckBox}
                     />
                   </FormGroup>
                 </div>
@@ -162,10 +186,13 @@ const StructuralIssue = () => {
                   className="card mb-3"
                   style={{ background: "transparent" }}
                 >
-                  <FormGroup>
-                    <FormControlLabel
-                      control={<Checkbox />}
+                  <FormGroup className="ms-2">
+                    <Form.Check
                       label="Excessive Cracking"
+                      value="Excessive Cracking"
+                      type="radio"
+                      checked={checkBox === "Excessive Cracking"}
+                      onChange={handleCheckBox}
                     />
                   </FormGroup>
                 </div>
@@ -193,17 +220,22 @@ const StructuralIssue = () => {
                   className="card mb-3"
                   style={{ background: "transparent" }}
                 >
-                  <FormGroup>
-                    <FormControlLabel
-                      control={<Checkbox />}
+                  <FormGroup className="ms-2">
+                    <Form.Check
                       label="Corrosion"
+                      value="Corrosion"
+                      type="radio"
+                      checked={checkBox === "Corrosion"}
+                      onChange={handleCheckBox}
                     />
                   </FormGroup>
                 </div>
               </div>
             </div>
+            <hr className="mt-5" />
 
             <div
+              className="w-75 mx-auto"
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -225,6 +257,20 @@ const StructuralIssue = () => {
                 onClick={handleBack}
               >
                 Back
+              </Button>
+              <Button
+                style={{
+                  flexGrow: 1,
+                  margin: "0 5px",
+                  maxWidth: "180px",
+                  backgroundColor: "rgb(25, 118, 210)",
+                  color: "white",
+                  marginLeft: "auto",
+                }}
+                type="submit"
+                onClick={handleSend}
+              >
+                Next
               </Button>
             </div>
           </div>
