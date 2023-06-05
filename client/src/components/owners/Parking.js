@@ -6,7 +6,11 @@ import ParkingGarage from "./ParkingGarage";
 import { Link } from "react-router-dom";
 
 const Parking = () => {
-  const [selectedButton, setSelectedButton] = useState("ParkingGarage");
+  const location = localStorage.getItem("location");
+  const [selectedButton, setSelectedButton] = useState(
+    (location === "parking garage" && "ParkingGarage") ||
+      (location === "building exterior" && "BuildingExterior")
+  );
 
   const handleClickButton = (button) => {
     setSelectedButton(button);
@@ -37,7 +41,12 @@ const Parking = () => {
         <div className="col-lg-2 col-sm-2">
           <Button
             style={{ textTransform: "initial" }}
-            defaultValue={selectedButton === "ParkingGarage"}
+            defaultValue={
+              (selectedButton === "ParkingGarage" &&
+                location === "parking garage") ||
+              (selectedButton === "BuildingExterior" &&
+                location === "building exterior")
+            }
             variant={selectedButton === "ParkingGarage" ? "contained" : ""}
             color={selectedButton === "ParkingGarage" ? "primary" : "default"}
             onClick={() => handleClickButton("ParkingGarage")}

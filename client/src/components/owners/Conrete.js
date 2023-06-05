@@ -4,6 +4,7 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import { useNavigate } from "react-router-dom";
 import "./style.css";
+import Rectangle from "../../images/Rectangle.png";
 
 const Concrete = () => {
   const [searchData, setSearchData] = useState([
@@ -16,8 +17,10 @@ const Concrete = () => {
   const handleNextClick = () => {
     if (query.toLowerCase() === "parking garage") {
       navigate("/parking-garage");
+      localStorage.setItem("location", "parking garage");
     } else if (query.toLowerCase() === "building exterior") {
-      navigate("/building-exterior");
+      navigate("/parking-garage");
+      localStorage.setItem("location", "building exterior");
     }
   };
 
@@ -64,7 +67,8 @@ const Concrete = () => {
         <img
           style={{ marginTop: "-2.5rem" }}
           className="img-fluid"
-          src="https://res.cloudinary.com/df8fsfjad/image/upload/v1681489902/Rectangle_pyk0rf.png"
+          src={Rectangle}
+          // src="https://res.cloudinary.com/df8fsfjad/image/upload/v1681489902/Rectangle_pyk0rf.png"
           alt="Rectangular"
         />
       </div>

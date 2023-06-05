@@ -24,6 +24,10 @@ const LocalEngineer = () => {
       navigate("/parking-garage/slab/StructuralIssue");
     }
   };
+
+  const handleSend = () => {
+    navigate("/parking-garage/slab/local-engineer/repair-projects");
+  };
   return (
     <div className="container-fluid">
       <Navbar />
@@ -121,7 +125,7 @@ const LocalEngineer = () => {
                   marginLeft: "auto",
                 }}
                 type="submit"
-                // onClick={handleSend}
+                onClick={handleSend}
               >
                 Next
               </Button>
