@@ -27,7 +27,7 @@ const RepairProject = () => {
             >
               Parking Garage - Slab on grade crack repair
             </h4>
-            <h4
+            {/* <h4
               className="mb-4 mt-2 text-center"
               style={{
                 margin: "auto",
@@ -37,7 +37,7 @@ const RepairProject = () => {
               }}
             >
               Project Estimate: $35,000 - $55,000
-            </h4>
+            </h4> */}
             <span
               style={{
                 margin: "auto",
