@@ -1,11 +1,76 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../navbar";
 import Button from "@mui/material/Button";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import { ToastContainer, toast } from "react-toastify";
+
 const RepairProject = () => {
+  const navigate = useNavigate();
+
+  const checkBoxed = JSON.parse(localStorage.getItem("checkbox"));
+  const structuralcheckbox = JSON.parse(
+    localStorage.getItem("structuralcheckbox")
+  );
+
+  const [checkBox, setCheckBox] = useState(
+    localStorage.getItem("lastScreen") || ""
+  );
+
+  // const allItems = [
+  //   "Cracks",
+  //   "Spalls",
+  //   "Structural Issues",
+  //   "Corrosion",
+  //   "Deflection",
+  //   "Excessive Cracking",
+  // ];
+  const allItems = [
+    {
+      groupName: "(i)",
+      items: ["Cracks", "Spalls", "Structural Issues"],
+    },
+    {
+      groupName: "(ii)",
+      items: ["Corrosion", "Deflection", "Excessive Cracking"],
+    },
+  ];
+
+  const filteredGroups = allItems
+    .filter((group) => {
+      const filteredItems = group.items.filter(
+        (item) =>
+          checkBoxed?.includes(item) || structuralcheckbox?.includes(item)
+      );
+      return filteredItems.length > 0;
+    })
+    .map((group) => `${group.groupName} ${group.items.join(", ")}`);
+
+  const output = filteredGroups.join(", ");
+
+  const handleCheckBox = (event) => {
+    const value = event.target.checked;
+    setCheckBox(value);
+    localStorage.setItem("lastScreen", value);
+    console.log("lastScreen", value);
+  };
+
+  const handleSend = () => {
+    if (checkBox === true) {
+      window.location.href = "https://on.sprintful.com/bidspek";
+    } else {
+      notify();
+    }
+  };
+
+  const handleBack = () => {
+    navigate("/parking-garage/slab/local-engineer");
+  };
+  const notify = () =>
+    toast("Please Select Term & condition.", { type: "error" });
+
   return (
     <div className="container-fluid">
       <Navbar />
@@ -25,7 +90,17 @@ const RepairProject = () => {
                 fontSize: "25px",
               }}
             >
-              Parking Garage - Slab on grade crack repair
+              Parking Garage - Slab -{" "}
+              {/* {allItems
+                .filter((item) => {
+                  return (
+                    checkBoxed?.includes(item) ||
+                    structuralcheckbox?.includes(item)
+                  );
+                })
+                .join(", ")}{" "} */}
+              {output}
+              on grade crack repair
             </h4>
             {/* <h4
               className="mb-4 mt-2 text-center"
@@ -66,6 +141,8 @@ const RepairProject = () => {
                 <FormControlLabel
                   required
                   control={<Checkbox />}
+                  checked={checkBox === true}
+                  onChange={handleCheckBox}
                   label="I agree to Bidspek’s terms and conditions, and agree to be called by a Bidspek specialist to discuss my quote. "
                 />
               </FormGroup>
@@ -91,7 +168,7 @@ const RepairProject = () => {
                 }}
                 variant="outline-primary"
                 type="submit"
-                // onClick={handleCancel}
+                onClick={handleBack}
               >
                 Back
               </Button>
@@ -105,10 +182,11 @@ const RepairProject = () => {
                   marginLeft: "auto",
                 }}
                 type="submit"
-                // onClick={handleSend}
+                onClick={handleSend}
               >
                 Schedule a call
               </Button>
+              <ToastContainer />
             </div>
           </div>
         </div>

@@ -10,16 +10,12 @@ const LocalEngineer = () => {
   const navigate = useNavigate();
 
   const handleCancel = () => {
-    const checkbox = localStorage.getItem("checkbox");
     const structuralcheckbox = localStorage.getItem("structuralcheckbox");
 
-    if (checkbox == "Cracks" || checkbox == "Spalls") {
-      navigate("/parking-garage/slab");
-    } else if (
-      (checkbox == "Structural Issues" && structuralcheckbox == "Corrosion") ||
-      (checkbox == "Structural Issues" &&
-        structuralcheckbox == "Excessive Cracking") ||
-      (checkbox == "Structural Issues" && structuralcheckbox == "Deflection")
+    if (
+      structuralcheckbox.includes("Corrosion") ||
+      structuralcheckbox.includes("Excessive Cracking") ||
+      structuralcheckbox.includes("Deflection")
     ) {
       navigate("/parking-garage/slab/StructuralIssue");
     }

@@ -14,6 +14,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { makeStyles } from "@material-ui/core/styles";
 import { useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
+import { ToastContainer, toast } from "react-toastify";
 
 const useStyles = makeStyles((theme) => ({
   confirmationPop: {
@@ -49,9 +50,11 @@ const StructuralIssue = () => {
   const [selectedArea, setSelectedArea] = useState(null);
   const [clickedArea, setClickedArea] = useState(null);
   const [openConfirmationPop, setOpenConfirmationPop] = useState(false);
-  const [checkBox, setCheckBox] = useState(
-    localStorage.getItem("structuralcheckbox") || ""
-  );
+
+  const [checkBox, setCheckBox] = useState(() => {
+    const storedValues = JSON.parse(localStorage.getItem("structuralcheckbox"));
+    return storedValues || [];
+  });
   const handleClick = (event, area) => {
     event.preventDefault();
     setClickedArea(area);
@@ -94,25 +97,39 @@ const StructuralIssue = () => {
     return "";
   };
 
+  // const handleCheckBox = (event) => {
+  //   const value = event.target.value;
+  //   setCheckBox(value);
+  //   localStorage.setItem("structuralcheckbox", value);
+  //   console.log("structuralcheckbox", value);
+  // };
   const handleCheckBox = (event) => {
     const value = event.target.value;
-    setCheckBox(value);
-    localStorage.setItem("structuralcheckbox", value);
-    console.log("structuralcheckbox", value);
+    const checked = event.target.checked;
+
+    let updatedCheckBox;
+    if (checked) {
+      updatedCheckBox = [...checkBox, value];
+    } else {
+      updatedCheckBox = checkBox.filter((item) => item !== value);
+    }
+
+    setCheckBox(updatedCheckBox);
+    localStorage.setItem("structuralcheckbox", JSON.stringify(updatedCheckBox));
   };
 
   const handleSend = () => {
-    const temp = localStorage.getItem("structuralcheckbox");
-    if (temp === "Deflection") {
-      navigate("/parking-garage/slab/local-engineer");
-    } else if (temp === "Excessive Cracking") {
-      navigate("/parking-garage/slab/local-engineer");
-    } else if (temp === "Corrosion") {
+    if (
+      checkBox.includes("Deflection") ||
+      checkBox.includes("Excessive Cracking") ||
+      checkBox.includes("Corrosion")
+    ) {
       navigate("/parking-garage/slab/local-engineer");
     } else {
-      navigate("/parking-garage/slab/StructuralIssue");
+      notify();
     }
   };
+  const notify = () => toast("Please Select atleast one.", { type: "error" });
   return (
     <div className="container-fluid">
       <Navbar />
@@ -155,8 +172,8 @@ const StructuralIssue = () => {
                     <Form.Check
                       label="Deflection"
                       value="Deflection"
-                      type="radio"
-                      checked={checkBox === "Deflection"}
+                      type="checkBox"
+                      checked={checkBox.includes("Deflection")}
                       onChange={handleCheckBox}
                     />
                   </FormGroup>
@@ -190,8 +207,8 @@ const StructuralIssue = () => {
                     <Form.Check
                       label="Excessive Cracking"
                       value="Excessive Cracking"
-                      type="radio"
-                      checked={checkBox === "Excessive Cracking"}
+                      type="checkBox"
+                      checked={checkBox.includes("Excessive Cracking")}
                       onChange={handleCheckBox}
                     />
                   </FormGroup>
@@ -224,8 +241,8 @@ const StructuralIssue = () => {
                     <Form.Check
                       label="Corrosion"
                       value="Corrosion"
-                      type="radio"
-                      checked={checkBox === "Corrosion"}
+                      type="checkBox"
+                      checked={checkBox.includes("Corrosion")}
                       onChange={handleCheckBox}
                     />
                   </FormGroup>
@@ -272,6 +289,7 @@ const StructuralIssue = () => {
               >
                 Next
               </Button>
+              <ToastContainer />
             </div>
           </div>
         </div>

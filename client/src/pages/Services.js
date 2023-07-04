@@ -177,7 +177,7 @@ function Services(props) {
   const jobtitle = localStorage.getItem("selectedValue");
 
   useEffect(() => {
-    if (jobtitle === "engineer") {
+    if (jobtitle === "engineer" || jobtitle === "consultant") {
       setHeading("If Yes, please specify the region, country & states * ?");
       setHeading1("Do you carry a PE License ?");
       setHeading2("Are you a certified corrosion Engineer?");

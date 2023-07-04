@@ -14,6 +14,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { makeStyles } from "@material-ui/core/styles";
 import { useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
+import { ToastContainer, toast } from "react-toastify";
 
 const useStyles = makeStyles((theme) => ({
   confirmationPop: {
@@ -52,9 +53,10 @@ const Slab = () => {
 
   const [selectedArea, setSelectedArea] = useState(null);
   const [openConfirmationPop, setOpenConfirmationPop] = useState(false);
-  const [checkBox, setCheckBox] = useState(
-    localStorage.getItem("checkbox") || ""
-  );
+  const [checkBox, setCheckBox] = useState(() => {
+    const storedValues = JSON.parse(localStorage.getItem("checkbox"));
+    return storedValues || [];
+  });
 
   const handleClick = (event, area) => {
     event.preventDefault();
@@ -95,21 +97,31 @@ const Slab = () => {
 
   const handleCheckBox = (event) => {
     const value = event.target.value;
-    setCheckBox(value);
-    localStorage.setItem("checkbox", value);
-    console.log("checkbox", value);
+    const checked = event.target.checked;
+
+    let updatedCheckBox;
+    if (checked) {
+      updatedCheckBox = [...checkBox, value];
+    } else {
+      updatedCheckBox = checkBox.filter((item) => item !== value);
+    }
+
+    setCheckBox(updatedCheckBox);
+    localStorage.setItem("checkbox", JSON.stringify(updatedCheckBox));
   };
 
   const handleSend = () => {
-    const temp = localStorage.getItem("checkbox");
-    if (temp === "Cracks") {
-      navigate("/parking-garage/slab/local-engineer");
-    } else if (temp === "Spalls") {
-      navigate("/parking-garage/slab/local-engineer");
-    } else if (temp === "Structural Issues") {
+    if (
+      checkBox.includes("Cracks") ||
+      checkBox.includes("Spalls") ||
+      checkBox.includes("Structural Issues")
+    ) {
       navigate("/parking-garage/slab/StructuralIssue");
+    } else {
+      notify();
     }
   };
+  const notify = () => toast("Please Select atleast one.", { type: "error" });
   return (
     <div className="container-fluid">
       <Navbar />
@@ -153,8 +165,9 @@ const Slab = () => {
                       // control={<Checkbox />}
                       label="Cracks"
                       value="Cracks"
-                      type="radio"
-                      checked={checkBox === "Cracks"}
+                      type="checkbox"
+                      checked={checkBox.includes("Cracks")}
+                      // checked={checkBox === "Cracks"}
                       onChange={handleCheckBox}
                     />
                   </FormGroup>
@@ -187,9 +200,10 @@ const Slab = () => {
                     <Form.Check
                       // control={<Checkbox />}
                       value="Spalls"
-                      type="radio"
+                      type="checkbox"
                       label="Spalls"
-                      checked={checkBox === "Spalls"}
+                      checked={checkBox.includes("Spalls")}
+                      // checked={checkBox === "Spalls"}
                       onChange={handleCheckBox}
                     />
                   </FormGroup>
@@ -223,9 +237,10 @@ const Slab = () => {
                     <Form.Check
                       // control={<Checkbox />}
                       value="Structural Issues"
-                      type="radio"
+                      type="checkbox"
                       label="Structural Issues"
-                      checked={checkBox === "Structural Issues"}
+                      checked={checkBox.includes("Structural Issues")}
+                      // checked={checkBox === "Structural Issues"}
                       onChange={handleCheckBox}
                     />
                   </FormGroup>
@@ -271,6 +286,7 @@ const Slab = () => {
               >
                 Next
               </Button>
+              <ToastContainer /> 
             </div>
           </div>
         </div>

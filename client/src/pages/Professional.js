@@ -12,7 +12,7 @@ const inisialState = [
   { title: "Parking Garages", flag: false },
   { title: "Office Buildings", flag: false },
   { title: "Low Rise Structure", flag: false },
-  { title: "Floors & badge", flag: false },
+  { title: "Retails office space", flag: false },
   { title: "Marine Structure", flag: false },
   { title: "Underground tunnel & pipelines", flag: false },
 ];
@@ -140,7 +140,6 @@ const Professional = (props) => {
               name="job-title"
               type="radio"
               value="consultant"
-              disabled
               checked={selectedValue === "consultant"}
               onChange={handleChange}
             />

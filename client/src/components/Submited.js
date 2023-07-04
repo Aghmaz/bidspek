@@ -116,7 +116,8 @@ export const Submited = ({ user }) => {
                 justifyContent: "center",
               }}
             >
-              You have Submited the Form.
+              Thanks for joining bidspek abvissory team and be part of our
+              subject matter expert network
             </h6>
           </Card.Body>
         </Card>
