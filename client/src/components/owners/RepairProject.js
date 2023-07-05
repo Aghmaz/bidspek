@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Navbar from "../navbar";
 import Button from "@mui/material/Button";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -6,9 +6,14 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { ToastContainer, toast } from "react-toastify";
+import { multiStepContext } from "../../StepContext";
+import axios from "axios";
 
 const RepairProject = () => {
   const navigate = useNavigate();
+  const { userData } = useContext(multiStepContext);
+
+  // console.log("userData>>>>>>", userData.ownerEmail, userData.zipowner);
 
   const checkBoxed = JSON.parse(localStorage.getItem("checkbox"));
   const structuralcheckbox = JSON.parse(
@@ -57,19 +62,123 @@ const RepairProject = () => {
     console.log("lastScreen", value);
   };
 
-  const handleSend = () => {
-    if (checkBox === true) {
-      window.location.href = "https://on.sprintful.com/bidspek";
-    } else {
-      notify();
-    }
-  };
+  // const handleSend = () => {
+  //   if (checkBox === true) {
+  //     window.location.href = "https://on.sprintful.com/bidspek";
+  //   } else {
+  //     notify();
+  //   }
+  // };
 
   const handleBack = () => {
     navigate("/parking-garage/slab/local-engineer");
   };
   const notify = () =>
     toast("Please Select Term & condition.", { type: "error" });
+
+  // const check = JSON.parse(localStorage.getItem("checkbox"));
+  // const structuralcheck = JSON.parse(
+  //   localStorage.getItem("structuralcheckbox")
+  // );
+  // const selectedStructural = structuralcheck?.filter((item) => item.flag);
+  // const selectedcheck = check?.filter((item) => item.flag);
+
+  // const handleSend = (e) => {
+  //   if (e) {
+  //     e.preventDefault();
+  //   }
+  //   const formData = new FormData();
+
+  //   formData.append("owneremail", userData.ownerEmail);
+  //   formData.append("ownerzip", userData.zipowner);
+  //   formData.append("screentwo", JSON.stringify(selectedStructural));
+  //   formData.append("screenone", JSON.stringify(selectedcheck));
+  //   // formData.append("zipCode", userData.zip);
+
+  //   const config = {
+  //     method: "post",
+  //     url: `${process.env.REACT_APP_API_URL}/owner`,
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     data: formData,
+  //   };
+
+  //   axios(config)
+  //     .then(function (response) {
+  //       console.log(response.data);
+
+  //       // localStorage.clear();
+  //       // localStorage.removeItem("engineerId");
+  //       // localStorage.removeItem("occupation");
+  //       // localStorage.removeItem("pieLicense");
+  //       // localStorage.removeItem("corrosion");
+  //       // localStorage.removeItem("company_name");
+  //       // localStorage.removeItem("buildingPermit");
+  //       // localStorage.removeItem("isInputField");
+  //       // localStorage.removeItem("uploadedImage");
+  //       // localStorage.removeItem("isInputField3");
+  //       // localStorage.removeItem("selectedvalue");
+  //       // localStorage.removeItem("isImageUploaded");
+  //       // localStorage.removeItem("isInputField2");
+  //       // localStorage.removeItem("hourly");
+  //       // localStorage.removeItem("billing");
+  //       // localStorage.removeItem("switchValue");
+  //       // localStorage.removeItem("selectedValue");
+  //       // localStorage.removeItem("boxCount");
+  //       // localStorage.removeItem("images");
+  //       // localStorage.removeItem("servicesData");
+  //       // localStorage.removeItem("professionalData");
+  //       // localStorage.removeItem("hasReloadedOnce");
+  //       // setTimeout(() => {
+  //       //   localStorage.removeItem("token");
+  //       // }, 10000);
+  //       notify();
+  //       if (checkBox === true) {
+  //         window.location.href = "https://on.sprintful.com/bidspek";
+  //       } else {
+  //         notifymes();
+  //       }
+  //     })
+  //     .catch(function (error) {
+  //       errorToast();
+  //       console.log(error);
+  //     });
+  // };
+
+  const handleSend = (e) => {
+    e.preventDefault();
+
+    const formData = {
+      owneremail: userData.ownerEmail,
+      ownerzip: userData.zipowner,
+      // screentwo: JSON.stringify(selectedStructural),
+      // screenone: JSON.stringify(selectedcheck),
+      screentwo: structuralcheckbox,
+      screenone: checkBoxed,
+    };
+
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/engineer/owner`, formData)
+      .then(function (response) {
+        console.log(response.data);
+        notify();
+
+        if (checkBox) {
+          window.location.href = "https://on.sprintful.com/bidspek";
+        }
+      })
+      .catch(function (error) {
+        errorToast();
+        console.log(error);
+      });
+  };
+  if (!checkBox) {
+    notifymes();
+  }
+  const errorToast = () => toast("this is error", { Type: "error" });
+
+  const notifymes = () => toast("You Form has been Submited");
 
   return (
     <div className="container-fluid">

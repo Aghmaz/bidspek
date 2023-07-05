@@ -324,11 +324,11 @@ const ParkingGarage = () => {
                     onClick={handleCancel}
                   />
                 </div>
-                <div style={{ float: "right" }}>
+                {/* <div style={{ float: "right" }}>
                   <ZoomInIcon
                     style={{ color: "#0052CC", marginRight: "0.5rem" }}
                   />
-                </div>
+                </div> */}
               </div>
               {selectedArea && (
                 <img

@@ -139,12 +139,12 @@ const Slab = () => {
             >
               <div className="col card" style={{ background: "transparent" }}>
                 <div>
-                  <div style={{ float: "right" }}>
+                  {/* <div style={{ float: "right" }}>
                     <ZoomInIcon
                       style={{ color: "#0052CC" }}
                       onClick={(event) => handleClick(event, "cracks")}
                     />
-                  </div>
+                  </div> */}
                 </div>
                 <img
                   src={cracks}
@@ -175,12 +175,12 @@ const Slab = () => {
               </div>
               <div className="col card" style={{ background: "transparent" }}>
                 <div>
-                  <div style={{ float: "right" }}>
+                  {/* <div style={{ float: "right" }}>
                     <ZoomInIcon
                       style={{ color: "#0052CC" }}
                       onClick={(event) => handleClick(event, "spalls")}
                     />
-                  </div>
+                  </div> */}
                 </div>
                 <img
                   src={spalls}
@@ -211,12 +211,12 @@ const Slab = () => {
               </div>
               <div className="col card" style={{ background: "transparent" }}>
                 <div>
-                  <div style={{ float: "right" }}>
+                  {/* <div style={{ float: "right" }}>
                     <ZoomInIcon
                       style={{ color: "#0052CC" }}
                       onClick={(event) => handleClick(event, "Structural")}
                     />
-                  </div>
+                  </div> */}
                 </div>
                 <img
                   src={Structural}
@@ -286,7 +286,7 @@ const Slab = () => {
               >
                 Next
               </Button>
-              <ToastContainer /> 
+              <ToastContainer />
             </div>
           </div>
         </div>

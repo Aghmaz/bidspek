@@ -1,6 +1,7 @@
 const express = require("express");
 const errorHandler = require("../../middleware/error");
 const Engineer = require("../../models/Engineer");
+const Owner = require("../../models/Owner");
 // const NewUser = require("../../models/NewUser");
 const createUserSchema = require("./validationSchema"); //.default;
 const crypto = require("crypto");
@@ -35,6 +36,37 @@ router.get(
   })
 );
 
+//for owner
+router.post("/owner", (req, res) => {
+  // Retrieve form data from the request body
+  const { owneremail, ownerzip, screentwo, screenone } = req.body;
+
+  // Handle the form data as required
+  // Perform any necessary processing or save the data to a database
+
+  // Example: Save the form data to a MongoDB database
+  const formData = new Owner({
+    owneremail,
+    ownerzip,
+    screentwo,
+    screenone,
+  });
+
+  formData
+    .save()
+    .then(() => {
+      // Send a response back to the frontend
+      res.status(200).json({ message: "Form submitted successfully" });
+    })
+    .catch((error) => {
+      console.log(error);
+      // Handle the error and send an appropriate response
+      res
+        .status(500)
+        .json({ error: "An error occurred while saving the form data" });
+    });
+});
+
 // search a specific engineer
 
 router.get(
@@ -63,7 +95,7 @@ router.post("/owner-login", (req, res) => {
   }
 });
 
-//delete a user by its id 
+//delete a user by its id
 //Delete an Engineer
 router.delete(
   "/:engineerId",

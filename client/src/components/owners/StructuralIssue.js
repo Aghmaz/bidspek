@@ -147,12 +147,12 @@ const StructuralIssue = () => {
             >
               <div className="col card" style={{ background: "transparent" }}>
                 <div>
-                  <div className="text-end">
+                  {/* <div className="text-end">
                     <ZoomInIcon
                       style={{ color: "#0052CC" }}
                       onClick={(e) => handleClick(e, "cracks")}
                     />
-                  </div>
+                  </div> */}
                 </div>
                 <img
                   src={cracks}
@@ -181,12 +181,12 @@ const StructuralIssue = () => {
               </div>
               <div className="col card " style={{ background: "transparent" }}>
                 <div>
-                  <div className="text-end">
+                  {/* <div className="text-end">
                     <ZoomInIcon
                       style={{ color: "#0052CC" }}
                       onClick={(e) => handleClick(e, "spalls")}
                     />
-                  </div>
+                  </div> */}
                 </div>
                 <img
                   src={spalls}
@@ -216,12 +216,12 @@ const StructuralIssue = () => {
               </div>
               <div className="col card" style={{ background: "transparent" }}>
                 <div>
-                  <div className="text-end">
+                  {/* <div className="text-end">
                     <ZoomInIcon
                       style={{ color: "#0052CC" }}
                       onClick={(e) => handleClick(e, "Structural")}
                     />
-                  </div>
+                  </div> */}
                 </div>
                 <img
                   src={Structural}
