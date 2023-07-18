@@ -173,12 +173,11 @@ const RepairProject = () => {
         console.log(error);
       });
   };
+  const notifymes = () => toast("You Form has been Submited");
   if (!checkBox) {
     notifymes();
   }
   const errorToast = () => toast("this is error", { Type: "error" });
-
-  const notifymes = () => toast("You Form has been Submited");
 
   return (
     <div className="container-fluid">
