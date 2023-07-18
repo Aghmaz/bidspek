@@ -77,11 +77,16 @@ const RepairProject = () => {
     toast("Please Select Term & condition.", { type: "error" });
   const notifymes = () => toast("You Form has been Submited");
 
-  const errorToast = () => toast("this is error", { Type: "error" });
+  const errorToast = (errorMessage) => toast(errorMessage, { type: "error" });
 
   const handleSend = (e) => {
     e.preventDefault();
 
+    if (!checkBox) {
+      // Display error toast and prevent API call
+      notify();
+      return;
+    }
     const formData = {
       owneremail: userData.ownerEmail,
       ownerzip: userData.zipowner,
@@ -95,16 +100,21 @@ const RepairProject = () => {
       .then(function (response) {
         console.log(response.data);
 
-        if (checkBox) {
-          notifymes();
+        notifymes();
 
-          window.location.href = "https://on.sprintful.com/bidspek";
-        } else {
-          notify();
-        }
+        window.location.href = "https://on.sprintful.com/bidspek";
       })
       .catch(function (error) {
-        errorToast();
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.error
+        ) {
+          errorToast(error.response.data.error);
+        } else {
+          errorToast("An error occurred while processing the request");
+        }
+
         console.log(error);
       });
   };
@@ -130,27 +140,27 @@ const RepairProject = () => {
             >
               Parking Garage - Slab -{" "}
               {/* {allItems
-                .filter((item) => {
-                  return (
-                    checkBoxed?.includes(item) ||
-                    structuralcheckbox?.includes(item)
-                  );
-                })
-                .join(", ")}{" "} */}
+                  .filter((item) => {
+                    return (
+                      checkBoxed?.includes(item) ||
+                      structuralcheckbox?.includes(item)
+                    );
+                  })
+                  .join(", ")}{" "} */}
               {output}
               on grade crack repair
             </h4>
             {/* <h4
-              className="mb-4 mt-2 text-center"
-              style={{
-                margin: "auto",
-                // width: "55%",
-                // display: "block",
-                fontSize: "22px",
-              }}
-            >
-              Project Estimate: $35,000 - $55,000
-            </h4> */}
+                className="mb-4 mt-2 text-center"
+                style={{
+                  margin: "auto",
+                  // width: "55%",
+                  // display: "block",
+                  fontSize: "22px",
+                }}
+              >
+                Project Estimate: $35,000 - $55,000
+              </h4> */}
             <span
               style={{
                 margin: "auto",

@@ -37,34 +37,38 @@ router.get(
 );
 
 //for owner
-router.post("/owner", (req, res) => {
-  // Retrieve form data from the request body
-  const { owneremail, ownerzip, screentwo, screenone } = req.body;
+router.post("/owner", async (req, res) => {
+  try {
+    // Retrieve form data from the request body
+    const { owneremail, ownerzip, screentwo, screenone } = req.body;
 
-  // Handle the form data as required
-  // Perform any necessary processing or save the data to a database
+    // Check if the email is already registered
+    const existingOwner = await Owner.findOne({ owneremail });
 
-  // Example: Save the form data to a MongoDB database
-  const formData = new Owner({
-    owneremail,
-    ownerzip,
-    screentwo,
-    screenone,
-  });
+    if (existingOwner) {
+      // Email is already registered, send a response to the frontend
+      return res.status(400).json({ error: "Email already registered" });
+    }
 
-  formData
-    .save()
-    .then(() => {
-      // Send a response back to the frontend
-      res.status(200).json({ message: "Form submitted successfully" });
-    })
-    .catch((error) => {
-      console.log(error);
-      // Handle the error and send an appropriate response
-      res
-        .status(500)
-        .json({ error: "An error occurred while saving the form data" });
+    // If the email is not registered, proceed to save the form data
+    const formData = new Owner({
+      owneremail,
+      ownerzip,
+      screentwo,
+      screenone,
     });
+
+    await formData.save();
+
+    // Send a response back to the frontend
+    res.status(200).json({ message: "Form submitted successfully" });
+  } catch (error) {
+    console.log(error);
+    // Handle the error and send an appropriate response
+    res
+      .status(500)
+      .json({ error: "An error occurred while processing the request" });
+  }
 });
 
 // search a specific engineer
