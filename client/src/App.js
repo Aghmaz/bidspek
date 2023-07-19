@@ -26,6 +26,7 @@ import Slab from "./components/owners/Slab";
 import StructuralIssue from "./components/owners/StructuralIssue";
 import LocalEngineer from "./components/owners/LocalEngineer";
 import RepairProject from "./components/owners/RepairProject";
+import Balcony from "./components/owners/balcony";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -207,6 +208,8 @@ function App() {
           path="/parking-garage/slab/local-engineer/repair-projects"
           element={<RepairProject />}
         />
+        {/* exterior building  */}
+        <Route path="/exteriorbuilding/balcony" element={<Balcony />} />
       </Routes>
     </div>
   );
