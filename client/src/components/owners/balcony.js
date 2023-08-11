@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "../navbar";
 import Button from "@mui/material/Button";
-import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import cracks from "../../images/deflection.png";
 import spalls from "../../images/structural.png";
 import Structural from "../../images/corrision.png";
@@ -9,7 +8,6 @@ import deflectionenlarged from "../../images/deflectionenlarged.png";
 import cracksenlarge from "../../images/cracksenlarge.png";
 import corrisionenlarge from "../../images/corrisionenlarge.png";
 import FormGroup from "@mui/material/FormGroup";
-import Checkbox from "@mui/material/Checkbox";
 import CloseIcon from "@mui/icons-material/Close";
 import { makeStyles } from "@material-ui/core/styles";
 import { useNavigate } from "react-router-dom";
