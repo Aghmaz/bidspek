@@ -168,19 +168,7 @@ function App() {
           element={<AlreadyFromSubmited user={user} />}
         />
         <Route path="/Submitted-Sucess" element={<Submited user={user} />} />
-        {/* <Route path="/owner-dashboard" element={<Dashboard />} /> */}
-        {/* <Route path="/owner-login" element={<OnwerLogin />} />
-        <Route
-          exact
-          path="/owner-dashboard"
-          element={
-            user ? (
-              <Navigate to="/owner-dashboard" replace={true} />
-            ) : (
-              <OnwerLogin setUser={setUser} />
-            )
-          }
-        /> */}
+
         <Route path="/owner-login" element={<OnwerLogin setUser={setUser} />} />
         <Route
           path="/owner-dashboard"
