@@ -64,12 +64,7 @@ function App() {
     } catch (err) {
       console.log(err);
     }
-  };
 
-  //
-
-  useEffect(() => {
-    getUser();
     const checkFormSubmission = async () => {
       try {
         const email = localStorage.getItem("email");
@@ -91,30 +86,12 @@ function App() {
     };
 
     checkFormSubmission();
-  }, []);
+  };
+
+  //
 
   useEffect(() => {
-    const checkFormSubmission1 = async () => {
-      try {
-        const email = localStorage.getItem("email");
-        const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/engineer/check-form-submission/${email}`
-        );
-
-        if (response.data.hasSubmittedForm) {
-          navigate("/form-Submitted");
-
-          console.log(
-            "response.data.hasSubmittedForm>>>>>>",
-            response.data.hasSubmittedForm
-          );
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    checkFormSubmission1();
+    getUser();
   }, []);
 
   return (
