@@ -16,7 +16,6 @@ import Building from "./components/owners/Building";
 import { AlreadyFromSubmited } from "./components/AlreadyFromSubmited";
 import { Submited } from "./components/Submited";
 import { useNavigate } from "react-router-dom";
-import { VerifyToken } from "./VerifyToken";
 import OnwerLogin from "./components/OwnerLogin";
 import Dashboard from "./components/Dashboard";
 import Profile from "./components/Profile";
