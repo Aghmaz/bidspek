@@ -94,6 +94,18 @@ function App() {
     getUser();
   }, []);
 
+  //how can i clear the localstorage if user close the browser window
+  useEffect(() => {
+    window.addEventListener("beforeunload", clearLocalStorage);
+    return () => {
+      window.removeEventListener("beforeunload", clearLocalStorage);
+    };
+  }, []);
+
+  const clearLocalStorage = () => {
+    localStorage.clear();
+  };
+
   return (
     <div className="App">
       <Routes>
