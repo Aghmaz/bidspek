@@ -29,9 +29,6 @@ const DisplayData = ({ user }) => {
   // for input fields of personal form
   const { userData, setStep } = useContext(multiStepContext);
 
-  // console.log(user, "user<<<<>>>>>>>>>>>>");
-  // console.log(userData, "userData<<<<>>>>>>>>>>>>");
-
   const storedValue = localStorage.getItem("switchValue");
 
   const storedCompanyValue = localStorage.getItem("company_name");
@@ -45,10 +42,8 @@ const DisplayData = ({ user }) => {
   // Retrieve data from local storage
   const data = JSON.parse(localStorage.getItem("professionalData"));
 
-  // console.log("data", data);
   // Filter selected items
   const selectedItems = data?.filter((item) => item.flag);
-  // console.log("selectedItems", selectedItems);
 
   // =============services ===========
   const serviceData = JSON.parse(localStorage.getItem("servicesData"));
@@ -82,10 +77,6 @@ const DisplayData = ({ user }) => {
     }
     setFileURLs(tempFileURLs);
   }, []);
-  // const images = localStorage.getItem(`image_url${index}`);
-  // console.log("images", images);
-  // const imageArray = images.split(","); // split string into array
-  // const numImages = imageArray.filter((img) => img !== null).length;
 
   // =============form sending ==========
   const handleSubmit = (e) => {
@@ -95,30 +86,18 @@ const DisplayData = ({ user }) => {
     const formData = new FormData();
     formData.append(
       "firstName",
-      // userData.firstname
-      //   ? userData.firstname
-      //   : user.given_name
-      //   ? userData.FirstName
-      //   : user.FirstName
+
       userData.firstname || user.given_name || user.FirstName
     );
     formData.append(
       "lastName",
-      // userData.lastname
-      //   ? userData.lastname
-      //   : user.given_name
-      //   ? userData.LastName
-      //   : user.LastName
+
       userData.lastname || user.given_name || user.LastName
     );
     formData.append("phone", userData.phone);
     formData.append(
       "email",
-      // userData.email
-      //   ? userData.email
-      //   : user.given_name
-      //   ? userData.Email
-      //   : user.Email
+
       userData.email || user.email || user.Email
     );
     formData.append("address", userData.address);
@@ -173,10 +152,7 @@ const DisplayData = ({ user }) => {
         localStorage.removeItem("images");
         localStorage.removeItem("servicesData");
         localStorage.removeItem("professionalData");
-        // localStorage.removeItem("hasReloadedOnce");
-        // setTimeout(() => {
-        //   localStorage.removeItem("token");
-        // }, 10000);
+
         notify();
         navigate("/Submitted-Sucess");
       })
@@ -186,30 +162,6 @@ const DisplayData = ({ user }) => {
       });
   };
   const errorToast = () => toast("this is error", { Type: "error" });
-  // ==============image
-
-  // function handleApi() {
-  //   console.log("i am there");
-  //   const formData = new FormData();
-  //   formData.append("image", image);
-  //   const engineerId = localStorage.getItem("engineerId");
-  //   axios
-  //     .patch(
-  //       `${process.env.REACT_APP_API_URL}/engineer/profileupload/${engineerId}`,
-  //       formData,
-  //       {
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //         },
-  //       }
-  //     )
-  //     .then((response) => {
-  //       console.log(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // }
 
   const [heading, setHeading] = useState("");
   const [heading1, setHeading1] = useState("");
